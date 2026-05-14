@@ -1,0 +1,29 @@
+.btn{
+    display: flex;
+    padding: 11px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.16);
+    cursor: pointer;
+    p{
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px; /* 150% */
+        letter-spacing: 0.16px;
+        color: var(--text-light);
+    }
+}
+.btn:hover{
+    background: rgba(255, 255, 255, 0.100);;
+}
+@media (max-width:768px){
+    .btn{
+        padding: 11px 12px;
+        p{
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+}

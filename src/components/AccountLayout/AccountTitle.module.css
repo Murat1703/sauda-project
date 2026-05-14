@@ -1,0 +1,7 @@
+.accountTitle{
+    font-size: 44px;
+    font-weight: 900;
+    letter-spacing: .88px;
+    line-height: 44px;
+    color: var(--detail-text);
+}
