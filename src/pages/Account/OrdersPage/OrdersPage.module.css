@@ -15,6 +15,12 @@
     gap: 16px;
     width: 100%;
 }
+.activeFilterBtn{
+    background: #152429!important;
+    p{
+        color: var(--white);
+    }
+}
 .ordersList{
     display: flex;
     flex-direction: column;
@@ -225,4 +231,14 @@
 }
 .orderActionButtonsLeft > a:hover{
     color: var(--detail-color);
+}
+.cancelOrderBtn{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    p{
+        color: #919799;
+        font-size: 16px;
+        line-height: 24px;
+    }
 }

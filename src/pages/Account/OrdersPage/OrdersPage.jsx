@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useOrders } from '../../../hooks/useOrders.js';
 import { Loader } from '../../../components/Loader';
 import { NavLink } from 'react-router-dom';
+import { useDateFormat } from '../../../hooks/useDateFormat.js';
 
 export const OrdersPage = () =>{
 
@@ -15,6 +16,8 @@ export const OrdersPage = () =>{
     },[]);
 
     console.log('ordersPage = ',orders)
+
+    const [filter, setFilter] = useState('all');
     
     const status = (item) =>{
         switch (item) {
@@ -32,17 +35,7 @@ export const OrdersPage = () =>{
         }
     }
 
-
-    const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('ru-RU', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-
-    });
-    };
+    const {formatDate} = useDateFormat();
 
 
     return(
@@ -59,16 +52,24 @@ export const OrdersPage = () =>{
             </div>
             <div className={cls.pageBottom}>
                 <FiltersContainer>
-                    <button>
+                    <button 
+                        className={filter == 'all' && cls.activeFilterBtn} onClick={()=>setFilter('all')}
+                    >
                         <p>Все</p>
                     </button>
-                    <button>
+                    <button
+                        className={filter == 'delivered' && cls.activeFilterBtn} onClick={()=>setFilter('delivered')}
+                    >
                         <p>Выполненные заказы</p>
                     </button>
-                    <button>
+                    <button
+                        className={filter == 'cancelled' && cls.activeFilterBtn} onClick={()=>setFilter('cancelled')}
+                    >
                         <p>Отмененные</p>
                     </button>
-                    <button>
+                    <button
+                        className={filter == 'returned' && cls.activeFilterBtn} onClick={()=>setFilter('returned')}
+                    >
                         <p>Возвраты</p>
                     </button>
                 </FiltersContainer>
@@ -93,9 +94,10 @@ export const OrdersPage = () =>{
                                     <p>Перейти в каталог</p>
                                 </NavLink>
                             </div>
+                            
                         </div>
                     )}
-                    {orders?.length !== 0 && orders?.map((order, index) =>(
+                    {orders?.length !== 0 && orders?.filter(order=>{if (filter=='all') return true; return order.status==filter}).map((order, index) =>(
                         <div className={cls.orderItem} key={order.id}>
                             <div className={cls.orderItemTop}>
                                 <div className={cls.orderStatus}>
@@ -151,6 +153,14 @@ export const OrdersPage = () =>{
                                         } 
 
                                     </div>
+                                    {order.status == 'processing' && (
+                                        <button className={cls.cancelOrderBtn}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <path d="M10.0013 18.3334C5.39893 18.3334 1.66797 14.6024 1.66797 10C1.66797 5.39764 5.39893 1.66669 10.0013 1.66669C14.6036 1.66669 18.3346 5.39764 18.3346 10C18.3346 14.6024 14.6036 18.3334 10.0013 18.3334ZM10.0013 16.6667C13.6832 16.6667 16.668 13.6819 16.668 10C16.668 6.31812 13.6832 3.33335 10.0013 3.33335C6.3194 3.33335 3.33464 6.31812 3.33464 10C3.33464 13.6819 6.3194 16.6667 10.0013 16.6667ZM10.0013 8.82152L12.3583 6.46449L13.5368 7.64299L11.1798 10L13.5368 12.357L12.3583 13.5355L10.0013 11.1785L7.64428 13.5355L6.46577 12.357L8.8228 10L6.46577 7.64299L7.64428 6.46449L10.0013 8.82152Z" fill="#8F9596"/>
+                                            </svg>
+                                            <p>Отменить заказ</p>
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

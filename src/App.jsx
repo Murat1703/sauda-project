@@ -10,6 +10,7 @@ import { CartPage } from './pages/Account/CartPage'
 import { AuthModalProvider } from './auth/AuthModalProvider/AuthModalProvider.jsx'
 import { AccountLayout } from './components/AccountLayout'
 import { OrdersPage } from './pages/Account/OrdersPage'
+import { OrderPage } from './pages/Account/OrdersPage'
 import { ReviewsPage } from './pages/Account/ReviewsPage'
 import { AccountDetailsPage } from './pages/Account/AccountDetailsPage'
 
@@ -34,6 +35,7 @@ function App() {
 
                 <Route element={<AccountLayout />} >
                   <Route path='/account/orders' element={<OrdersPage />}/>
+                  <Route path={`/account/orders/:id`} element={<OrderPage />}/>
                   <Route path='/account/favorites' element={<FavoritesPage />}/>
                   <Route path='/account/reviews' element={<ReviewsPage />}/>
                   <Route path='/account/profile' element={<AccountDetailsPage />}/>
