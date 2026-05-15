@@ -1,0 +1,11 @@
+.sliderControlBtn{
+    display: flex;
+    width: 56px;
+    height: 56px;
+    padding: 12px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 28px;
+    border: 1px solid var(--Dark-D50, #8F9596);
+    background: #FFF;
+}

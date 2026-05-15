@@ -1,0 +1,64 @@
+
+.bannerWrapper{
+    width: 100%;
+    height: 264px;
+    position: relative;
+    border-radius: 32px;
+    background: #DCDCDC;
+    overflow: hidden;
+}
+.bannerWrapper::before{
+    z-index: 2;
+    content:'';
+    top: -240px;
+    left: -320px;
+    width: 605px;
+    height: 849px; 
+    border-radius: 849px;
+    opacity: 0.5;
+    background: radial-gradient(50% 50% at 50% 50%, #FFF 0%, rgba(255, 255, 255, 0.00) 100%);
+    position: absolute;
+}
+.bannerText{
+    font-family: var(--font);
+    position: absolute;
+    width: 400px;
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 110%;
+    letter-spacing: -.84px;
+    text-transform: uppercase;
+    color: var(--accent);
+    top: 63px;
+    left: 120px;
+}
+.bannerWrapper > img{
+    width: 960.647px;
+    height: 539.689px;
+    transform: rotate(-1.286deg);
+    aspect-ratio: 89/50;
+    position: absolute;
+    right: -150px;
+    top: -100px;
+}
+.badge{
+    display: flex;
+    width: 318.786px;
+    height: 83.593px;
+    transform: rotate(13.633deg);
+    padding: 9px 25px 10px 25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 80px;
+    background: var(--Dark-D5, #EEEFF0);
+    position: absolute;
+    top: 100px;
+    right: 100px;
+    p{
+        color: var(--accent);
+        font-weight: 900;
+        font-size: 50px;
+        line-height: 52px;
+    }
+}

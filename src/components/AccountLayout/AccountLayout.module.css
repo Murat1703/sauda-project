@@ -1,7 +1,7 @@
 .accountLayout{
     display: flex;
     align-items: flex-start;
-    padding: 32px 0;
+    padding: 32px 32px;
     gap: 30px;
 }
 .accountLayout > asside{

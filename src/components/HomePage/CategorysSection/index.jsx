@@ -1,0 +1,1 @@
+export {CategorysSection} from './CategorysSection'

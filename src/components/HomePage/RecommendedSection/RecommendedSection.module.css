@@ -1,0 +1,27 @@
+.recommendedSectionContent{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 32px;
+}
+.recommendedSectionContent > h3{
+    font-size: 32px;
+    font-style: normal;
+    line-height: 44px; /* 137.5% */
+    letter-spacing: 0.64px;
+}
+.recommendedSlider{
+    position: relative;
+}
+.recommendedSlider > button{
+    position: absolute;
+    top: 50%;
+    margin-top: -28px;
+    z-index: 2;
+}
+.recommendedSlider > button:last-child{
+    right: -16px;
+}
+.recommendedSlider > button:nth-child(2){
+    left: -16px;
+}

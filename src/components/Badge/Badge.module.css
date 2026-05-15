@@ -1,0 +1,22 @@
+.badge{
+    display: flex;
+    padding: 2px 5px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 23px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .33px;
+    line-height: 14px;
+    text-transform: uppercase;
+}
+.newBadge{
+    padding: 2px 6px;
+    background: #4BF4FF;
+    color: var(--text);
+}
+.discountBadge{
+    background: var(--accent);
+    color: var(--white);
+}

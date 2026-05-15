@@ -1,0 +1,134 @@
+.productCard{
+    height: 480px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    border-radius: 18px;
+    background: var(--white);
+    position: relative;
+}
+.productCardImagesWrapper{
+    height: 237.025px;
+    flex-shrink: 0;
+    align-self: stretch;
+    aspect-ratio: 121/120;
+    border-radius: 10px;
+    position: relative;
+}
+.favoriteBtn{
+display: flex;
+padding: 6px;
+align-items: center;
+gap: 8px;
+position: absolute;
+right: 12px;
+top: 12px;
+z-index: 4;
+
+}
+.productCardImagesWrapper > div, 
+.productCardImagesWrapper > div > div{
+    width: 100%;
+    height: 100%;
+}
+.productCardImagesWrapper > div > div > div > img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.productCardInfoTop{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.productCardInfoReviews{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    align-self: stretch;
+}
+.productCardInfoReviews > span:nth-child(2){
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; /* 128.571% */
+}
+.productCardInfoReviews > span:nth-child(3){
+    font-size: 12px;
+    line-height: 14px; /* 116.667% */
+    color: #8F9596;
+}
+.productCardInfoTop > h4{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+}
+.productCardInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 0 0;
+    width: 100%;
+}
+.productCardInfoPrice{
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+.productCardPriceWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.productCardBtn{
+    display: flex;
+    height: 46px;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+    background: var(--accent);
+    border-radius: 14px;
+    p{
+        color: var(--white);
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+.finalPrice{
+    span{
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 24px;
+    }
+}
+.discountPrice{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.discountPrice > span:nth-child(1){
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 133.333% */
+    color: #8F9596;
+    position: relative;
+}
+.discountPrice > span:nth-child(1)::after{
+    content: '';
+    width: 100%;
+    height: 1px;
+    top: 10px;
+    background: var(--accent);
+    position: absolute;
+    left: 0;
+}

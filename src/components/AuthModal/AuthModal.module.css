@@ -6,6 +6,7 @@
     height: 100dvh;
     background: rgba(0, 0, 0, 0.54);
     backdrop-filter: blur(2.5px);
+    z-index: 1000;
 }
 .authModalContent{
     position: relative;

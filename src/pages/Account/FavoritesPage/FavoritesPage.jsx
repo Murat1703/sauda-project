@@ -1,8 +1,11 @@
 import { AccountTitle } from '../../../components/AccountLayout'
 import { BreadCrumbs } from '../../../components/AccountLayout'
 import cls from './FavoritesPage.module.css'
+import { useFavorites } from '../../../hooks/useFavorites'
 
 export const FavoritesPage = () =>{
+    const {favorites} = useFavorites();
+    console.log(favorites)
     return(
         <div>
             <div className={cls.pageTop}>

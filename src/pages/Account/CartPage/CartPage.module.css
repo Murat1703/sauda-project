@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    padding: 0 32px;
 }
 .cartPageTitle{
     padding: 32px 0 12px 0;

@@ -1,0 +1,68 @@
+.categorySection{
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border-radius: 40px;
+}
+.categorySectionContent{
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.categorySectionContent > h3{
+    font-size: 32px;
+    line-height: 44px; /* 137.5% */
+    letter-spacing: 0.64px;
+}
+.categorysSlider {
+    width: 100%;
+    height: 200px;
+    position: relative;
+}
+.categorysSlider > div, 
+.categorysSlider > div > div{
+    width: 100%;
+    height: 100%;
+}
+.categoryCardItem{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background: var(--Dark-D5, #EEEFF0);
+    padding-top: 35px;
+}
+.categoryCardItem > h4 {
+    text-align: center;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+}
+.categoryCardItem > img{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.categorysSlider > button{
+    position: absolute;
+    top: 50%;
+    margin-top: -28px;
+    display: flex;
+    width: 56px;
+    height: 56px;
+    padding: 12px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 28px;
+    border: 1px solid var(--Dark-D50, #8F9596);
+    background: #FFF;
+    z-index: 3;
+}
+.prevBtn{
+    left: -16px;
+}
+.nextBtn{
+    right: -16px;
+}
