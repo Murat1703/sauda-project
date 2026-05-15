@@ -9,6 +9,8 @@ import { AuthModal } from '../AuthModal/AuthModal.jsx';
 import { useAuthModal } from '../../hooks/useAuthModal.js'
 import { SideBar } from '../AccountLayout/SideBar.jsx';
 import { useOrders } from '../../hooks/useOrders.js';
+import { CounterBadge } from '../CounterBadge';
+import { useFavorites } from '../../hooks/useFavorites.js';
 
 export const Header = ({ordersCount}) =>{
 
@@ -45,6 +47,8 @@ export const Header = ({ordersCount}) =>{
     const {orders, loadingOrders, loadOrders} = useOrders();
 
     console.log('headerOrders = ', orders  )
+
+    const {favorites, toggleFavorites} = useFavorites();
 
     return(
         <>
@@ -93,6 +97,8 @@ export const Header = ({ordersCount}) =>{
                             <path fillRule="evenodd" clipRule="evenodd" d="M10.8935 3.03755C8.89419 0.700133 5.56014 0.071376 3.05509 2.21175C0.550035 4.35212 0.197358 7.93071 2.16459 10.4621C3.80021 12.5668 8.75016 17.0058 10.3725 18.4426C10.554 18.6033 10.6447 18.6837 10.7506 18.7153C10.843 18.7428 10.9441 18.7428 11.0365 18.7153C11.1423 18.6837 11.2331 18.6033 11.4146 18.4426C13.0369 17.0058 17.9869 12.5668 19.6225 10.4621C21.5897 7.93071 21.2801 4.3296 18.732 2.21175C16.1839 0.0938905 12.8929 0.700133 10.8935 3.03755Z" stroke="#152429" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                         <p>Избранное</p>
+                        {favorites.length!== 0 && <CounterBadge count={favorites.length}/>}
+                        
                     </ControlBtn>
                     <ControlBtn nav='/cart'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 21 22" fill="none">
@@ -161,6 +167,7 @@ export const Header = ({ordersCount}) =>{
                 </defs>
                 </svg>
                 <p>Избранное</p>
+                <CounterBadge />
             </ControlBtn>
             <ControlBtn nav='/cart'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

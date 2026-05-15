@@ -51,7 +51,7 @@ export const ProductCard = ({product, addToFavorite, isFavorite}) =>{
                             }
                         </div>
                         <div className={cls.finalPrice}>
-                            <span>115 000 ₸</span>
+                            <span>{product?.finalPrice} ₸</span>
                         </div>
                     </div>
                     <button className={cls.productCardBtn}>

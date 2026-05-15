@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
-import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Outlet, Navigate, useLocation } from 'react-router-dom'
 import { MainLayout } from './components/MainLayout'
 import { HomePage } from './pages/HomePage'
 import { FavoritesPage } from './pages/Account/FavoritesPage'
@@ -13,10 +13,21 @@ import { OrdersPage } from './pages/Account/OrdersPage'
 import { OrderPage } from './pages/Account/OrdersPage'
 import { ReviewsPage } from './pages/Account/ReviewsPage'
 import { AccountDetailsPage } from './pages/Account/AccountDetailsPage'
+import { useAuthModal } from './hooks/useAuthModal.js'
 
 const ProtectedRoutes = () =>{
+  const { openAuthModal } = useAuthModal();
+  const location = useLocation();
   const {isAuth} = useAuth();
-  return isAuth ? <Outlet />: <Navigate to={'/'}  />
+
+  useEffect(() => {
+    if (!isAuth) {
+      openAuthModal();
+    }
+  }, [isAuth]);
+
+
+  return isAuth ? <Outlet />: <Navigate to={location.pathname} replace />;  
 }
 
 function App() {
@@ -29,7 +40,10 @@ function App() {
           <Routes >
             <Route element={<MainLayout/>}>
               <Route path='/' element={<HomePage />}/>
-              {/* <Route path='/account/favorites' element={<FavoritesPage />}/> */}
+              <Route element={<AccountLayout />}>
+                <Route path="/account/favorites" element={<FavoritesPage />} />
+              </Route>
+
               <Route path='/cart' element={<CartPage />}/>
               <Route element={<ProtectedRoutes />}>
 

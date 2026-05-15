@@ -415,5 +415,33 @@ export const useProducts = () =>{
         }
     },[])
 
-    return {products, loadingProducts, loadProducts, product, loadingProduct, loadProduct}
+    const [productsArrByIds, setProductsArrByIds] = useState(null)
+    const [loadingProductsByIds, setLoadingProductsByIds] = useState(false)
+
+    // const loadProductsByIds = async (ids) => {
+    //     const result = await Promise.all(
+    //         ids.map(id => getProduct(id))
+    //     );
+
+    //     setProductsArrById(result);
+    // };
+
+    const loadProductsByIds = useCallback(async(ids)=>{
+        try {
+            setLoadingProductsByIds(true);
+            const res = await Promise.all(
+                ids.map(id => getProduct(id))
+            );
+            setProductsArrByIds(res || []);
+        } catch (error) {
+            console.error("Failed to load products:", error);
+            throw error;
+        } finally {
+            setLoadingProductsByIds(false);
+        }
+    },[])
+
+    
+
+    return {products, loadingProducts, loadProducts, product, loadingProduct, loadProduct, loadProductsByIds, productsArrByIds, loadingProductsByIds}
 }

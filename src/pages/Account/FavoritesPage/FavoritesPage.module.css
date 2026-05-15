@@ -1,5 +1,132 @@
+.favoritesPageWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: flex-start;
+}
 .pageTop{
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+.favoritesPageWrapper > div:nth-child(2){
+    width: 100%;
+}
+.pageBottom{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+}
+.favoritesPageEmpty{
+    width: 100%;
+    height: 343px;
+    border-radius: 18px;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.favoritesInfoBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    gap: 32px;
+}
+.titleBlock{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+}
+.icon{
+    background: var(--accent);
+    display: flex;
+    width: 80px;
+    height: 80px;
+    padding: 22px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 40px;
+}
+.text{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.text > p:nth-child(1){
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 100% */
+}
+.text > p:nth-child(2){
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+}
+.backBtn{
+    display: flex;
+    padding: 16px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    background: var(--accent);
+    p{
+        color: var(--white);
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 700;
+    }
+}
+.backBtn:hover{
+    background: var(--accent-hover);
+}
+.favoritesFilters{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.favoriteFilterItem{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+}
+.favoriteFilterItem > p:nth-child(1){
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 142.857% */
+}
+.filterWrapper{
+    display: flex;
+    height: 44px;
+    padding: 10px 12px;
+    align-items: center;
+    gap: 80px;
+    border-radius: 12px;
+    background: var(--Dark-D0, #FFF);
+    cursor: pointer;
+}
+.filterLeft{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.filterLeft > p{
+    font-size: 16px;
+    line-height: 24px;
+}
+.favoritesList{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.favoritesList > div{
+    width: calc((100% - 60px)/4)
 }
