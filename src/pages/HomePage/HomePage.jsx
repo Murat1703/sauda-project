@@ -1,5 +1,5 @@
 import cls from './HomePage.module.css'
-import { Banner } from '../../components/HomePage'
+import { Banner } from '../../components/HomePage/Banner'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { useEffect, useRef } from 'react';
@@ -9,6 +9,9 @@ import "swiper/css/pagination";
 import { CategorysSection } from '../../components/HomePage/CategorysSection';
 import { RecommendedSection } from '../../components/HomePage/RecommendedSection';
 import { useProducts } from '../../hooks/useProducts.js';
+import { AdvantagesSection } from '../../components/HomePage/AdvantagesSection';
+import { WatchedSection } from '../../components/HomePage/WatchedSection/WatchedSection.jsx';
+import { DiscountSection } from '../../components/HomePage/DiscountSection';
 
 export const HomePage = () =>{
 
@@ -20,7 +23,7 @@ export const HomePage = () =>{
         loadProducts();
     },[])
 
-    console.log(products)
+    const productsWithDiscount = products.filter(product => product.hasDiscount== true)
  
     return(
         <div className={cls.homePageWrapper}>
@@ -58,6 +61,9 @@ export const HomePage = () =>{
             </section>
             <CategorysSection />
             <RecommendedSection products={products}/>
+            <AdvantagesSection />
+            <WatchedSection products={products}/>
+            <DiscountSection productsWithDiscount={productsWithDiscount}/>
         </div>
     )
 }

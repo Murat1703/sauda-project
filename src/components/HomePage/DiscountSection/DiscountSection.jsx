@@ -1,36 +1,30 @@
-import cls from './RecommendedSection.module.css'
+import cls from './DiscountSection.module.css'
 import { Title } from '../../Title'
-import { ProductCard } from '../../ProductCard'
-import {  useRef } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import { useRef } from 'react';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { SliderControlBtn } from '../../SliderControlBtn';
 import { useFavorites } from '../../../hooks/useFavorites';
+import { ProductCard } from '../../ProductCard';
 
 
-
-export const RecommendedSection = ({products}) =>{
-    const swiperRef = useRef();
+export const DiscountSection = ({productsWithDiscount}) =>{
 
     const {favorites, toggleFavorites} = useFavorites();
-
-
-    const handleMakeFavorite = (productId) => {
-        toggleFavorites(productId)
-    };
-
-    console.log(favorites)
+    const swiperRef = useRef();
 
 
     return(
-        <section className={cls.recommendedSection}>
-            <div className={cls.recommendedSectionContent}>
-                <Title>
-                    Рекомендуемые товары
-                </Title>
-                <div className={cls.recommendedSlider}>
+        <section className={cls.dicountSection}>
+            <div className={cls.discountSectionContent}>
+                <div className={cls.discountSectionTitleBlock}>
+                    <Title>Мега🔥скидки</Title>
+                    <p>Горящие товары со скидкой до 70%</p>
+                </div>
+                <div className={cls.discountedProducts}>
                     <Swiper 
                         slidesPerView={5}
                         spaceBetween={15}
@@ -38,16 +32,17 @@ export const RecommendedSection = ({products}) =>{
                             swiperRef.current = swiper;
                         }}
                     >
-                        {products?.map((product)=>{
-                            return (
-                            <SwiperSlide key={product.id}>
-                                <ProductCard 
-                                product={product} 
-                                isFavorite={favorites.includes(product.id)} 
-                                addToFavorite={() => handleMakeFavorite(product.id)} />
-                            </SwiperSlide>)
+                        {productsWithDiscount.map((product,index)=>{
+                            return(
+                                <SwiperSlide key={product.id}>
+                                    <ProductCard 
+                                        product={product}
+                                        isFavorite={favorites.includes(product.id)} 
+                                        addToFavorite={() => toggleFavorites(product.id)} 
+                                    />
+                                </SwiperSlide>
+                            )
                         })}
-
                     </Swiper>
                     <SliderControlBtn onClick={()=> swiperRef.current?.slidePrev()}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M10.4392 17.3335L17.5912 24.4855L15.7056 26.3711L5.33464 16.0001L15.7056 5.62934L17.5912 7.51493L10.4392 14.6668L26.668 14.6668L26.668 17.3335L10.4392 17.3335Z" fill="#FF4D00"></path></svg>
@@ -55,7 +50,7 @@ export const RecommendedSection = ({products}) =>{
                     <SliderControlBtn onClick={()=>swiperRef.current?.slideNext()}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M21.5608 14.6665L14.4088 7.51452L16.2944 5.62891L26.6654 15.9999L16.2944 26.3707L14.4088 24.4851L21.5608 17.3332H5.33203V14.6665H21.5608Z" fill="#FF4D00"></path></svg>
                     </SliderControlBtn>
-                 </div>
+                </div>
             </div>
         </section>
     )

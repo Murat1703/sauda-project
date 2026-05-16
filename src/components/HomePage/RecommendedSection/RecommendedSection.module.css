@@ -1,3 +1,6 @@
+.recommendedSection{
+    padding: 40px 0;
+}
 .recommendedSectionContent{
     display: flex;
     flex-direction: column;

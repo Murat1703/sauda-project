@@ -3,3 +3,44 @@
     flex-direction: column;
     gap: 16px;
 }
+.reviewsPageContent{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.reviewsFiltersWrapper{
+    display: flex;
+    padding: 8px;
+    /* flex-direction: column; */
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 16px;
+    background: var(--white);
+    width: fit-content;
+}
+.reviewsFiltersWrapper > button{
+    display: flex;
+    padding: 8px 32px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: #EEEFF0;
+    border-radius: 14px;
+    p{
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+    }
+}
+.active{
+    background: var(--text)!important;
+    p{
+        color: var(--white);
+    }
+}
+.reviewsList{
+    padding: 24px; 
+    background: var(--white);
+    border-radius: 18px;
+}

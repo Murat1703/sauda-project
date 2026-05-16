@@ -27,7 +27,7 @@ const ProtectedRoutes = () =>{
   }, [isAuth]);
 
 
-  return isAuth ? <Outlet />: <Navigate to={location.pathname} replace />;  
+  return isAuth ? <Outlet />: <Navigate to={'/'} />;  
 }
 
 function App() {

@@ -1,0 +1,36 @@
+.watchedSectionWrapper{
+    padding: 40px 0;
+}
+.watchedSectionContent{
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+.watchedSectionContent > h3{
+    font-size: 32px;
+    line-height: 44px;
+}
+.watchedSectionList{
+    width: 100%;
+    height: 480px;
+    position: relative;
+}
+.watchedSectionList > div,
+.watchedSectionList > div > div{
+    width: 100%;
+    height: 100%;
+}
+.watchedSectionList > button{
+    position: absolute;
+    top: 50%;     
+    z-index: 3;   
+    margin-top: -28px;                                               
+}
+.watchedSectionList > button:nth-child(2){
+    left: -16px;
+}
+.watchedSectionList > button:nth-child(3){
+    right: -16px;
+}

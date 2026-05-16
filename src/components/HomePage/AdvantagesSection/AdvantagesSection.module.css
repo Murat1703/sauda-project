@@ -1,0 +1,45 @@
+.advantagesSection{
+    padding: 40px 0;
+}
+.advantagesSectionContent{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 0 32px;
+}
+.advantagesCard{
+    display: flex;
+    flex: 1 0 0;
+    padding: 24px 128px 24px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 18px;
+    background: var(--white);
+}
+.advantagesCard > div{
+    height: 164px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* gap: 46px; */
+}
+.advantageCardTitle{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+}
+.advantageCardTitle > p:nth-child(1){
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 110%; /* 26.4px */
+}
+.advantageCardTitle > p:nth-child(2){
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 22.4px */
+}

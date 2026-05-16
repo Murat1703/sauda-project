@@ -1,51 +1,41 @@
-import cls from './RecommendedSection.module.css'
+import cls from './WatchedSection.module.css'
 import { Title } from '../../Title'
 import { ProductCard } from '../../ProductCard'
 import {  useRef } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { SliderControlBtn } from '../../SliderControlBtn';
 import { useFavorites } from '../../../hooks/useFavorites';
 
 
+export const WatchedSection = ({products}) =>{
 
-export const RecommendedSection = ({products}) =>{
     const swiperRef = useRef();
 
     const {favorites, toggleFavorites} = useFavorites();
 
-
-    const handleMakeFavorite = (productId) => {
-        toggleFavorites(productId)
-    };
-
-    console.log(favorites)
-
-
     return(
-        <section className={cls.recommendedSection}>
-            <div className={cls.recommendedSectionContent}>
-                <Title>
-                    Рекомендуемые товары
-                </Title>
-                <div className={cls.recommendedSlider}>
-                    <Swiper 
+        <section className={cls.watchedSectionWrapper}>
+            <div className={cls.watchedSectionContent}>
+                <Title>Вы ранее смотрели</Title>
+                <div className={cls.watchedSectionList}>
+                    <Swiper
                         slidesPerView={5}
                         spaceBetween={15}
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
                     >
-                        {products?.map((product)=>{
-                            return (
-                            <SwiperSlide key={product.id}>
-                                <ProductCard 
-                                product={product} 
-                                isFavorite={favorites.includes(product.id)} 
-                                addToFavorite={() => handleMakeFavorite(product.id)} />
-                            </SwiperSlide>)
+                        {products.map((product, index)=>{
+                            return(
+                            <SwiperSlide                                     key={product.id}>                            
+                                    <ProductCard 
+                                        product={product} 
+                                        isFavorite={favorites.includes(product.id)} 
+                                        addToFavorite={() => toggleFavorites(product.id)} 
+                                    />
+                            </SwiperSlide>
+                            )
                         })}
 
                     </Swiper>
@@ -55,7 +45,7 @@ export const RecommendedSection = ({products}) =>{
                     <SliderControlBtn onClick={()=>swiperRef.current?.slideNext()}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M21.5608 14.6665L14.4088 7.51452L16.2944 5.62891L26.6654 15.9999L16.2944 26.3707L14.4088 24.4851L21.5608 17.3332H5.33203V14.6665H21.5608Z" fill="#FF4D00"></path></svg>
                     </SliderControlBtn>
-                 </div>
+                </div>
             </div>
         </section>
     )

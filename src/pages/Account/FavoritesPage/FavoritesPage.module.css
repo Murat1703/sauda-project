@@ -123,10 +123,11 @@
     line-height: 24px;
 }
 .favoritesList{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
     width: 100%;
 }
 .favoritesList > div{
-    width: calc((100% - 60px)/4)
+    width: 100%;
 }

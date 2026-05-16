@@ -5,6 +5,7 @@ import { useFavorites } from '../../../hooks/useFavorites'
 import { ProductCard } from '../../../components/ProductCard'
 import { useProducts } from '../../../hooks/useProducts'
 import { useEffect } from 'react'
+import { Loader } from '../../../components/Loader'
 
 export const FavoritesPage = () =>{
     const {favorites, toggleFavorites} = useFavorites();
@@ -53,6 +54,7 @@ export const FavoritesPage = () =>{
                         </div>
                     </div>
                 }
+                {loadingProductsByIds && <Loader />}
                 {favorites.length > 0 && 
                 <>
                     <div className={cls.favoritesFilters}>
