@@ -441,7 +441,31 @@ export const useProducts = () =>{
         }
     },[])
 
+    const loadCartProducts = useCallback(async(cartItems) => {
+        try {
+            setLoadingProductsByIds(true);
+
+            const res = await Promise.all(
+                cartItems.map(async (cartItem) => {
+                    const product = await getProduct(cartItem.id);
+
+                    return {
+                        ...product,
+                        quantity: cartItem.quantity
+                    };
+                })
+            );
+
+            setProductsArrByIds(res || []);
+        } catch (error) {
+            console.error("Failed to load cart products:", error);
+            throw error;
+        } finally {
+            setLoadingProductsByIds(false);
+        }
+    }, []);
+
     
 
-    return {products, loadingProducts, loadProducts, product, loadingProduct, loadProduct, loadProductsByIds, productsArrByIds, loadingProductsByIds}
+    return {products, loadingProducts, loadProducts, product, loadingProduct, loadProduct, loadProductsByIds, productsArrByIds, loadingProductsByIds, loadCartProducts}
 }

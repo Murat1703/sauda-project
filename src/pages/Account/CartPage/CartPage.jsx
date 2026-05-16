@@ -1,8 +1,30 @@
+import { useEffect } from 'react'
 import { Button } from '../../../components/Button'
 import { Title } from '../../../components/Title'
+import { useCart } from '../../../hooks/useCart'
+import { useProducts } from '../../../hooks/useProducts'
 import cls from './CartPage.module.css'
 
 export const CartPage = () =>{
+    const {cartItems, addToCart, removeFromCart, increaseQuantity, decreaseQuantity} = useCart();
+    console.log(cartItems)
+
+    const {
+        productsArrByIds: cartProducts,
+        loadingProductsByIds,
+        productsArrByIds,
+        loadCartProducts
+    } = useProducts();
+
+    useEffect(() => {
+        if (cartItems.length > 0) {
+            loadCartProducts(cartItems);
+        }
+    }, [cartItems, loadCartProducts]);
+
+    console.log(cartProducts)
+
+
     return(
         <div className={cls.cartPageWrapper}>
             <div className={cls.cartPageTitle}>
@@ -11,7 +33,8 @@ export const CartPage = () =>{
                 </Title>
             </div>
             <div className={cls.cartPageBody}>
-                <div className={cls.cartContent}>
+                <div className={cls.cartContent} style={{padding: cartItems.length > 0 && "24px 12px"}}>
+                    {cartItems?.length == 0 &&
                     <div className={cls.cartContentInfo}>
                         <div className={cls.cartContentTextEmpty}>
                             <div>
@@ -27,7 +50,46 @@ export const CartPage = () =>{
                         <Button>
                             <p>Перейти в каталог</p>
                         </Button>
-                    </div>
+                    </div>}
+                    {cartItems?.length > 0 && 
+                        productsArrByIds?.map((item,index)=>{
+                            return (
+                            <div className={cls.cartItem}>
+                                <div className={cls.cartItemImgWrapper}>
+                                    <img src={item.image} alt='cart-img'/>
+                                </div>
+                                <div className={cls.cartItemTitleBlock}>
+                                    <p>{item.title}</p>
+                                    <p>Код: {item.id}</p>
+                                </div>
+                                <div className={cls.cartItemCounter}>
+                                    <button 
+                                        className={cls.counterBtn}
+                                        onClick={()=>{(item.quantity == 1) ? removeFromCart(item.id) :decreaseQuantity(item.id)}}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M4.16602 10H15.8327" stroke="#FF5302" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                    <p>{item.quantity}</p>
+                                    <button className={cls.counterBtn}
+                                    onClick={()=>increaseQuantity(item.id)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M9.99935 4.16663V15.8333M4.16602 9.99996H15.8327" stroke="#FF5302" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className={cls.cartItemPriceBlock}>
+                                    <div className={cls.oldPriceWrapper}>
+                                        {item.hasDiscount && <p className={cls.oldPrice}>{item.oldPrice} ₸</p>}
+                                        <p className={cls.finalPrice}>{item.finalPrice} ₸</p>
+                                    </div>
+                                    <div className={cls.pricePerProduct}></div>
+                                </div>
+                            </div>
+                            )
+                        })
+                    }
                 </div>
                 <div className={cls.cartDetails}>
                     <h4>Детали заказа</h4>
