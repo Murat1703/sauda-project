@@ -1,0 +1,69 @@
+.aboutSectionWrapper{
+    padding: 40px 0;
+}
+.aboutSectionContent{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.aboutSectionLogoSlider{
+    width: 100%;
+    height: 67px;
+}
+.aboutSectionLogoSlider > div{
+    width: 100%;
+    height: 100%;
+}
+.logoSliderItem{
+    padding: 12px 24px;
+    background: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.logoSliderItem > img{
+    /* position: absolute; */
+    width: 100%;
+    height: 100%;
+    object-position: center center;
+    object-fit: contain;
+}
+.aboutSectionInfo{
+    display: flex;
+    flex-direction: column;
+    padding: 0 32px;
+    gap: 60px;
+}
+.aboutSectionInfo > h3{
+    font-size: 28px;
+    line-height: 32px;
+}
+.aboutSectionInfoTextContent{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+}
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+}
+.top > p{
+    flex: 1 0 0;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.16px;
+}
+.moreLink{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    p{
+        color: var(--accent);
+    }
+}

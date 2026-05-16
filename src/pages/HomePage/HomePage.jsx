@@ -12,6 +12,7 @@ import { useProducts } from '../../hooks/useProducts.js';
 import { AdvantagesSection } from '../../components/HomePage/AdvantagesSection';
 import { WatchedSection } from '../../components/HomePage/WatchedSection/WatchedSection.jsx';
 import { DiscountSection } from '../../components/HomePage/DiscountSection';
+import { AboutSection } from '../../components/HomePage/AboutSection';
 
 export const HomePage = () =>{
 
@@ -64,6 +65,7 @@ export const HomePage = () =>{
             <AdvantagesSection />
             <WatchedSection products={products}/>
             <DiscountSection productsWithDiscount={productsWithDiscount}/>
+            <AboutSection />
         </div>
     )
 }

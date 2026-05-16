@@ -15,6 +15,7 @@
 }
 .recommendedSlider{
     position: relative;
+    z-index: 1;
 }
 .recommendedSlider > button{
     position: absolute;
