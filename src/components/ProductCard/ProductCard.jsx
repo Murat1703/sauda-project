@@ -7,17 +7,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useCart } from '../../hooks/useCart';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 
 
 export const ProductCard = ({product, addToFavorite, isFavorite}) =>{
 
     const {addToCart} = useCart();
-
-    const handleAddCart = (id) =>{
-        addToCart(id);
-    }
 
     return(
         <>
@@ -65,7 +62,19 @@ export const ProductCard = ({product, addToFavorite, isFavorite}) =>{
                             <span>{product?.finalPrice} ₸</span>
                         </div>
                     </div>
-                    <button className={cls.productCardBtn} onClick={()=>handleAddCart(product.id)}>
+                    <button className={cls.productCardBtn} onClick={()=>{
+                        addToCart(product.id);
+                        toast(
+                            <div className={cls.toastContent}>
+                                <div>
+                                    <p>Товар добавлен в корзину</p>
+                                </div>
+                                <Link to='/cart'>
+                                    Нажмите, чтобы перейти
+                                </Link>
+                            </div>
+                        )
+                    }}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <g clip-path="url(#clip0_871_9594)">
                             <path d="M12.0008 6.75V4.5C12.0008 2.84315 10.6576 1.5 9.00077 1.5C7.34391 1.5 6.00077 2.84315 6.00077 4.5V6.75M2.69477 7.76397L2.24477 12.564C2.11682 13.9287 2.05285 14.6111 2.2793 15.1382C2.47824 15.6012 2.82685 15.984 3.26928 16.2253C3.77291 16.5 4.45829 16.5 5.82905 16.5H12.1725C13.5432 16.5 14.2286 16.5 14.7323 16.2253C15.1747 15.984 15.5233 15.6012 15.7222 15.1382C15.9487 14.6111 15.8847 13.9287 15.7568 12.564L15.3068 7.76397C15.1987 6.61151 15.1447 6.03528 14.8855 5.59962C14.6573 5.21594 14.32 4.90883 13.9167 4.71738C13.4588 4.5 12.88 4.5 11.7225 4.5L6.27905 4.5C5.12153 4.5 4.54277 4.5 4.08483 4.71738C3.68151 4.90883 3.34427 5.21594 3.11601 5.59962C2.85683 6.03528 2.80281 6.61151 2.69477 7.76397Z" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
@@ -81,7 +90,7 @@ export const ProductCard = ({product, addToFavorite, isFavorite}) =>{
                 </div>
             </div>
         </div>
-        <ToastContainer />
+
         </>
     )
 }

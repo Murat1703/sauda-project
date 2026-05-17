@@ -182,3 +182,27 @@
     border-right-color: var(--border);
   }
 } */
+.toastContainer{
+  top: 84px!important;
+}
+.toastContainer > div{
+  padding: 16px;
+  border-radius: 12px;
+  background: #161B1C!important;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+}
+.progress{
+  background: var(--accent)!important;
+}
+.toastContainer > div> button{
+  color: var(--white);
+  top: 50%;
+  margin-top: -15px;
+}
+.toastContainer > div > button > svg,
+.toastContainer > div > button > svg path{
+  width: 24px;
+  height: 24px;
+}

@@ -14,6 +14,9 @@ import { OrderPage } from './pages/Account/OrdersPage'
 import { ReviewsPage } from './pages/Account/ReviewsPage'
 import { AccountDetailsPage } from './pages/Account/AccountDetailsPage'
 import { useAuthModal } from './hooks/useAuthModal.js'
+import { ToastContainer } from 'react-toastify';
+
+
 
 const ProtectedRoutes = () =>{
   const { openAuthModal } = useAuthModal();
@@ -59,11 +62,16 @@ function App() {
 
 
 
-            </Route>          
+            </Route> 
           </Routes>
+          <ToastContainer 
+            className="toastContainer"
+            progressClassName={"progress"}
+          />
         </BrowserRouter>
       </AuthModalProvider>
     </AuthProvider>
+
     </>
   )
 }
