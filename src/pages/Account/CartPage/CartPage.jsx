@@ -3,7 +3,9 @@ import { Button } from '../../../components/Button'
 import { Title } from '../../../components/Title'
 import { useCart } from '../../../hooks/useCart'
 import { useProducts } from '../../../hooks/useProducts'
+import { useState } from 'react'
 import cls from './CartPage.module.css'
+import { ScrollToTop } from '../../../components/ScrollToTop'
 
 export const CartPage = () =>{
     const {cartItems, addToCart, removeFromCart, increaseQuantity, decreaseQuantity} = useCart();
@@ -17,15 +19,33 @@ export const CartPage = () =>{
     } = useProducts();
 
     useEffect(() => {
-        if (cartItems.length > 0) {
-            loadCartProducts(cartItems);
-        }
+        loadCartProducts(cartItems);
     }, [cartItems, loadCartProducts]);
+
+    const summaryPrice = (quantity, price) =>{
+        let sum;
+        return sum = quantity * price
+    }
 
     console.log(cartProducts)
 
 
+
+    const totalPrice = cartProducts?.reduce((sum, item) => {
+        return sum + item.quantity * item.finalPrice;
+    }, 0);
+
+
+
+
+
+
+    
+
+
     return(
+        <>
+        <ScrollToTop />
         <div className={cls.cartPageWrapper}>
             <div className={cls.cartPageTitle}>
                 <Title>
@@ -82,7 +102,10 @@ export const CartPage = () =>{
                                 <div className={cls.cartItemPriceBlock}>
                                     <div className={cls.oldPriceWrapper}>
                                         {item.hasDiscount && <p className={cls.oldPrice}>{item.oldPrice} ₸</p>}
-                                        <p className={cls.finalPrice}>{item.finalPrice} ₸</p>
+                                        <p className={cls.finalPrice}>
+                                        { 
+                                            summaryPrice(item.quantity, item.finalPrice)
+                                        } ₸</p>
                                     </div>
                                     <div className={cls.pricePerProduct}></div>
                                 </div>
@@ -100,7 +123,7 @@ export const CartPage = () =>{
                                 <div className={cls.line}>
                                     <hr />
                                 </div>
-                                <span>0</span>
+                                <span>{cartItems.length}</span>
                             </div>
                             <div className={cls.detailItem}>
                                 <div>
@@ -135,12 +158,13 @@ export const CartPage = () =>{
                                 <hr />
                             </div>
                             <span>
-                                0₸
+                                {totalPrice}₸
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </>
     )
 }

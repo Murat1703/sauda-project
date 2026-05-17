@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { useOrders } from '../../hooks/useOrders.js';
+import { ScrollToTop } from '../ScrollToTop';
 
 export const MainLayout = () =>{
 
@@ -18,9 +19,10 @@ export const MainLayout = () =>{
 
     return(
         <>
-            <div className={cls.mainLayout}>
+            <ScrollToTop />
+            <div className={cls.mainLayout} >
                 <Header ordersCount={orders?.length} />
-                <div className={cls.mainWrapper}>
+                <div className={cls.mainWrapper} id='main-scroll'>
                     <main className={cls.main}>
                         <Suspense fallback={<Loader/>}>
                             <Outlet />

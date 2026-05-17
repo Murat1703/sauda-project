@@ -2,19 +2,23 @@ import { Badge } from '../Badge'
 import cls from './ProductCard.module.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useCart } from '../../hooks/useCart';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { useFavorites } from '../../hooks/useFavorites';
 
 
 
-export const ProductCard = ({product, addToFavorite, isFavorite}) =>{
+export const ProductCard = ({product, isFavorite}) =>{
 
     const {addToCart} = useCart();
+    const {toggleFavorites} = useFavorites();
+
+    
 
     return(
         <>
@@ -28,7 +32,19 @@ export const ProductCard = ({product, addToFavorite, isFavorite}) =>{
                         <img src={product?.image} alt={product?.title}/>
                     </SwiperSlide>
                 </Swiper>
-                <button className={cls.favoriteBtn} onClick={addToFavorite}>
+                <button className={cls.favoriteBtn} onClick={()=>{
+                    toggleFavorites(product.id);
+                    {!isFavorite && toast(
+                        <div className={cls.toastContent}>
+                            <div>
+                                <p>Товар добавлен в избранное</p>
+                            </div>
+                            <Link to='/account/favorites'>
+                                Нажмите, чтобы перейти
+                            </Link>
+                        </div>
+                    )}            
+                }}>
                     {!isFavorite? 
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99559 4.27985C8.32947 2.332 5.55109 1.80804 3.46355 3.59168C1.37601 5.37532 1.08211 8.35748 2.72147 10.467C4.08448 12.2209 8.20945 15.9201 9.56139 17.1174C9.71264 17.2513 9.78827 17.3183 9.87648 17.3446C9.95347 17.3676 10.0377 17.3676 10.1147 17.3446C10.2029 17.3183 10.2786 17.2513 10.4298 17.1174C11.7817 15.9201 15.9067 12.2209 17.2697 10.467C18.9091 8.35748 18.6511 5.35656 16.5276 3.59168C14.4042 1.8268 11.6617 2.332 9.99559 4.27985Z" stroke="#8F9596" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>

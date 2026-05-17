@@ -6,6 +6,7 @@ import { ProductCard } from '../../../components/ProductCard'
 import { useProducts } from '../../../hooks/useProducts'
 import { useEffect } from 'react'
 import { Loader } from '../../../components/Loader'
+import { ScrollToTop } from '../../../components/ScrollToTop'
 
 export const FavoritesPage = () =>{
     const {favorites, toggleFavorites} = useFavorites();
@@ -22,6 +23,8 @@ export const FavoritesPage = () =>{
     },[favorites]);
 
     return(
+        <>
+        <ScrollToTop />
         <div className={cls.favoritesPageWrapper}>
             <div className={cls.pageTop}>
                 <div className={cls.breadCrumbsWrapper}>
@@ -111,5 +114,6 @@ export const FavoritesPage = () =>{
                 }
             </div>
         </div>
+        </>
     )
 }
