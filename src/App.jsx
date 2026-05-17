@@ -15,6 +15,7 @@ import { ReviewsPage } from './pages/Account/ReviewsPage'
 import { AccountDetailsPage } from './pages/Account/AccountDetailsPage'
 import { useAuthModal } from './hooks/useAuthModal.js'
 import { ToastContainer } from 'react-toastify';
+import { ProductPage } from './pages/ProductPage'
 
 
 
@@ -59,9 +60,7 @@ function App() {
                 </Route>
                 <Route path='/cart' element={<CartPage />}/>
               </Route>
-
-
-
+              <Route path={`/product/:id`} element={<ProductPage />}/>          
             </Route> 
           </Routes>
           <ToastContainer 

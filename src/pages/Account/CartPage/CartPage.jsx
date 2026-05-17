@@ -5,7 +5,6 @@ import { useCart } from '../../../hooks/useCart'
 import { useProducts } from '../../../hooks/useProducts'
 import { useState } from 'react'
 import cls from './CartPage.module.css'
-import { ScrollToTop } from '../../../components/ScrollToTop'
 
 export const CartPage = () =>{
     const {cartItems, addToCart, removeFromCart, increaseQuantity, decreaseQuantity} = useCart();
@@ -45,7 +44,6 @@ export const CartPage = () =>{
 
     return(
         <>
-        <ScrollToTop />
         <div className={cls.cartPageWrapper}>
             <div className={cls.cartPageTitle}>
                 <Title>

@@ -19,10 +19,14 @@ export const ProductCard = ({product, isFavorite}) =>{
     const {toggleFavorites} = useFavorites();
 
     
-
     return(
         <>
         <div className={cls.productCard}>
+            <Link
+            to={`/product/${product.id}`}
+            className={cls.productCardLink}
+            />
+
             <div className={cls.productCardImagesWrapper}>
                 <Swiper>
                     <SwiperSlide>
@@ -106,7 +110,6 @@ export const ProductCard = ({product, isFavorite}) =>{
                 </div>
             </div>
         </div>
-
         </>
     )
 }
