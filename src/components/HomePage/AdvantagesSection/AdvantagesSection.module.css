@@ -43,3 +43,28 @@
     font-weight: 400;
     line-height: 140%; /* 22.4px */
 }
+@media (max-width:768px){
+    .advantagesSection{
+        padding: 0;
+    }
+    .advantagesSectionContent{
+        padding: 0 16px;
+        flex-direction: column;
+    }
+    .advantagesCard{
+        padding: 24px 12px;
+        flex: auto;
+        width: 100%;
+    }
+    .advantagesCard > div{
+        height: 120px;
+    }
+    .advantagesCard > div > svg{
+        width: 24px;
+        height: 24px;
+    }
+    .advantageCardTitle > p:nth-child(1){
+        font-size: 18px;
+        line-height: 20px;
+    }
+}

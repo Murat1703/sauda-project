@@ -206,3 +206,9 @@
   width: 24px;
   height: 24px;
 }
+
+@media (max-width:768px){
+  .toastContainer{
+    top: 0!important;
+  }
+}

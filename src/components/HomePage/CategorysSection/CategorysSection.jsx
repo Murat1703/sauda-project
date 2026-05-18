@@ -25,11 +25,23 @@ export const CategorysSection = () =>{
                     <Swiper
                         modules={[Navigation, Pagination]}
                         spaceBetween={10}
-                        slidesPerView={5}
+                        // slidesPerView={5}
                         loop
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
+                        breakpoints={{
+                            360: {
+                                slidesPerView:2
+                            },
+                            640: {
+                                slidesPerView:3
+                            },
+                            960: {
+                                slidesPerView:5
+                            }
+                        }}
+
 
                     >
                         <SwiperSlide>

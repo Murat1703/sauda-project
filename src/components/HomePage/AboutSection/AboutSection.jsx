@@ -20,6 +20,17 @@ export const AboutSection = () =>{
                         slidesPerView={7}
                         spaceBetween={15}
                         loop
+                        breakpoints={{
+                            360:{
+                                slidesPerView: 2
+                            },
+                            480:{
+                                slidesPerView : 4
+                            }, 
+                            768: {
+                                slidesPerView: 7
+                            }
+                        }}
                     >
                         <SwiperSlide>
                             <div className={cls.logoSliderItem}>

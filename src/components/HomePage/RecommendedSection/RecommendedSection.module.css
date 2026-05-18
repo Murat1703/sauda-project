@@ -29,3 +29,21 @@
 .recommendedSlider > button:nth-child(2){
     left: -16px;
 }
+@media (max-width:768px){
+    .recommendedSection{
+        padding: 24px 0;
+    }
+    .recommendedSectionContent{
+        padding: 0 16px;
+    }
+    .recommendedSectionContent > h3{
+        font-size: 20px;
+        line-height: 120%;
+    }
+    .recommendedSlider > button:nth-child(2){
+        left: -8px;
+    }
+    .recommendedSlider > button:last-child{
+        right: -8px;
+    }
+}

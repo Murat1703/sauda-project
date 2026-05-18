@@ -37,6 +37,17 @@ export const RecommendedSection = ({products}) =>{
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
+                        breakpoints={{
+                            360:{
+                                slidesPerView : 2
+                            },
+                            640:{
+                                slidesPerView : 3
+                            },
+                            768:{
+                                slidesPerView : 5
+                            }
+                        }}
                     >
                         {products?.map((product)=>{
                             return (

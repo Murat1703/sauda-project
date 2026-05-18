@@ -34,3 +34,22 @@
 .watchedSectionList > button:nth-child(3){
     right: -16px;
 }
+
+@media (max-width:768px){
+    .watchedSectionWrapper{
+        padding: 24px 0;
+    }
+    .watchedSectionContent{
+        padding: 0 16px;
+    }
+    .watchedSectionContent > h3{
+        font-size: 20px;
+        line-height: 120%;
+    }
+    .watchedSectionList > button:nth-child(3){
+        right: -8px;
+    }
+    .watchedSectionList > button:nth-child(2){
+        left: -8px;
+    }
+}

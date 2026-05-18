@@ -6,10 +6,19 @@ import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { useOrders } from '../../hooks/useOrders.js';
 import { ScrollToTop } from '../ScrollToTop';
+import { useLocation } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 
 export const MainLayout = () =>{
 
     const {orders, loadingOrders, loadOrders} = useOrders();
+
+    const {pathname} = useLocation();
+    const isMobile = useMediaQuery({
+        maxWidth: 768
+    })
+
+    console.log(pathname)
 
     useEffect(()=>{
         loadOrders()
@@ -28,8 +37,9 @@ export const MainLayout = () =>{
                             <Outlet />
                         </Suspense>
                     </main>
-                    <Footer />
-
+                   
+                    {pathname!=='/cart' && <Footer />}
+                    
                 </div>
             </div>
         </>

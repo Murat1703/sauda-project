@@ -156,3 +156,32 @@ z-index: 4;
     width: 100%;
     height: 100%;
 }
+@media (max-width:768px){
+    .productCard{
+        height: 408px;
+        padding: 12px 8px;
+        gap: 10px;
+    }
+    .productCardImagesWrapper{
+        height: 175px;
+    }
+    .favoriteBtn{
+        top: 0;
+        right: 0;
+    }
+    .finalPrice span{
+        font-size: 18px;
+        line-height: 20px;
+    }
+    .productCardBtn{
+        padding: 6px 12px;
+        height: 36px;
+        svg{
+            display: none;
+        }
+        p{
+            font-size: 14px;
+            line-height: 14px;
+        }
+    }
+}

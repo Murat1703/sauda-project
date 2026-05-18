@@ -25,6 +25,17 @@ export const WatchedSection = ({products}) =>{
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
+                        breakpoints={{
+                            360:{
+                                slidesPerView: 2
+                            },
+                            480:{
+                                slidesPerView: 3
+                            },
+                            768:{
+                                slidesPerView: 5
+                            }
+                        }}
                     >
                         {products.map((product, index)=>{
                             return(

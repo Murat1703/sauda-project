@@ -26,6 +26,7 @@
     height: 100%;
 }
 .categoryCardItem{
+    overflow: hidden;
     position: relative;
     width: 100%;
     height: 100%;
@@ -65,4 +66,21 @@
 }
 .nextBtn{
     right: -16px;
+}
+
+@media (max-width:768px){
+    .categorySectionContent{
+        padding: 16px;
+    }
+    .categorySectionContent > h3{
+        font-size: 20px;
+        line-height: 120%;
+        letter-spacing: .4px;
+    }
+    .nextBtn{
+        right: -8px;
+    }
+    .prevBtn{
+        left: -8px;
+    }
 }

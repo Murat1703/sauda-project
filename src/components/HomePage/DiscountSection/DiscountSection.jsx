@@ -31,6 +31,17 @@ export const DiscountSection = ({productsWithDiscount}) =>{
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
+                        breakpoints={{
+                            360:{
+                                slidesPerView: 2
+                            },
+                            480:{
+                                slidesPerView: 3
+                            },
+                            768:{
+                                slidesPerView: 5
+                            }
+                        }}
                     >
                         {productsWithDiscount.map((product,index)=>{
                             return(

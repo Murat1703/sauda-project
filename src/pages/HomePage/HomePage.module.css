@@ -31,3 +31,17 @@
 .nextBtn{
     right: 16px;
 }
+@media (max-width:768px){
+    .banner{
+        padding: 0 16px;
+    }
+    .prevBtn{
+        left: 8px;
+    }
+    .nextBtn{
+        right: 8px;
+    }
+    .homePageWrapper{
+        gap: 24px;
+    }
+}

@@ -41,3 +41,18 @@
 .discountedProducts > button:nth-child(2){
     left: -16px;
 }
+
+@media (max-width: 768px){
+    .discountSection{
+        padding: 24px 0;
+    }
+    .discountSectionContent{
+        padding: 0 16px;
+    }
+    .discountSectionContent > button:nth-child(2){
+        left: -8px;
+    }
+    .discountSectionContent > button:nth-child(3){
+        right: -8px;
+    }
+}

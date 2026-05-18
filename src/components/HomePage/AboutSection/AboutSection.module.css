@@ -67,3 +67,21 @@
         color: var(--accent);
     }
 }
+
+@media (max-width: 768px){
+    .aboutSectionWrapper{
+        padding: 24px 0
+    }
+    .aboutSectionInfo{
+        flex-direction: column;
+        padding: 0 16px;
+        gap: 24px;
+    }
+    .aboutSectionInfo > h3{
+        font-size: 20px;
+        line-height: 120%;
+    }
+    .aboutSectionInfoTextContent > .top{
+        flex-direction: column;
+    }
+}
