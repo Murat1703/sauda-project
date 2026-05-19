@@ -16,8 +16,6 @@ export const AccountLayout = () =>{
         loadOrders()
     },[]);
 
-    console.log(orders)
-
 
     return(
         <>

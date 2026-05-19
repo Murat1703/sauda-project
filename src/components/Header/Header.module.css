@@ -144,7 +144,7 @@
         align-items: center;
         border-top: 0.33px solid rgba(0, 0, 0, 0.32);
         background: var(--white);
-        z-index: 100;
+        z-index: 9999;
     }
     .mobileControlPanel > button{
         width: auto;

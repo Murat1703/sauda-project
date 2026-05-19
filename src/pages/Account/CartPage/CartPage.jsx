@@ -47,6 +47,12 @@ export const CartPage = () =>{
         return favorites.includes(id)
     }
 
+    console.log(mobileDetails)
+
+    useEffect(()=>{ 
+        !isMobile && setMobileDetails(true)
+    }, [isMobile])
+
 
 
     return(

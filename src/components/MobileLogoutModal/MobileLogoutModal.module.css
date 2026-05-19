@@ -1,0 +1,78 @@
+.modalLogoutWrapper{
+    position: fixed;
+    padding: 0 16px;
+    top: 0;
+    left: 0;
+    z-index: 100000;
+    width: 100%;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.48);
+}
+.modalLogoutInner{
+    padding: 20px 0;
+    width: 100%;
+    position: relative;
+    background: var(--white);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.top{
+    width: 100%;
+    padding: 0 16px;
+    display: flex;
+    justify-content: end;
+}
+.bottom{
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    gap: 12px;
+    text-align: center;
+}
+.bottom > h4{
+    font-size: 20px;
+    line-height: 140%;
+    font-weight: 700;
+}
+.bottom > span{
+    font-size: 14px;
+    line-height: 18px;
+    color: #8F9596;
+}
+.mobileModalButtonsList{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.mobileModalButtonsList > button{
+    width: 100%;
+    height: 48px;
+    padding: 14px 16px;
+    gap: 12px;;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+}
+.mobileModalButtonsList > button:nth-child(1){
+    background: #f20;
+    p{
+        color: var(--white);
+    }
+}
+.mobileModalButtonsList > button:nth-child(1):hover{
+    background: rgb(188, 26, 1);
+}
+.mobileModalButtonsList > button:nth-child(2){
+    background: #EEEFF0;
+    p{
+        color: #000;
+    }
+}
+.mobileModalButtonsList > button:nth-child(2):hover{
+    background: #babdbf
+}

@@ -8,7 +8,7 @@ import { AuthProvider } from './auth/AuthProvider'
 import { useAuth } from './hooks/useAuth.js'
 import { CartPage } from './pages/Account/CartPage'
 import { AuthModalProvider } from './auth/AuthModalProvider/AuthModalProvider.jsx'
-import { AccountLayout } from './components/AccountLayout'
+import { AccountLayout, AccountResponsiveLayout } from './components/AccountLayout'
 import { OrdersPage } from './pages/Account/OrdersPage'
 import { OrderPage } from './pages/Account/OrdersPage'
 import { ReviewsPage } from './pages/Account/ReviewsPage'
@@ -16,6 +16,9 @@ import { AccountDetailsPage } from './pages/Account/AccountDetailsPage'
 import { useAuthModal } from './hooks/useAuthModal.js'
 import { ToastContainer } from 'react-toastify';
 import { ProductPage } from './pages/ProductPage'
+import { MobileAccountPage } from './pages/Account/MobileAccountPage'
+import { useMediaQuery } from 'react-responsive'
+import { MainAccountMainPage } from './pages/Account/MobileAccountMainPage'
 
 
 
@@ -23,15 +26,31 @@ const ProtectedRoutes = () =>{
   const { openAuthModal } = useAuthModal();
   const location = useLocation();
   const {isAuth} = useAuth();
+  const isMobile = useMediaQuery({
+    maxWidth: 768
+  })
 
   useEffect(() => {
-    if (!isAuth) {
+    if (!isAuth && !isMobile) {
       openAuthModal();
-    }
+    } 
+
   }, [isAuth]);
 
 
-  return isAuth ? <Outlet />: <Navigate to={'/'} />;  
+  if (!isAuth && isMobile){
+    return <Navigate to="/login" />
+  }
+
+
+
+  if (!isAuth && !isMobile){
+    return null
+  }
+
+
+  // return isAuth ? <Outlet />: <Navigate to={'/'} />;  
+  return <Outlet />
 }
 
 function App() {
@@ -49,14 +68,18 @@ function App() {
               </Route>
 
               <Route path='/cart' element={<CartPage />}/>
-              <Route element={<ProtectedRoutes />}>
+              <Route path='/login' element={<MobileAccountPage />}/>
 
-                <Route element={<AccountLayout />} >
+              
+              <Route element={<ProtectedRoutes />}>                
+
+                <Route element={<AccountResponsiveLayout />} >
                   <Route path='/account/orders' element={<OrdersPage />}/>
                   <Route path={`/account/orders/:id`} element={<OrderPage />}/>
                   <Route path='/account/favorites' element={<FavoritesPage />}/>
                   <Route path='/account/reviews' element={<ReviewsPage />}/>
                   <Route path='/account/profile' element={<AccountDetailsPage />}/>
+                  <Route path='/account' element={<MainAccountMainPage />} />
                 </Route>
                 <Route path='/cart' element={<CartPage />}/>
               </Route>
