@@ -146,3 +146,212 @@ span.finalPrice{
 .orderReceipt:hover{
     background: var(--footer-text);
 }
+@media (max-width:768px){
+    .orderPageTitleBlock > div:nth-child(1){
+        display: none;
+    }
+    .orderPageTitleBlock > div:nth-child(2){
+        padding: 10px 16px;
+        background: var(--white);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .orderPageTitleBlock > div:nth-child(2) > h4{
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+        letter-spacing: .16px;
+    }
+    .orderPageTop{
+        gap: 16px;
+    }
+    .orderPageInfoBlock{
+        gap: 0px;
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+        background: var(--white);
+        border-radius: 20px;
+    }
+    .orderPageInfoBlock > p{
+        margin-bottom: 12px;
+        font-size: 18px;
+        line-height: 18px;
+        font-weight: 500;
+        color: #0B262E;
+    }
+    .orderPageInfoItem{
+        padding: 8px 0;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        border-bottom: 1px solid #E4E5E5;
+    }
+    .orderPageInfoItem > p:nth-child(1){
+        color: #909596;
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .orderPageInfoItem:last-child{
+        border-bottom: none;
+    }
+    .orderPageInfoItem > span{
+        padding: 2px 12px;
+        border-radius: 320px;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+    }
+    .delivered{
+        background: rgba(93, 153, 29, 0.09);
+        color: #5D991D;
+    }
+    .processing{
+        background: var(--Dark-D10, #E4E5E5);
+        color: #8F9596;
+    }
+    .cancelled{
+        background: rgba(210, 29, 29, 0.09);
+        color: #D21D1D;
+    }
+    .shipped{
+        background: #DFEFFF;
+        color: #005EFF;
+    }
+    .orderItemsList{
+        border-radius: 20px;
+        padding: 16px;
+        gap: 20px;
+    }
+    .orderItemsList > p{
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 18px; /* 100% */
+        color: #0B262E;
+    }
+    .orderItem{
+        padding: 8px 0;
+        flex-direction: column;
+        width: 100%;
+    }
+    .orderInfoLeftBlock{
+        gap: 8px;
+        width: 100%;
+    }
+    .orderInfoTitle{
+        gap: 8px;
+    }
+    .orderInfoTitle > span:nth-child(1){
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        p{
+            color: var(--text);
+            font-size: 16px;
+            line-height: 18px;
+            font-weight: 500;
+        }
+    }
+    .mobilePriceBlock{
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .mobilePriceBlock > p{
+        font-size: 14px;
+        font-weight: 900;
+        line-height: 16px;
+    }
+    .mobilePriceBlock > p:nth-child(1){
+        color: var(--text);
+    }
+    .mobilePriceBlock > p:nth-child(2){
+        color: #8F9596 ;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+    }
+    .orderImg{
+        width: 56px;
+        height: 56px;
+    }
+    .orderCountBlock, .orderPriceBlock{
+        display: none;
+    }
+    .orderInfoTitle > button{
+        height: 36px;
+        padding: 6px 12px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex: 1 0 0;
+        border-radius: 12px;
+        background: var(--accent);
+        width: fit-content;
+        p{
+            color: #fff;
+        }
+    }
+    .orderReceipt{
+        display: none;
+    }
+    .totalReceipt{
+        display: flex;
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 20px;
+        background: var(--white);
+    }
+    .totalReceipt > p:nth-child(1){
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 18px;
+        color: #0B262E;
+        padding-bottom: 8px;
+    }
+    .totalReceiptItems{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .totalReceiptItem{
+        padding: 8px 0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+        border-bottom: 1px solid #E4E5E5;
+    }
+    .totalReceiptItem:last-child{
+        border-bottom: none;
+    }
+    .totalReceiptItem > p:nth-child(1){
+        color: #909596;
+    }
+    .orderTotalPriceModal{
+        font-weight: 900;
+    }
+    .mobileTotalReceiptButtons{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    .mobileTotalReceiptButtons > button{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 44px;
+        padding: 8px 16px;
+        border-radius: 12px;
+        background: var(--Dark-D5, #EEEFF0);
+
+    }
+
+}

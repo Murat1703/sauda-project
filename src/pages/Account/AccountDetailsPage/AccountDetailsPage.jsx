@@ -1,9 +1,17 @@
 import cls from './AccountDetailsPage.module.css';
 import { AccountTitle } from '../../../components/AccountLayout';
 import { BreadCrumbs } from '../../../components/AccountLayout';
+import { useMediaQuery } from 'react-responsive';
+import { Link } from 'react-router-dom';
 
 export const AccountDetailsPage = () =>{
+    
+    const isMobile = useMediaQuery({
+        maxWidth: 768
+    })
+
     return(
+        <>
         <div className={cls.accountDetailsPageWrapper}>
             <div className={cls.pageTop}>
                 <div className={cls.breadCrumbsWrapper}>
@@ -11,9 +19,15 @@ export const AccountDetailsPage = () =>{
                     <BreadCrumbs >-</BreadCrumbs>
                     <BreadCrumbs >Мои данные</BreadCrumbs>
                 </div>
+                {isMobile && <Link to={'/account'}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M12 5L5 12L12 19" stroke="#152429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                </Link>}
                 <div className={cls.pageTitleWrapper}>
                     <AccountTitle>Мои данные</AccountTitle>
                 </div>
+                {isMobile && <div></div>}
             </div>
             <div className={cls.accountDetailsInputs}>
                 <div className={cls.row}>
@@ -50,5 +64,6 @@ export const AccountDetailsPage = () =>{
                 </button>
             </div>
         </div>
+        </>
     )
 }

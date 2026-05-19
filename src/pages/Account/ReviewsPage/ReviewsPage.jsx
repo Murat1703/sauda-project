@@ -2,24 +2,41 @@ import cls from './ReviewsPage.module.css';
 import { AccountTitle } from '../../../components/AccountLayout';
 import { BreadCrumbs } from '../../../components/AccountLayout';
 import { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { Link } from 'react-router-dom';
 
 export const ReviewsPage = () =>{
 
     const [reviewsFilter, setReviewsFilter] = useState('waiting');
+    const isMobile = useMediaQuery({
+        maxWidth: 768
+    })
+
+    const reviewsList = [];
 
     return(
-        <div>
+        <div className={cls.reviewsPageWrapper}>
             <div className={cls.pageTop}>
                 <div className={cls.breadCrumbsWrapper}>
                     <BreadCrumbs >Профиль</BreadCrumbs>
                     <BreadCrumbs >-</BreadCrumbs>
                     <BreadCrumbs >Отзывы</BreadCrumbs>
                 </div>
+                {isMobile &&
+                <Link to='/account'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M12 5L5 12L12 19" stroke="#152429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </Link>
+                }
                 <div className={cls.pageTitleWrapper}>
                     <AccountTitle>Отзывы</AccountTitle>
                 </div>
+                {isMobile && <div></div>}
+                
             </div>
             <div className={cls.reviewsPageContent}>
+                {!(isMobile && reviewsList.length == 0) && 
                 <div className={cls.reviewsFiltersWrapper}>
                     <button
                         className={`${reviewsFilter == 'waiting'? `${cls.active}`: ""}`}
@@ -34,10 +51,28 @@ export const ReviewsPage = () =>{
                         <p>Ваши отзывы</p>
                     </button>
                 </div>
+                }
                 <div className={cls.reviewsList}>
+                    {reviewsList.length == 0 && 
+                    <div className={cls.emptyReviews}>
+                        <div className={cls.emptyIcon}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                            <path d="M10.4081 20.6311C9.27748 21.8582 8.98287 23.7458 9.84356 25.1752C10.1408 25.6688 10.4743 26.139 10.8814 26.5461C11.2885 26.9532 11.7587 27.2869 12.2523 27.584C13.6818 28.4446 15.5693 28.15 16.7965 27.0195C18.9666 25.0202 21.231 22.9473 23.4576 20.7208C25.2739 18.9045 26.9879 17.0629 28.6433 15.2678C30.4331 13.327 30.8559 10.3052 28.9891 8.43844C27.1223 6.57164 24.1005 6.99444 22.1597 8.78419C20.3647 10.4395 18.5231 12.1536 16.7067 13.97C14.4802 16.1965 12.4074 18.4609 10.4081 20.6311Z" stroke="#919799" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10.4114 26.7104L7.2002 29.9217" stroke="#919799" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10.8633 12.0299L14.2136 8.88909C15.6808 7.51364 17.9748 7.55066 19.3969 8.97271L20.6848 10.2606" stroke="#919799" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M27.2554 16.8292L20.6016 10.1753C21.1418 9.6716 21.6812 9.17642 22.2168 8.6879C24.149 6.92543 27.1428 6.58923 28.9921 8.43852C30.8414 10.2878 30.5053 13.2817 28.7429 15.214C28.2544 15.7495 27.7592 16.2889 27.2554 16.8292Z" stroke="#919799" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div className={cls.emptyText}>
+                            <p>У вас пока нет отзывов</p>
+                            <span>Отзывы можно добавить на товары в ваших завершенных заказах.</span>
+                        </div>
                     
+                    </div>}
                 </div>
             </div>
+            {isMobile && <div></div>}
+
         </div>
     )
 }

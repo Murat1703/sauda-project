@@ -25,3 +25,22 @@
         }
     }
 }
+
+@media (max-width:768px){
+    .filtersContainer{
+        background: transparent;
+    }
+    .filtersContainer > button{
+        background: var(--white);
+        padding: 8px 12px;
+        p{
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: .14px;
+        }
+    }
+    .filtersContainer{
+        width: 100%;
+        overflow-x: auto;
+    }
+}

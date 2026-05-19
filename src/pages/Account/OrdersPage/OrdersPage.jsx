@@ -6,6 +6,8 @@ import { useOrders } from '../../../hooks/useOrders.js';
 import { Loader } from '../../../components/Loader';
 import { NavLink } from 'react-router-dom';
 import { useDateFormat } from '../../../hooks/useDateFormat.js';
+import { Link } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 
 export const OrdersPage = () =>{
 
@@ -37,6 +39,10 @@ export const OrdersPage = () =>{
 
     const {formatDate} = useDateFormat();
 
+    const isMobile = useMediaQuery({
+        maxWidth: 768
+    })
+
 
     return(
         <div className={cls.ordersPageWrapper}>
@@ -46,9 +52,18 @@ export const OrdersPage = () =>{
                     <BreadCrumbs >-</BreadCrumbs>
                     <BreadCrumbs >Заказы</BreadCrumbs>
                 </div>
+                {isMobile && 
+                <Link to="/account">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M12 5L5 12L12 19" stroke="#152429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </Link>
+
+                }
                 <div className={cls.pageTitleWrapper}>
                     <AccountTitle>Заказы</AccountTitle>
                 </div>
+                {isMobile && <div></div>}
             </div>
             <div className={cls.pageBottom}>
                 <FiltersContainer>
@@ -60,7 +75,7 @@ export const OrdersPage = () =>{
                     <button
                         className={filter == 'delivered' && cls.activeFilterBtn} onClick={()=>setFilter('delivered')}
                     >
-                        <p>Выполненные заказы</p>
+                        <p>{isMobile ? "Выполненные": "Выполненные заказы"}</p>
                     </button>
                     <button
                         className={filter == 'cancelled' && cls.activeFilterBtn} onClick={()=>setFilter('cancelled')}
@@ -101,7 +116,9 @@ export const OrdersPage = () =>{
                         <div className={cls.orderItem} key={order.id}>
                             <div className={cls.orderItemTop}>
                                 <div className={cls.orderStatus}>
-                                    <p>№{order.orderNumber}</p>
+                                    <p>№{order.orderNumber}
+                                        {isMobile && <span>{formatDate(order.createdAt)}</span>}
+                                    </p>
                                     {status(order.status)}
                                 </div>
                                 <div className={cls.orderInformation}>
@@ -142,6 +159,11 @@ export const OrdersPage = () =>{
                                         </button>
                                         {order.status  !== 'delivered' ?    
                                         <NavLink to={`/account/orders/${order.id}`}>
+                                            {isMobile && 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <path d="M11.6663 9.16666H6.66634M8.33301 12.5H6.66634M13.333 5.83332H6.66634M16.6663 5.66666V14.3333C16.6663 15.7335 16.6663 16.4335 16.3939 16.9683C16.1542 17.4387 15.7717 17.8212 15.3013 18.0608C14.7665 18.3333 14.0665 18.3333 12.6663 18.3333H7.33301C5.93288 18.3333 5.23281 18.3333 4.69803 18.0608C4.22763 17.8212 3.84517 17.4387 3.60549 16.9683C3.33301 16.4335 3.33301 15.7335 3.33301 14.3333V5.66666C3.33301 4.26653 3.33301 3.56646 3.60549 3.03168C3.84517 2.56128 4.22763 2.17882 4.69803 1.93914C5.23281 1.66666 5.93288 1.66666 7.33301 1.66666H12.6663C14.0665 1.66666 14.7665 1.66666 15.3013 1.93914C15.7717 2.17882 16.1542 2.56128 16.3939 3.03168C16.6663 3.56646 16.6663 4.26653 16.6663 5.66666Z" stroke="#152429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            }
                                             <p>Детали заказа</p>
                                         </NavLink>:
                                         <button>

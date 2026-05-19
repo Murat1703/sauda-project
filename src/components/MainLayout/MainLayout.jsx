@@ -26,6 +26,8 @@ export const MainLayout = () =>{
 
     console.log('mainLayoutOrders = ', orders)
 
+
+
     return(
         <>
             <ScrollToTop />
@@ -38,7 +40,7 @@ export const MainLayout = () =>{
                         </Suspense>
                     </main>
                    
-                    {((pathname!=='/cart') && (pathname !== '/account') )&& <Footer />}
+                    {((pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) )&& <Footer />}
                     
                 </div>
             </div>

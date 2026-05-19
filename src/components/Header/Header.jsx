@@ -12,7 +12,7 @@ import { useOrders } from '../../hooks/useOrders.js';
 import { CounterBadge } from '../CounterBadge';
 import { useFavorites } from '../../hooks/useFavorites.js';
 import { useCart } from '../../hooks/useCart.js';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 export const Header = ({ordersCount}) =>{
 
@@ -56,10 +56,12 @@ export const Header = ({ordersCount}) =>{
 
     const {pathname} = useLocation();
 
+    const {id} = useParams();
+
     
     return(
         <>
-        {!(isMobile && (pathname=='/cart' || pathname == '/account')) &&
+        {!(isMobile && (pathname=='/cart' || pathname == '/account' || pathname == '/account/profile' || pathname == '/account/reviews' || pathname == '/account/orders' || pathname.includes('/account/orders'))) &&
         <header>
             <div className={cls.headerContent}>
                 <div className={cls.headerLeft}>
