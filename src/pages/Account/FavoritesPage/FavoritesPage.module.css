@@ -131,3 +131,348 @@
 .favoritesList > div{
     width: 100%;
 }
+@media (max-width:768px){
+    .breadCrumbsWrapper{
+        display: none;
+    }
+    .pageTop{
+        width: 100%;
+    }
+    .pageTop > div:nth-child(2){
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px 16px;
+        background: var(--white);
+    }
+    .pageTop > div:nth-child(2) > h4{
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+        letter-spacing: .16px;
+    }
+    .favoritesPageWrapper{
+        gap: 0;
+    }
+    .mobileFilters{
+        padding: 6px 16px 10px 16px;
+        background: var(--white);
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .mobileFilterItem{
+        display: flex;
+        padding: 10px 12px;
+        align-items: center;
+        gap: 4px;
+        border-radius: 12px;
+        background: var(--Dark-D5, #EEEFF0);
+        p{
+            font-size: 14px;
+            line-height: 16px;
+        }
+    }
+    .favoritesList{
+        gap: 8px;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+    .titleBlock{
+        gap: 24px;
+    }
+    .icon{
+        width: 64px;
+        height: 64px;
+        gap: 8px;
+        justify-content: center;
+        padding:0;
+        flex-direction: column;
+        padding: 14px;
+    }
+    .text{
+        gap: 12px;
+    }
+    .text > p:nth-child(1){
+        font-size: 20px;
+        line-height: 24px;
+    }
+    .text > p:nth-child(2){
+        font-size: 14px;
+        line-height: 20px;
+        color: #8F9596;
+    }
+    .backBtn{
+        width: 100%;
+        padding: 14px 16px;
+        height: 48px;
+        border-radius: 16px;
+        gap: 12px;
+        p{
+            font-size: 16px;
+            line-height: 16px;
+            font-weight: 500;
+        }
+    }
+    .favoritesPageWrapper{
+        height: 100dvh;
+    }
+    .pageBottom{
+        height: 100%;
+    }
+    .favoritesPageEmpty{
+        height: 100%;
+        padding: 0 16px;
+    }
+    .sortModal{
+        top: 0;
+        left: 0;
+        position: fixed;
+        width: 100%;
+        height: 100dvh;
+        display: flex;
+        align-items: flex-end;
+        justify-content: end;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.48);
+        z-index: 10000;
+    }
+    .sortModalContent{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .mobileCloseIcon{
+        margin: 0 auto;
+        display: flex;
+        width: 36px;
+        height: 4px;
+        border-radius: 12px;
+        background: var(--white);
+    }
+    .mobileSortItems{
+        background: var(--white);
+        border-radius: 20px 20px 0 0;
+        padding: 20px 16px 32px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+    .mobileSortItems > p{
+        font-size: 20px;
+        line-height: 140%;
+        font-weight: 700;
+    }
+    .sortItemsList{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .sortItem{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        width: 100%;
+    }
+    .iconCircle{
+        display: flex;
+        width: 16px;
+        height: 16px;
+        border-radius: 320px;
+        border: 1px solid rgba(205, 209, 212, 1);
+    }
+    .sortItem > input[type=radio]{
+        position: absolute;
+        left: 0;
+        top:0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    .iconCircle{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .iconCircle svg{
+        display: none;
+    }
+    .sortItem input:checked + .iconCircle{
+        background: var(--accent);
+    }
+    .sortItem input:checked + .iconCircle svg{
+        display: block;
+    }
+    .sortItemsList{
+        padding-bottom: 24px;
+    }
+    .sortFilterBtn{
+        display: flex;
+        height: 48px;
+        padding: 16px 0;
+        justify-content: center;
+        align-self: stretch;
+        border-radius: 16px;
+        background: var(--accent);
+        p{
+            color: var(--white);
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;
+        }
+    }
+    .filterWrapperMobile{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100dvh;
+        background: #EEEFF0;
+        z-index: 100000;
+    }
+    .filterContentMobile > button{
+        margin: 0 16px;
+        width: calc(100% - 32px);
+    }
+    .filterContentMobile{
+        padding-bottom: 16px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .filterContentMobile > div:nth-child(1){
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .filterContentMobile > p{
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+    }
+    .filterContentMobile > button{
+        padding: 16px 0;
+        /* width: 100%; */
+        height: 48px;
+        background: var(--accent);
+        border-radius: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p{
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 24px;
+        }
+    }
+    .filtersTopMobile{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+        background: var(--white);
+    }
+    .filtersTopMobile > button:nth-child(3){
+        display: flex;
+        height: 32px;
+        padding: 0 14px;
+        align-items: center;
+        gap: 8px;
+        border-radius: 12px;
+        background: var(--Dark-D5, #EEEFF0);
+    }
+    .availibility{
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        border-radius: 14px;
+        background: var(--white);
+    }
+    .filterItemTitle{
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: .16px;
+        font-weight: 500;
+    }
+    .availibilityList{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .filterItemMobile{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
+    .filterItemMobile > input[type="radio"]{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    .iconCircle svg{
+        display: none;
+    }
+    .filterItemMobile > input:checked + .iconCircle {
+        background: var(--accent);
+    }
+    .filterItemMobile > input:checked + .iconCircle  svg{
+        display: block;
+    }
+    .filterItemMobile > p{
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .categoryFilter{
+        border-radius: 14px;
+        background: var(--white);
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .categoryFilterList{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .categoryFilterItem{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
+    .categoryFilterItem > input{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    .categoryFilterItem > input:checked + .categoryFilterIcon svg{
+        display: block;
+    }
+    .categoryFilterIcon{
+        width: 16px;
+        height: 16px;
+        border-radius: var(--Rounding-xs, 4px);
+        border: 1px solid var(--Dark-D10, #E1E2E3);
+        background: var(--Dark-D0, #FFF);
+    }
+    .categoryFilterIcon svg{
+        display: none;
+    }
+    .categoryFilterIcon svg path{
+        stroke: var(--accent);
+    }
+}

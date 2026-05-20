@@ -23,7 +23,10 @@
 @media (max-width:768px){
     .mainLayout,
     .mainWrapper{
-        height: auto;
+        /* height: auto; */
+    }
+    .mainWrapper{
+        height: 100%;
     }
     .main{
         padding: 0 0;

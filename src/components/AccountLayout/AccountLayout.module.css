@@ -50,4 +50,7 @@
     .accountLayout > aside{
         display: none;
     }
+    .accountLayout{
+        padding: 0;
+    }
 }

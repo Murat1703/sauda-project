@@ -8,6 +8,7 @@ import { Title } from '../../components/Title';
 import { Badge } from '../../components/Badge';
 import { useCart } from '../../hooks/useCart';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useFavorites } from '../../hooks/useFavorites.js';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -15,6 +16,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { useMediaQuery } from 'react-responsive';
 
 
 
@@ -42,8 +44,15 @@ export const ProductPage = () =>{
 
     const [active, setActive] = useState(0);
 
+    const isMobile = useMediaQuery({
+        maxWidth: 768
+    });
+
+    const {favorites, toggleFavorites} = useFavorites();
+
     return(
         <div className={cls.productPageWrapper}>
+            {!isMobile &&
             <div className={cls.productPageContent}>
                 {loadingProduct && <Loader />}
                 <div className={cls.productTitleBlock}>
@@ -59,7 +68,6 @@ export const ProductPage = () =>{
                         <Title>
                             {product?.title}
                         </Title>
-
                     </div>
                     <span>Код: {product?.id}</span>
                 </div>
@@ -551,7 +559,103 @@ export const ProductPage = () =>{
                         </div>
                     </div>
                 </div>
+            </div>}
+            {isMobile && 
+            <div className={cls.mobileProductPageContent}>
+                {loadingProduct && <Loader />}
+                <div className={cls.mobileBreadCrumbs}>
+                    <BreadCrumbs>Каталог</BreadCrumbs>
+                    <BreadCrumbs> - </BreadCrumbs>
+                    <BreadCrumbs> Электроинструменты </BreadCrumbs>
+                    <BreadCrumbs> - </BreadCrumbs>
+                    <BreadCrumbs> Электроинструменты </BreadCrumbs>
+                    <BreadCrumbs> - </BreadCrumbs>
+                    <BreadCrumbs> Шуруповерт </BreadCrumbs>
+                </div>
+                <div className={cls.mobileProductImgWrapper}>
+                    <div className={cls.mobileProductImgSlider}>
+                        <Swiper
+                                    style={{
+                                    '--swiper-navigation-color': '#fff',
+                                    '--swiper-pagination-color': '#FF4D00',
+                                    }}
+                                    pagination={true}
+                                    spaceBetween={10}
+                                    modules={[FreeMode, Navigation, Thumbs]}
+                                >
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-1.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-2.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-3.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-4.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-5.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-6.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-7.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-8.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-9.jpg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                    <img src="https://swiperjs.com/demos/images/abstract-10.jpg" />
+                                    </SwiperSlide>
+                        </Swiper>
+                    </div>
+                </div>
+                <div className={cls.mobileProductInfoWrapper}>
+                    <div className={cls.mobileProductInfoWrapperTop}>
+                        <div className={cls.mobileRating}>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M5.24163 0.366076C5.44825 -0.122112 6.1401 -0.122111 6.34672 0.366077L7.52542 3.15103C7.61207 3.35576 7.80482 3.4958 8.0263 3.51495L11.0392 3.77535C11.5673 3.821 11.7811 4.479 11.3807 4.82636L9.09627 6.80797C8.92834 6.95364 8.85471 7.18023 8.90495 7.39679L9.58832 10.3427C9.70811 10.8591 9.14839 11.2658 8.69428 10.9922L6.10374 9.43199C5.9133 9.31729 5.67505 9.31729 5.48461 9.43199L2.89407 10.9922C2.43996 11.2658 1.88024 10.8591 2.00003 10.3427L2.6834 7.39679C2.73363 7.18023 2.66001 6.95364 2.49208 6.80797L0.207664 4.82636C-0.192782 4.479 0.0210152 3.821 0.549158 3.77535L3.56205 3.51495C3.78353 3.4958 3.97628 3.35576 4.06293 3.15103L5.24163 0.366076Z" fill="#FF4D00"/>
+                                </svg>
+
+                                <p>5.0</p>
+                            </div>
+                            <span>157 отзывов</span>
+                        </div>
+                        <div className={cls.mobileTopButtons}>
+                            <button
+                                onClick={()=>toggleFavorites(product?.id)}
+                            >
+                                {favorites.includes(product?.id)? 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99462 4.27985C8.32849 2.332 5.55011 1.80804 3.46257 3.59168C1.37503 5.37532 1.08113 8.35748 2.72049 10.467C4.08351 12.2209 8.20847 15.9201 9.56041 17.1174C9.71166 17.2513 9.78729 17.3183 9.8755 17.3446C9.9525 17.3676 10.0367 17.3676 10.1137 17.3446C10.2019 17.3183 10.2776 17.2513 10.4288 17.1174C11.7808 15.9201 15.9057 12.2209 17.2687 10.467C18.9081 8.35748 18.6501 5.35656 16.5267 3.59168C14.4032 1.8268 11.6607 2.332 9.99462 4.27985Z" fill="#FF4D00" stroke="#FF4D00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg> :                               
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99428 4.27985C8.32816 2.332 5.54978 1.80804 3.46224 3.59168C1.37469 5.37532 1.0808 8.35748 2.72015 10.467C4.08317 12.2209 8.20813 15.9201 9.56007 17.1174C9.71133 17.2513 9.78695 17.3183 9.87517 17.3446C9.95216 17.3676 10.0364 17.3676 10.1134 17.3446C10.2016 17.3183 10.2772 17.2513 10.4285 17.1174C11.7804 15.9201 15.9054 12.2209 17.2684 10.467C18.9078 8.35748 18.6498 5.35656 16.5263 3.59168C14.4029 1.8268 11.6604 2.332 9.99428 4.27985Z" stroke="#8F9596" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+
+                                }
+                            </button>
+                            <button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.3261 10.5062C17.5296 10.3318 17.6313 10.2446 17.6686 10.1409C17.7013 10.0498 17.7013 9.9502 17.6686 9.85914C17.6313 9.75539 17.5296 9.6682 17.3261 9.49383L10.2672 3.44331C9.917 3.14315 9.74191 2.99306 9.59367 2.98939C9.46483 2.98619 9.34177 3.04279 9.26035 3.14269C9.16667 3.25764 9.16667 3.48825 9.16667 3.94948V7.52886C7.38777 7.84007 5.75966 8.74146 4.54976 10.0949C3.23069 11.5704 2.50103 13.48 2.5 15.4591V15.9691C3.37445 14.9157 4.46626 14.0638 5.70063 13.4716C6.78891 12.9495 7.96535 12.6403 9.16667 12.5588V16.0505C9.16667 16.5117 9.16667 16.7424 9.26035 16.8573C9.34177 16.9572 9.46483 17.0138 9.59367 17.0106C9.74191 17.0069 9.917 16.8569 10.2672 16.5567L17.3261 10.5062Z" stroke="#8F9596" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div className={cls.mobileProductTitleBlock}>
+                        <Title>{product?.title}</Title>
+                        <span>Код: {product?.id}</span>
+                    </div>
+                </div>
             </div>
+            }
         </div>
     )
 }

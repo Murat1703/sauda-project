@@ -40,7 +40,7 @@ export const MainLayout = () =>{
                         </Suspense>
                     </main>
                    
-                    {((pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) )&& <Footer />}
+                    { (!isMobile ||(pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) && ((pathname!=='/login')) && ((pathname!=='/account/favorites')) )&& <Footer />}
                     
                 </div>
             </div>
