@@ -498,4 +498,140 @@ a.link{
         line-height: 14px;
         color: #8F9596;
     }
+    .mobileProductPriceBlock{
+        display: flex;
+        padding: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 18px;
+        border: 1px solid var(--Dark-D10, #E4E5E5);
+        background: var(--Dark-D0, #FFF);
+    }
+    .mobileProductPriceValue{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        align-self: stretch;
+    }
+    .oldPrice{
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .oldPrice > p{
+        font-size: 13px;
+        line-height: 20px;
+        color: #8F9596;
+        position: relative;
+    }
+    .oldPrice > p::after{
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--accent);
+        top: 10px;
+    }
+    .mobileFinalPrice{
+        font-weight: 900;
+        font-size: 24px;
+        line-height: 28px;
+    }
+    .mobileProductActionBtn{
+        width: 100%;
+    }
+    .mobileProductActionBtn > button{
+        width: 100%;
+        gap: 8px;
+        background: var(--accent);
+        color: var(--white);
+    }
+    .mobileProductActionBtn > button:hover{
+        background: var(--accent-hover);
+    }
+    .mobileProductDeliveryItems{
+        width: 100%;
+    }
+    .productDeliveryBlock{
+        padding-bottom: 8px;
+        gap: 12px;
+    }
+    .productDeliveryItem{
+        gap: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid  #E4E5E5;
+    }
+    .productDeliveryItem:last-child{
+        border-bottom: none;
+    }
+    .productDeliveryItemText > p{
+        font-size: 14px;
+        line-height: 18px;
+    }
+    .productDeliveryItemText > span{
+        font-size: 12px;
+        line-height: 14px;
+    }
+    .mobileProductDescriptionBlock{
+        padding: 16px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+        border-radius: 20px;
+        background: var(--white);
+    }
+    .mobileProductDescriptionType{
+        display: flex;
+        padding: 4px;
+        align-items: flex-start;
+        align-self: stretch;
+        border-radius: 14px;
+        background: var(--Dark-D5, #EEEFF0);
+    }
+    .mobileProductDescriptionType > button:nth-child(1){
+        border-radius: 14px;
+    }
+    .mobileProductDescriptionType > button{
+        display: flex;
+        flex: 1 0 0;
+        display: flex;
+        padding: 10px 14px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex: 1 0 0;
+        border-radius: 14px;
+        background: var(--Dark-D5, #EEEFF0);
+        p{
+            font-weight: 500;
+        }
+    }
+    .mobileProductDescriptionType > button.active{
+        background: #152429;
+        p{
+            color: var(--white)
+        }
+    }
+    .mobileProductDescriptionWrapper{
+        width: 100%;
+    }
+    .text{
+        gap: 12px;
+    }
+    .textItem> span{
+        font-size: 14px;
+        line-height: 16px ;
+    }
+    .link{
+        margin-top: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+    }
 }
