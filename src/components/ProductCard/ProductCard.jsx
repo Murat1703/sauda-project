@@ -1,11 +1,8 @@
 import { Badge } from '../Badge'
 import cls from './ProductCard.module.css'
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
-import { useEffect, useRef, useState } from 'react';
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { useCart } from '../../hooks/useCart';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';

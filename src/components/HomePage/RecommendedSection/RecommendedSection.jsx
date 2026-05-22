@@ -50,9 +50,9 @@ export const RecommendedSection = ({products}) =>{
                             return (
                             <SwiperSlide key={product.id}>
                                 <ProductCard 
-                                product={product} 
-                                isFavorite={favorites.includes(product.id)} 
-                                addToFavorite={() => handleMakeFavorite(product.id)} />
+                                    product={product} 
+                                    isFavorite={favorites.includes(product.id)} 
+                                    addToFavorite={() => handleMakeFavorite(product.id)} />
                             </SwiperSlide>)
                         })}
 

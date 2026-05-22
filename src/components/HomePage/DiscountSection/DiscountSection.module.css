@@ -33,7 +33,7 @@
     position: absolute;
     top: 50%;
     margin-top: -28px;
-    z-index: 4;
+    z-index: 30;
 }
 .discountedProducts > button:nth-child(3){
     right: -16px;
@@ -49,10 +49,10 @@
     .discountSectionContent{
         padding: 0 16px;
     }
-    .discountSectionContent > button:nth-child(2){
+    .discountedProducts > button:nth-child(2){
         left: -8px;
     }
-    .discountSectionContent > button:nth-child(3){
+    .discountedProducts > button:nth-child(3){
         right: -8px;
     }
 }
