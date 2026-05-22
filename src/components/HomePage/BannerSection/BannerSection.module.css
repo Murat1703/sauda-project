@@ -1,0 +1,41 @@
+.banner{
+    position: relative;
+    padding: 0 32px;
+}
+.banner > button{
+    display: flex;
+    width: 56px;
+    height: 56px;
+    padding: 12px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 28px;
+    border: 1px solid var(--Dark-D50, #8F9596);
+    background: #FFF;
+}
+.nextBtn, .prevBtn{
+    position: absolute;
+    top: 50%;
+    margin-top: -28px;
+    z-index: 10;
+}
+.prevBtn{
+    left: 16px;
+}
+.nextBtn{
+    right: 16px;
+}
+@media (max-width:768px){
+    .banner{
+        padding: 0 16px;
+    }
+    .prevBtn{
+        left: 8px;
+    }
+    .nextBtn{
+        right: 8px;
+    }
+    .homePageWrapper{
+        gap: 24px;
+    }
+}

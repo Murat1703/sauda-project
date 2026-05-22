@@ -21,7 +21,7 @@
     position: absolute;
     top: 50%;
     margin-top: -28px;
-    z-index: 2;
+    z-index: 10;
 }
 .recommendedSlider > button:last-child{
     right: -16px;

@@ -55,13 +55,18 @@ const ProtectedRoutes = () =>{
 
 function App() {
 
+  const [isMobileScroll, setIsMobileScroll] = useState(false);
+
+  console.log('app = ',isMobileScroll)
+
+
   return (
     <>
     <AuthProvider>
       <AuthModalProvider>
         <BrowserRouter>
           <Routes >
-            <Route element={<MainLayout/>}>
+            <Route element={<MainLayout setIsMobileScrolled={setIsMobileScroll}/>}>
               <Route path='/' element={<HomePage />}/>
               <Route element={<AccountLayout />}>
                 <Route path="/account/favorites" element={<FavoritesPage />} />
@@ -83,7 +88,7 @@ function App() {
                 </Route>
                 <Route path='/cart' element={<CartPage />}/>
               </Route>
-              <Route path={`/product/:id`} element={<ProductPage />}/>          
+              <Route path={`/product/:id`} element={<ProductPage isMobileScroll={isMobileScroll}/>}/>          
             </Route> 
           </Routes>
           <ToastContainer 

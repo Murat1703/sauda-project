@@ -1,11 +1,10 @@
 import { Title } from '../../Title'
 import cls from './CategorysSection.module.css'
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import { useRef } from 'react';
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 import img1 from './images/build.png'
 import img2 from './images/electro.png'
 import img3 from './images/hand.png'
@@ -23,9 +22,8 @@ export const CategorysSection = () =>{
                 <Title>Категории</Title>
                 <div className={cls.categorysSlider}>
                     <Swiper
-                        modules={[Navigation, Pagination]}
+                        modules={[Navigation]}
                         spaceBetween={10}
-                        // slidesPerView={5}
                         loop
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
@@ -41,8 +39,6 @@ export const CategorysSection = () =>{
                                 slidesPerView:5
                             }
                         }}
-
-
                     >
                         <SwiperSlide>
                             <div className={cls.categoryCardItem}>
@@ -84,18 +80,19 @@ export const CategorysSection = () =>{
                     <button 
                         className={cls.prevBtn}
                         onClick={() => swiperRef.current?.slidePrev()}
-
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                         <path d="M10.4392 17.3335L17.5912 24.4855L15.7056 26.3711L5.33464 16.0001L15.7056 5.62934L17.5912 7.51493L10.4392 14.6668L26.668 14.6668L26.668 17.3335L10.4392 17.3335Z" fill="#FF4D00"/>
                         </svg>
                     </button>
-                    <button className={cls.nextBtn} onClick={() => swiperRef.current?.slideNext()}>
+                    <button 
+                        className={cls.nextBtn} 
+                        onClick={() => swiperRef.current?.slideNext()}
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                         <path d="M21.5608 14.6665L14.4088 7.51452L16.2944 5.62891L26.6654 15.9999L16.2944 26.3707L14.4088 24.4851L21.5608 17.3332H5.33203V14.6665H21.5608Z" fill="#FF4D00"/>
                         </svg>
                     </button>
-
                 </div>
             </div>
         </section>

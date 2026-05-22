@@ -1,5 +1,5 @@
 import cls from './MainLayout.module.css'
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Loader } from '../Loader'
 import { Outlet } from 'react-router-dom';
 import { Footer } from '../Footer';
@@ -8,8 +8,9 @@ import { useOrders } from '../../hooks/useOrders.js';
 import { ScrollToTop } from '../ScrollToTop';
 import { useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { useRef } from 'react';
 
-export const MainLayout = () =>{
+export const MainLayout = ({setIsMobileScrolled}) =>{
 
     const {orders, loadingOrders, loadOrders} = useOrders();
 
@@ -26,6 +27,32 @@ export const MainLayout = () =>{
 
     console.log('mainLayoutOrders = ', orders)
 
+    const contentRef = useRef(null);
+
+    const [isMobileScroll, setIsMobileScroll] = useState(false)
+    useEffect(() => {
+        const el = contentRef.current;
+
+        if (!el || !isMobile) {
+            setIsMobileScroll(false);
+            setIsMobileScrolled(false);
+            return;
+        }
+
+        const handleScroll = () => {
+            const scrolled = el.scrollTop > 50;
+
+            setIsMobileScroll(scrolled);
+            setIsMobileScrolled(scrolled);
+        };
+
+        el.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        return () => el.removeEventListener('scroll', handleScroll);
+    }, [isMobile, setIsMobileScrolled]);
+
+    // console.log(isMobileScroll)
 
 
     return(
@@ -33,7 +60,7 @@ export const MainLayout = () =>{
             <ScrollToTop />
             <div className={cls.mainLayout} >
                 <Header ordersCount={orders?.length} />
-                <div className={cls.mainWrapper} id='main-scroll'>
+                <div className={cls.mainWrapper} id='main-scroll' ref={contentRef}>
                     <main className={cls.main}>
                         <Suspense fallback={<Loader/>}>
                             <Outlet />

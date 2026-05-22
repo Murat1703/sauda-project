@@ -60,6 +60,7 @@ export const useCart = create((set, get) => ({
         set({ cartItems: updated });
     },
 
+
     removeFromCart: (productId) => {
         const current = get().cartItems;
 
@@ -74,6 +75,11 @@ export const useCart = create((set, get) => ({
 
         set({ cartItems: updated });
     },
+
+    clearCart: () =>{
+        set({ cartItems: [] });
+    },
+
 
     increaseQuantity: (productId) => {
         const updated = get().cartItems.map(item =>
