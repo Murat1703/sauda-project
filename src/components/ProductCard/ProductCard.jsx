@@ -68,7 +68,7 @@ export const ProductCard = ({product, isFavorite}) =>{
                         <span>5.0</span>
                         <span>· 157 отзвывов</span>
                     </div>
-                    <h4>{product?.description}</h4>
+                    <h4>{product?.title}</h4>
                 </div>
                 <div className={cls.productCardInfoPrice}>
                     <div className={cls.productCardPriceWrapper}>

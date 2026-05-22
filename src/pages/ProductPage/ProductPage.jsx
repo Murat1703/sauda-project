@@ -3,12 +3,14 @@ import cls from './ProductPage.module.css'
 import { useProducts } from '../../hooks/useProducts';
 import { act, useEffect, useState } from 'react';
 import { Loader } from '../../components/Loader';
+import { Link } from 'react-router-dom';
 import { BreadCrumbs } from '../../components/AccountLayout';
 import { Title } from '../../components/Title';
 import { Badge } from '../../components/Badge';
 import { useCart } from '../../hooks/useCart';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useFavorites } from '../../hooks/useFavorites.js';
+import { toast } from 'react-toastify';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -18,6 +20,7 @@ import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { useMediaQuery } from 'react-responsive';
 import { Button } from '../../components/Button';
+import { ProductCard } from '../../components/ProductCard';
 
 
 
@@ -30,6 +33,12 @@ export const ProductPage = () =>{
 
     useEffect(()=>{
         loadProduct(id)
+    },[])
+
+    const {products, loadingProducts, loadProducts} = useProducts();
+
+    useEffect(()=>{
+        loadProducts()
     },[])
 
     const [add, setAdd] = useState(false);
@@ -50,6 +59,8 @@ export const ProductPage = () =>{
     });
 
     const {favorites, toggleFavorites} = useFavorites();
+
+    const [showMoreGaranty, setShowMoreGaranty] = useState(false)
 
     return(
         <div className={cls.productPageWrapper}>
@@ -631,7 +642,19 @@ export const ProductPage = () =>{
                         </div>
                         <div className={cls.mobileTopButtons}>
                             <button
-                                onClick={()=>toggleFavorites(product?.id)}
+                                onClick={()=>{toggleFavorites(product?.id);
+                                !favorites.includes(product?.id)&&
+                                toast(
+                                    <div className={cls.toastContent}>
+                                        <div>
+                                            <p>Товар добавлен в избранное</p>
+                                        </div>
+                                        <Link to='/account/favorites'>
+                                            Нажмите, чтобы перейти
+                                        </Link>
+                                    </div>
+                                )}
+                                }
                             >
                                 {favorites.includes(product?.id)? 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -794,8 +817,107 @@ export const ProductPage = () =>{
                                 </div>
                             </div>
                         }
+                        {active == 1 && 
+                            <div className={cls.textDescriptionItemsMobile}>
+                                    <div className={cls.textDescriptionItem}>
+                                        <p>Аккумуляторная дрель-шуруповёрт MTX MCDL-12-02 — компактный и универсальный инструмент для бытового ремонта, сборки мебели и монтажных работ. Модель работает от Li-Ion аккумулятора напряжением 12 В и развивает крутящий момент до 20 Н·м, что обеспечивает уверенное закручивание крепежа и сверление различных материалов. Инструмент подходит для работы с деревом, пластиком и металлом, позволяя сверлить отверстия диаметром до 20 мм в древесине и до 6 мм в металле.</p>
+                                    </div>
+                                    <div className={cls.textDescriptionItem}>
+                                        <h4>Надежный инструмент</h4>
+                                        <p>Двухскоростной редуктор и регулировка крутящего момента (18+1 ступеней) позволяют точно подобрать режим работы под конкретную задачу — от аккуратной сборки мебели до сверления отверстий. Частота вращения регулируется в диапазоне до 1350 об/мин, а функция реверса облегчает как монтаж, так и демонтаж крепежа.</p>
+                                    </div>
+                                    <div className={cls.textDescriptionItem}>
+                                        <h4>Бесшумная работа</h4>
+                                        <p>Инструмент оснащён быстрозажимным патроном, что позволяет быстро менять биты и сверла без дополнительных ключей. Для удобства работы предусмотрена подсветка рабочей зоны и эргономичная прорезиненная рукоятка, обеспечивающая надёжный хват даже при длительном использовании.</p>
+                                    </div>
+                                    <div className={cls.textDescriptionItem}>
+                                        <h4>Экономично и выгодно</h4>
+                                        <p>В комплект поставки входят два аккумулятора ёмкостью 2 А·ч, зарядное устройство и удобный кейс для хранения и транспортировки. Благодаря запасному аккумулятору можно работать практически без перерывов, меняя батарею по мере разрядки.</p>
+                                    </div>
+                            </div>
+                        }
                     </div>
                 </div>
+                <div className={cls.mobileAlternativeWrapper}>
+                    <Title>Альтернатива</Title>
+                    <Swiper 
+                        slidesPerView={2.2}
+                        spaceBetween={8}
+                    >
+                    {products.map((item, index)=>{
+                        if (item.id !==id)
+                        return(
+                            <SwiperSlide>
+                                <ProductCard product={item} isFavorite={favorites.includes(item.id)}/>
+                            </SwiperSlide>
+                        )
+                    })}
+                    </Swiper>
+
+                </div>
+                <div className={cls.mobileReviewsWrapper}>
+                    <div className={cls.mobileReviewsTop}>
+                        <div>
+                            <Title>Отзывы</Title>
+                            <span>157 отзываов</span>   
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10.2939 15.3807C10.1118 15.2788 9.88984 15.2788 9.70776 15.3807L5.25802 17.8715C4.81125 18.1216 4.27668 17.7332 4.37646 17.231L5.37027 12.2294C5.41094 12.0247 5.34235 11.8136 5.18915 11.6719L1.44526 8.2097C1.06936 7.86208 1.27355 7.23364 1.78199 7.17336L6.84592 6.57295C7.05313 6.54838 7.2327 6.41791 7.32011 6.22843L9.45599 1.59789C9.67044 1.13296 10.3312 1.13297 10.5457 1.59789L12.6815 6.22843C12.7689 6.41791 12.9485 6.54838 13.1557 6.57295L18.2196 7.17336C18.728 7.23365 18.9322 7.86207 18.5563 8.2097L14.8125 11.6719C14.6593 11.8136 14.5907 12.0247 14.6314 12.2293L15.6252 17.231C15.7249 17.7332 15.1904 18.1216 14.7436 17.8715L10.2939 15.3807Z" fill="#FF4D00"/>
+                            </svg>
+                            <p>5.0</p>
+                        </div>
+                    </div>
+                    <div className={cls.mobileReviewsSlider}></div>
+                    <button className={cls.showReviews}>
+                        <p>Смотреть все отзывы</p>
+                    </button>
+                </div>
+                <div className={cls.mobileGarantyWrapper}>
+                    <Title>
+                        Гарантия
+                    </Title>
+                    <div className={cls.mobileGarantyItems}>
+                        <div className={cls.textDescriptionItem}>
+                                        <p>Мы понимаем, что покупки в интернете требуют доверия. Поэтому мы обеспечиваем прозрачную и понятную систему гарантий для каждого клиента.</p>
+                        </div>
+                        <div className={cls.textDescriptionItem}>
+                                        <h4>Гарантия подлинности товаров</h4>
+                                        <p>Все продавцы проходят проверку перед размещением на платформе. Мы стремимся к тому, чтобы вы получали только оригинальную и качественную продукцию.</p>
+                        </div>
+                        <div className={cls.textDescriptionItem}>
+                                        <h4>Возврат и обмен без лишних сложностей</h4>
+                                        <p>Если товар не соответствует описанию, имеет дефекты или просто не подошёл — вы можете оформить возврат или обмен в установленный срок. Процесс максимально упрощён и не требует лишней бюрократии.</p>
+                        </div>
+                        {!showMoreGaranty &&
+                        <a onClick={()=>setShowMoreGaranty(true)}>
+                            <p>Читать полностью</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.35656 7.85653C4.71194 7.50115 5.28812 7.50115 5.64349 7.85653L10 12.2131L14.3566 7.85653C14.7119 7.50115 15.2881 7.50115 15.6435 7.85653C15.9989 8.21191 15.9989 8.78809 15.6435 9.14346L10.6435 14.1435C10.2881 14.4988 9.71194 14.4988 9.35656 14.1435L4.35656 9.14346C4.00118 8.78809 4.00118 8.21191 4.35656 7.85653Z" fill="#FF5302"/>
+                            </svg>
+                        </a>
+                        }
+
+                        {showMoreGaranty && 
+                        <>
+
+                        <div className={cls.textDescriptionItem}>
+                                        <h4>Защита платежей</h4>
+                                        <p>Ваши деньги не передаются продавцу до момента подтверждения получения товара. Это гарантирует, что вы платите только за то, что действительно получили.</p>
+                        </div>
+                        <div className={cls.textDescriptionItem}>
+                                        <h4>Поддержка на каждом этапе</h4>
+                                        <p>Наша служба поддержки помогает решать любые спорные ситуации между покупателем и продавцом. Мы всегда на стороне справедливости.</p>
+                        </div>
+                        <div className={cls.textDescriptionItem}>
+                                        <h4>Ответственность продавцов</h4>
+                                        <p>Продавцы обязаны соблюдать стандарты качества и сроки доставки. За нарушения предусмотрены санкции вплоть до блокировки.</p>
+                        </div>
+
+                        </>}
+                    </div>
+                </div>
+
 
             </div>
             }
