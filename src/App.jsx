@@ -5,7 +5,8 @@ import { MainLayout } from './components/MainLayout'
 import { HomePage } from './pages/HomePage'
 import { FavoritesPage } from './pages/Account/FavoritesPage'
 import { AuthProvider } from './auth/AuthProvider'
-import { useAuth } from './hooks/useAuth.js'
+// import { useAuth } from './hooks/useAuth.js'
+import { useAuth } from './context/AuthContext.jsx'
 import { CartPage } from './pages/Account/CartPage'
 import { AuthModalProvider } from './auth/AuthModalProvider/AuthModalProvider.jsx'
 import { AccountLayout, AccountResponsiveLayout } from './components/AccountLayout'
@@ -13,7 +14,7 @@ import { OrdersPage } from './pages/Account/OrdersPage'
 import { OrderPage } from './pages/Account/OrdersPage'
 import { ReviewsPage } from './pages/Account/ReviewsPage'
 import { AccountDetailsPage } from './pages/Account/AccountDetailsPage'
-import { useAuthModal } from './hooks/useAuthModal.js'
+import { useAuthModal } from './context/AuthModalContext.jsx'
 import { ToastContainer } from 'react-toastify';
 import { ProductPage } from './pages/ProductPage'
 import { MobileAccountPage } from './pages/Account/MobileAccountPage'
@@ -23,33 +24,53 @@ import { MainAccountMainPage } from './pages/Account/MobileAccountMainPage'
 
 
 const ProtectedRoutes = () =>{
-  const { openAuthModal } = useAuthModal();
-  const location = useLocation();
-  const {isAuth} = useAuth();
+  const { openAuthModal, closeAuthModal } = useAuthModal();
+  const {pathname} = useLocation();
+  const {isAuth, isAuthLoading} = useAuth();
   const isMobile = useMediaQuery({
     maxWidth: 768
   })
 
+  // useEffect(() => {
+  //   if (isAuthLoading) return;
+
+  //   const protectedRoutes = ['/account', '/cart'];
+  //   const isProtected = protectedRoutes.some(route =>
+  //     pathname.startsWith(route)
+  //   );
+
+
+  //   if (!isAuth && isMobile  ) {
+  //     openAuthModal();
+  //   }
+
+
+  //   if (!isAuth || !isProtected ){
+  //     closeAuthModal();
+  //   }
+
+
+  // }, [isAuthLoading, isAuth, isMobile, pathname, closeAuthModal, openAuthModal]);
+
   useEffect(() => {
-    if (!isAuth && !isMobile) {
-      openAuthModal();
-    } 
+    if (isAuthLoading) return;
 
-  }, [isAuth]);
-
-
-  if (!isAuth && isMobile){
-    return <Navigate to="/login" />
-  }
-
-
-
-  if (!isAuth && !isMobile){
-    return null
-  }
+    if (!isAuth) {
+      openAuthModal()
+    }
+  }, [
+    isAuthLoading,
+    isAuth,
+    openAuthModal
+  ]);
 
 
-  // return isAuth ? <Outlet />: <Navigate to={'/'} />;  
+  if (isAuthLoading) return null;
+
+  if (!isAuth) return null;
+
+
+
   return <Outlet />
 }
 
@@ -57,16 +78,18 @@ function App() {
 
   const [isMobileScroll, setIsMobileScroll] = useState(false);
 
-  console.log('app = ',isMobileScroll)
-
 
   return (
     <>
-    <AuthProvider>
-      <AuthModalProvider>
         <BrowserRouter>
           <Routes >
-            <Route element={<MainLayout setIsMobileScrolled={setIsMobileScroll}/>}>
+            <Route 
+              element={
+                <MainLayout 
+                  setIsMobileScrolled={setIsMobileScroll}
+                />
+              }
+            >
               <Route path='/' element={<HomePage />}/>
               <Route element={<AccountLayout />}>
                 <Route path="/account/favorites" element={<FavoritesPage />} />
@@ -96,9 +119,6 @@ function App() {
             progressClassName={"progress"}
           />
         </BrowserRouter>
-      </AuthModalProvider>
-    </AuthProvider>
-
     </>
   )
 }

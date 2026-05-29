@@ -1,20 +1,34 @@
 import cls from './MobileLogoutModal.module.css'
-import { useAuth } from '../../hooks/useAuth'
+import { useAuth } from '../../context/AuthContext.jsx';
+import { BlackCloseIcon } from '../../../public/assets/icons/BlackCloseIcon';
+import { useNavigate } from 'react-router-dom';
+// import { useAuth } from '../../context/AuthContext';
 
 export const MobileLogoutModal = ({onClose}) =>{
 
-    const {setIsAuth} = useAuth();
+    const navigate = useNavigate();
+
+    const {logout} = useAuth();
+
+    const handleLogout = () =>{
+        logout();
+        localStorage.removeItem('reactCardLogin');
+        localStorage.removeItem('token');
+        navigate('/');
+    }
 
     return(
-        <div className={cls.modalLogoutWrapper} onClick={onClose}>
-            <div className={cls.modalLogoutInner}
+        <div 
+            className={cls.modalLogoutWrapper} 
+            onClick={onClose}
+        >
+            <div 
+                className={cls.modalLogoutInner}
                 onClick={(e)=>e.stopPropagation()}
             >
                 <div className={cls.top}>
                     <button onClick={onClose}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="#152429" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
+                        <BlackCloseIcon />
                     </button>
                 </div>
                 <div className={cls.bottom}>
@@ -22,10 +36,7 @@ export const MobileLogoutModal = ({onClose}) =>{
                     <p>Вы уверенны, что хотите выйти из профиля?</p>
                     <div className={cls.mobileModalButtonsList}>
                         <button 
-                            onClick={()=>{
-                                onClose();
-                                setIsAuth(false)
-                            }}
+                            onClick={handleLogout}
                         >
                             <p>Выйти</p>
                         </button>

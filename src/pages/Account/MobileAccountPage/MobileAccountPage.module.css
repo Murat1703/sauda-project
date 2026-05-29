@@ -1,221 +1,376 @@
-.mobileLoginPageWrapper{
-    width: 100%;
-    height: 100dvh;
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.mobileLoginTitle{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 10px 16px;
-    background: var(--white);
-    p{
-        font-size: 16px;
-        line-height: 20px;
-        font-weight: 500;
+@media (max-width:768px){
+
+    .mobileLoginPageWrapper{
+        width: 100%;
+        height: 100dvh;
+        padding: 0 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
-}
-.accountLogin{
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-.accountLogin > div:nth-child(1){
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-}
-.accountLogin > div:nth-child(1) > p:nth-child(1){
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
-}
-.accountLogin > div:nth-child(1) > p:nth-child(2){
-    font-size: 14px;
-    line-height: 20px;
-    color: #8F9596;
-}
-.accountLogin > div:nth-child(2){
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.accountLogin > div:nth-child(2) > input{
-    display: flex;
-    height: 48px;
-    padding: 0 12px;
-    align-items: center;
-    gap: 8px;
-    align-self: stretch;
-    border-radius: 12px;
-    border: 1px solid #E1E2E3;
-    background: var(--white);
-}
-.accountLogin > div:nth-child(2) > input:focus{
-    border: 1px solid var(--text-opacity)
-}
-.accountLogin > div:nth-child(2) > button{
-    display: flex;
-    height: 48px;
-    padding: 14px 16px;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    align-self: stretch;
-    background: var(--accent);
-    border-radius: 16px;
-p{
-   font-size: 16px;
-   font-weight: 500;
-   color: var(--white);
-   line-height: 16px; 
-}
-}
-.accountLogin > div:nth-child(2) > button:hover{
-    background: var(--accent-hover);
-}
-.supportBlock{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-bottom: 80px;
-}
-.supportBlock > div:nth-child(1){
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    align-self: stretch;
-}
-.supportBlock > div:nth-child(1) > hr{
-    flex: 1 0 0;
-    height: 1px;
-    background: #CFD0D1;
-}
-.supportBlock > div:nth-child(1) > p{
-    font-size: 14px;
-    line-height: 20px;
-    color: #8F9596;
-}
-.supportBlock > div:nth-child(2){
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.supportBlock > div:nth-child(2) > a{
-    display: flex;
-    height: 40px;
-    padding: 14px 20px 14px 16px;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    align-self: stretch;
-    border-radius: 12px;
-    border: 1px solid #E4E5E5;
-    background: #FFF;
-}
-.supportBlock > div:nth-child(2) > a:hover{
-    border: 1px solid var(--text-opacity);
-}
-.authOtp{
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.authOtpContent{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-}
-.authOtpTitleBlock{
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.authOtpTitleBlock > h4{
-    font-size: 20px;
-    line-height: 140%;
-    font-weight: 700;
-}
-.authOtpTitleBlock > p{
-    font-size: 13px;
-    line-height: 16px;
-    color: #909596;
-    span{
-        color: var(--text);
+    .mobileLoginTitle{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px 16px;
+        background: var(--white);
+        p{
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: 500;
+        }
     }
-}
-.authOtpTitleBlock > a{
-    color: var(--accent);
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 500;
-}
-.authOtpCodeWrapper{
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding: 16px 64px;
-    justify-content: center;
-}
-.authOtpCodeWrapper > input{
-    width: 58px;
-    height: 60px;
-    display: flex;
-    padding: 16px 8px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 12px;
-    border-radius: 12px;
-    border: 1px solid #D4D5D6;
-    background: #FFF;
-    color: var(--text);
-    font-size: 32px;
-    line-height: 32px;
-    font-weight: 500;
-}
-.authOtpCodeWrapper > input:focus{
-    border: 2px solid var(--accent)
-}
-.authOtp > p{
-    text-align: center;
-    font-size: 13px;
-    line-height: 16px;
-    color: #909596;
-}
-.authOtp > button{
-    display: flex;
-    height: 44px;
-    padding: 8px 12px;
-    justify-content: center;
-    align-items: center;
-    align-self: stretch;
-    border-radius: 12px;
-    border: 1px solid var(--Dark-D10, #E4E5E5);
-    background: #FFF; 
-    p{
-        color: #212121;
+    .accountLogin{
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+    .accountLogin > div:nth-child(1){
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    .accountLogin > div:nth-child(1) > p:nth-child(1){
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+    }
+    .accountLogin > div:nth-child(1) > p:nth-child(2){
         font-size: 14px;
-        line-height: 14px;
+        line-height: 20px;
+        color: #8F9596;
+    }
+    .accountLogin > div:nth-child(2){
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .accountLogin > div:nth-child(2) > input{
+        display: flex;
+        height: 48px;
+        padding: 0 12px;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+        border-radius: 12px;
+        border: 1px solid #E1E2E3;
+        background: var(--white);
+    }
+    .accountLogin > div:nth-child(2) > input:focus{
+        border: 1px solid var(--text-opacity)
+    }
+    .accountLogin > div:nth-child(2) > button{
+        display: flex;
+        height: 48px;
+        padding: 14px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+        background: var(--accent);
+        border-radius: 16px;
+    p{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 16px; 
+    }
+    }
+    .accountLogin > div:nth-child(2) > button:hover{
+        background: var(--accent-hover);
+    }
+    .supportBlock{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-bottom: 80px;
+    }
+    .supportBlock > div:nth-child(1){
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+    }
+    .supportBlock > div:nth-child(1) > hr{
+        flex: 1 0 0;
+        height: 1px;
+        background: #CFD0D1;
+    }
+    .supportBlock > div:nth-child(1) > p{
+        font-size: 14px;
+        line-height: 20px;
+        color: #8F9596;
+    }
+    .errPhone{
+        border: 2px solid #F20!important;
+    }
+    .supportBlock > div:nth-child(2){
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .supportBlock > div:nth-child(2) > a{
+        display: flex;
+        height: 40px;
+        padding: 14px 20px 14px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 12px;
+        border: 1px solid #E4E5E5;
+        background: #FFF;
+    }
+    .supportBlock > div:nth-child(2) > a:hover{
+        border: 1px solid var(--text-opacity);
+    }
+    .authOtp{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .authOtpContent{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    .authOtpTitleBlock{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .authOtpTitleBlock > h4{
+        font-size: 20px;
+        line-height: 140%;
+        font-weight: 700;
+    }
+    .authOtpTitleBlock > p{
+        font-size: 13px;
+        line-height: 16px;
+        color: #909596;
+        span{
+            color: var(--text);
+        }
+    }
+    .authOtpTitleBlock > a{
+        color: var(--accent);
+        font-size: 14px;
+        line-height: 16px;
         font-weight: 500;
     }
-}
-.errInput{
-    border: 2px solid #F20!important;
-}
-.errText{
-    text-align: center;
-    font-size: 13px;
-    line-height: 16px;
-    color: #F20;
-    letter-spacing: 0.13px;
-    font-weight: 400;
-    margin-top: -12px;
+    .authOtpCodeWrapper{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 16px 64px;
+        justify-content: center;
+    }
+    .authOtpCodeWrapper > input{
+        width: 58px;
+        height: 60px;
+        display: flex;
+        padding: 16px 8px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+        border-radius: 12px;
+        border: 1px solid #D4D5D6;
+        background: #FFF;
+        color: var(--text);
+        font-size: 32px;
+        line-height: 32px;
+        font-weight: 500;
+    }
+    .authOtpCodeWrapper > input:focus{
+        border: 2px solid var(--accent)
+    }
+    .authOtp > p{
+        text-align: center;
+        font-size: 13px;
+        line-height: 16px;
+        color: #909596;
+    }
+    .authOtp > button{
+        display: flex;
+        height: 44px;
+        padding: 8px 12px;
+        justify-content: center;
+        align-items: center;
+        align-self: stretch;
+        border-radius: 12px;
+        border: 1px solid var(--Dark-D10, #E4E5E5);
+        background: #FFF; 
+        p{
+            color: #212121;
+            font-size: 14px;
+            line-height: 14px;
+            font-weight: 500;
+        }
+    }
+    .errInput{
+        border: 2px solid #F20!important;
+    }
+    .errText{
+        text-align: center;
+        font-size: 13px;
+        line-height: 16px;
+        color: #F20;
+        letter-spacing: 0.13px;
+        font-weight: 400;
+        margin-top: -12px;
+    }
+    .errorPhone{
+        border: 1px solid #F20!important
+    }
+    .mobileCreateProfile{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        padding: 0 16px;
+    }
+    .mobileCreateProfile > p:nth-child(1){
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 140%;
+        color: var(--title);
+    }
+    .mobileCreateProfile > p:nth-child(2){
+        color: var(--detail-color);
+        font-size: 13px;
+        line-height: 16px;
+        font-weight: 400;
+    }
+    .mobileInputWrapper > input{
+        display: flex;
+        flex-direction: column;
+        height: 48px;
+        width: 100%;
+        position: relative;
+        display: flex;
+        padding: 0 12px;
+        border: 1px solid var(--Dark-D10, #E1E2E3);
+        border-radius: 12px;
+        font-weight: 700;
+    }
+    .mobileInputWrapper > input:focus{
+       border: 1px solid var(--Dark-D10, #e1e2e3);
+    }
+    .mobileInputWrapper{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .mobileInputWrapper > button{
+        display: flex;
+        height: 48px;
+        padding: 14px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 16px;
+        background: var(--accent);
+        p{
+            font-weight: 500;
+            color: var(--white);
+        }
+    }
+    .mobileInputWrapper > button:hover{
+        background: var(--accent-hover);
+    }
+    .mobileCreateProfile > p:last-child{
+        padding: 16px 16px 0 16px;
+        text-align: center;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 120%; /* 14.4px */
+        color: var(--detail-color);
+    }
+    .mobileCreateProfile > p:nth-child(4) >span{
+        color: #152429!important;
+    }
+    .mobileCreatedUserProfile{
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+        background: var(--white);
+        border-radius: 12px;
+    }
+    .mobileCreatedUserTop{
+        display: flex;
+        padding: 0 16px;
+        width: 100%;
+        justify-content: end;
+        align-items: center;
+    }
+    .mobileCreatedUserBottom{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 16px;
+        align-items: center;
+    }
+    .mobileCreatedIcon{
+        display: flex;
+        width: 74px;
+        height: 74px;
+        padding: 18px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: 50px;
+        background: rgba(255, 83, 2, 0.14);
+    }
+    .mobileCreatedUserBottom > p:nth-child(2){
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 140%; /* 28px */
+        color: var(--title);
+    }
+    .mobileCreatedUserBottom > p:nth-child(3){
+        color: var(--detail-color);
+        font-size: 13px;
+        line-height: 16px;
+    }
+    .mobileCreatedUserBottom > button{
+        display: flex;
+        height: 48px;
+        padding: 14px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 16px;
+        background: var(--accent);
+        p{
+            font-weight: 500;
+            color: var(--white);
+        }
+    }
+    .mobileInputWrapper > a{
+        display: flex;
+        height: 48px;
+        padding: 14px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 16px;
+        background: var(--accent);
+        p{
+            font-weight: 500;
+            color: var(--white);
+        }
+
+    }
+
 }

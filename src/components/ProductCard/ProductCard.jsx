@@ -19,11 +19,6 @@ export const ProductCard = ({product, isFavorite}) =>{
     return(
         <>
         <div className={cls.productCard}>
-            <Link
-            to={`/product/${product.id}`}
-            className={cls.productCardLink}
-            />
-
             <div className={cls.productCardImagesWrapper}>
                 <Swiper>
                     <SwiperSlide>
@@ -105,6 +100,7 @@ export const ProductCard = ({product, isFavorite}) =>{
                         <p>В корзину</p>
                     </button>
                 </div>
+                <Link className={cls.productCardLink} to={`/product/${product.id}`} />
             </div>
         </div>
         </>

@@ -3,8 +3,21 @@ import { AccountTitle } from '../../../components/AccountLayout';
 import { BreadCrumbs } from '../../../components/AccountLayout';
 import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
+import { useEffect, useState } from 'react';
 
 export const AccountDetailsPage = () =>{
+
+    const {user} = useAuth();
+
+    const [userName, setUserName] = useState('');
+    const [userPhone, setUserPhone] = useState('');
+
+    useEffect(()=>{
+       setUserName(user?.user.name);
+       setUserPhone(user?.user.phone)
+    }, [])
+
     
     const isMobile = useMediaQuery({
         maxWidth: 768
@@ -33,11 +46,20 @@ export const AccountDetailsPage = () =>{
                 <div className={cls.row}>
                     <div className={cls.accountItemInputWrapper}>
                         <p>Имя <span>*</span></p>
-                        <input type="text" name='name' placeholder='Ваше имя'/>
+                        <input 
+                            type="text" 
+                            name='name' 
+                            placeholder='Ваше имя'
+                            value={userName}
+                        />
                     </div>
                     <div className={cls.accountItemInputWrapper}>
                         <p>Фамилия</p>
-                        <input type="text" name='surname' placeholder='Введите фамилию'/>
+                        <input 
+                            type="text" 
+                            name='surname' 
+                            placeholder='Введите фамилию'
+                        />
                     </div>
                     <div className={cls.accountItemInputWrapper}>
                         <p>Город</p>
@@ -52,7 +74,12 @@ export const AccountDetailsPage = () =>{
                 <div className={cls.row}>
                     <div className={cls.accountItemInputWrapper}>
                         <p>Номер телефона <span>*</span></p>
-                        <input type="text" name='phone' placeholder='+7'/>
+                        <input 
+                            type="text" 
+                            name='phone' 
+                            placeholder='+7'
+                            value={userPhone}
+                        />
                     </div>
                     <div className={cls.accountItemInputWrapper}>
                         <p>Эл. почта</p>

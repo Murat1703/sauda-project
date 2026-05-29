@@ -21,7 +21,11 @@ export const AccountLayout = () =>{
         <>
         <ScrollToTop />
         <div className={cls.accountLayout}>
-            <SideBar setLink={setLink} link={link} ordersCount={orders?.length || 0}/> 
+            <SideBar 
+                setLink={setLink} 
+                link={link} 
+                ordersCount={orders?.length || 0}
+            /> 
             <div>
                 <Outlet />
             </div>

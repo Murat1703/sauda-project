@@ -11,7 +11,7 @@ const productsList = {
     finalPrice: 2880,
     hasDiscount: true,
     discountPercent: 10,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Стройматериалы",
     brand: "Alit"
   },
@@ -23,7 +23,7 @@ const productsList = {
     finalPrice: 780,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Стеновые материалы",
     brand: "StoneBlock"
   },
@@ -35,7 +35,7 @@ const productsList = {
     finalPrice: 2800,
     hasDiscount: true,
     discountPercent: 15,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Сухие смеси",
     brand: "Ceresit"
   },
@@ -47,7 +47,7 @@ const productsList = {
     finalPrice: 5400,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Лакокрасочные материалы",
     brand: "Knauf"
   },
@@ -59,7 +59,7 @@ const productsList = {
     finalPrice: 7600,
     hasDiscount: true,
     discountPercent: 5,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Сухие смеси",
     brand: "Sheetrock"
   },
@@ -71,7 +71,7 @@ const productsList = {
     finalPrice: 12500,
     hasDiscount: true,
     discountPercent: 8,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Кровля",
     brand: "Grand Line"
   },
@@ -83,7 +83,7 @@ const productsList = {
     finalPrice: 8900,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Утеплители",
     brand: "Технониколь"
   },
@@ -95,7 +95,7 @@ const productsList = {
     finalPrice: 1200,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Гипсокартонные системы",
     brand: "Knauf"
   },
@@ -107,7 +107,7 @@ const productsList = {
     finalPrice: 3696,
     hasDiscount: true,
     discountPercent: 12,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Гипсокартонные системы",
     brand: "Gyproc"
   },
@@ -119,7 +119,7 @@ const productsList = {
     finalPrice: 950,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Крепеж",
     brand: "FixPro"
   },
@@ -131,7 +131,7 @@ const productsList = {
     finalPrice: 167,
     hasDiscount: true,
     discountPercent: 7,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Стеновые материалы",
     brand: "Kerama"
   },
@@ -143,7 +143,7 @@ const productsList = {
     finalPrice: 3100,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Герметики и пены",
     brand: "Soudal"
   },
@@ -155,7 +155,7 @@ const productsList = {
     finalPrice: 2160,
     hasDiscount: true,
     discountPercent: 10,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Герметики и пены",
     brand: "Makroflex"
   },
@@ -167,7 +167,7 @@ const productsList = {
     finalPrice: 11600,
     hasDiscount: true,
     discountPercent: 20,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Лакокрасочные материалы",
     brand: "Dulux"
   },
@@ -179,7 +179,7 @@ const productsList = {
     finalPrice: 1900,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Инструменты",
     brand: "Matrix"
   },
@@ -191,7 +191,7 @@ const productsList = {
     finalPrice: 850,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Инструменты",
     brand: "Stayer"
   },
@@ -203,7 +203,7 @@ const productsList = {
     finalPrice: 39525,
     hasDiscount: true,
     discountPercent: 15,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Электроинструменты",
     brand: "Bosch"
   },
@@ -215,7 +215,7 @@ const productsList = {
     finalPrice: 35010,
     hasDiscount: true,
     discountPercent: 10,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Электроинструменты",
     brand: "Makita"
   },
@@ -227,7 +227,7 @@ const productsList = {
     finalPrice: 6200,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Измерительный инструмент",
     brand: "Stanley"
   },
@@ -239,7 +239,7 @@ const productsList = {
     finalPrice: 2100,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Измерительный инструмент",
     brand: "Gross"
   },
@@ -251,7 +251,7 @@ const productsList = {
     finalPrice: 5658,
     hasDiscount: true,
     discountPercent: 18,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Напольные покрытия",
     brand: "Kronospan"
   },
@@ -263,7 +263,7 @@ const productsList = {
     finalPrice: 1300,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Напольные покрытия",
     brand: "SolidFloor"
   },
@@ -275,7 +275,7 @@ const productsList = {
     finalPrice: 5220,
     hasDiscount: true,
     discountPercent: 10,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Плитка",
     brand: "Kerama Marazzi"
   },
@@ -287,7 +287,7 @@ const productsList = {
     finalPrice: 8200,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Плитка",
     brand: "Estima"
   },
@@ -299,7 +299,7 @@ const productsList = {
     finalPrice: 1598,
     hasDiscount: true,
     discountPercent: 6,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Плитка",
     brand: "Ceresit"
   },
@@ -311,7 +311,7 @@ const productsList = {
     finalPrice: 650,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Сантехника",
     brand: "Valtec"
   },
@@ -323,7 +323,7 @@ const productsList = {
     finalPrice: 21560,
     hasDiscount: true,
     discountPercent: 12,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Сантехника",
     brand: "Grohe"
   },
@@ -335,7 +335,7 @@ const productsList = {
     finalPrice: 50960,
     hasDiscount: true,
     discountPercent: 9,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Отопление",
     brand: "Royal Thermo"
   },
@@ -347,7 +347,7 @@ const productsList = {
     finalPrice: 2300,
     hasDiscount: false,
     discountPercent: 0,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Электрика",
     brand: "Schneider Electric"
   },
@@ -359,7 +359,7 @@ const productsList = {
     finalPrice: 741,
     hasDiscount: true,
     discountPercent: 5,
-    image: "/assets/images/products/cem.png",
+    image: "https://swiperjs.com/demos/images/abstract-1.jpg",
     category: "Электрика",
     brand: "KazCable"
   }

@@ -2,7 +2,7 @@ import cls from './SideBar.module.css';
 import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useOrders } from '../../hooks/useOrders.js';
 import { useFavorites } from '../../hooks/useFavorites.js';
@@ -15,9 +15,13 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
 
     const navigate = useNavigate();
 
-    const { isAuth, setIsAuth } = useAuth();
+    const {user, logout, fetchUser } = useAuth();
 
     const [link, setLink] = useState('');
+
+    // useEffect(()=>{
+    //     fetchUser();
+    // },[])
 
     const getLinkActiveLink = () => {
         switch (location.pathname) {
@@ -44,8 +48,9 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
 
     const handleLogOut = () =>{
         navigate('/');
-        setIsAuth(false);
+        logout();
         localStorage.removeItem('reactCardLogin');
+        localStorage.removeItem('token');
         setShowProfileMenu(false);
     }
 
@@ -62,8 +67,8 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
                         </svg>
                     </div>
                     <div className={cls.profileText}>
-                        <p className={cls.profileName}>John Doe</p>
-                        <span className={cls.profileType}>Физическое лицо</span>
+                        <p className={cls.profileName}>{user?.user.name}</p>
+                        <span className={cls.profileType}>{user?.user.profile_type}</span>
                     </div>
                 </div>
             )}

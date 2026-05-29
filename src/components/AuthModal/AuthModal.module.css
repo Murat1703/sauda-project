@@ -56,6 +56,9 @@
     flex-direction: column;
     gap: 14px;
 }
+.inputWrapper.error> input{
+    border: 2px solid #F20;
+}
 .inputWrapper > input{
     display: flex;
     height: 64px;
@@ -181,6 +184,200 @@
     top: -50px;
     right: 0;
 }
+.authModalProfile{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.authModalProfileTop{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.authModalProfileTop > h4{
+    max-width: 260px;
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 110%;
+}
+.authModalProfileTop > p{
+    font-size: 20px;
+    line-height: 140%;
+    color: var(--detail-color);
+}
+.authModalProfileBottom{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.authModalProfileInputWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.authModalProfileInputWrapper > p{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 28px;
+}
+.authModalProfileInputWrapper > input{
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 10px;
+    border: 1px solid #E1E2E3;
+    padding: 0 12px;
+}
+.authModalProfileInputWrapper>button{
+    border-radius: 12px;
+    padding: 18px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    background: var(--accent);
+    p{
+        color: var(--white);
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: 500;
+        letter-spacing: .18px;
+    }
+}
+.authModalProfileInputWrapper>button:hover{
+    background: var(--accent-hover);
+}
+.authModalProfileBottom p{
+    text-align: center;
+    font-size: 12px;
+    line-height: 140%;
+    letter-spacing: .12px;
+}
+.authModalUser{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+.authModalUserTop{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+}
+.authModalUserTop > div:nth-child(1){
+    display: flex;
+    width: 74px;
+    height: 74px;
+    padding: 18px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 50px;
+    background: rgba(255, 83, 2, 0.14);
+}
+.authModalUserTop > div:nth-child(2){
+    display: FLEX;
+    flex-direction: column;
+    gap: 4px;
+}
+.authModalUserTop > div:nth-child(2) > h4{
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 110%;
+}
+.authModalUserTop > div:nth-child(2) >p{
+    font-size: 20px;
+    line-height: 140%;
+    color: var(--detail-color);
+}
+.authModalUserBottom > button{
+    display: flex;
+    width: 100%;
+    padding: 18px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    background: var(--accent);
+    box-shadow: 0 2px 8px 0 rgba(11, 38, 46, 0.04), 0 2px 2px 0 rgba(11, 38, 46, 0.08);
+    p{
+        color: var(--white);
+        font-weight: 500;
+    }
+}
+
+.finishRegistration{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.finishRegistrationTop{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+}
+.finishRegistrationIcon{
+    display: flex;
+    width: 74px;
+    height: 74px;
+    padding: 18px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 50px;
+    background: rgba(255, 83, 2, 0.14);
+}
+.finishRegistrationTop > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.finishRegistrationTop > div:nth-child(2) > h4{
+    font-size: 42px;
+    line-height: 110%;
+    max-width: 350px;
+    color: var(--title );
+}
+.finishRegistrationTop > div:nth-child(2) > p{
+    font-size: 20px;
+    line-height: 140%;
+    font-weight: 400;
+    max-width: 350px;
+    color: var(--detail-color);
+}
+.finishRegistration > button{
+    padding: 18px 16px;
+    width: 100%;
+    background: var(--accent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px 0 rgba(11, 38, 46, 0.04), 0 2px 2px 0 rgba(11, 38, 46, 0.08);
+    p{
+        color: var(--white);
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: 500;
+    }
+
+}
+.finishRegistration > button:hover{
+    background: var(--accent-hover);
+}
+.errorOTP{
+    border: 2px solid #f20!important
+}
+p.error{
+    color: #F20;
+}
 
 @media (max-width:768px){
    .authModalWrapper{
@@ -256,4 +453,150 @@
         line-height: 16px;
     }
    }
+   .authLoginTop > div:nth-child(1){
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    max-width: 100%;
+   }
+   .authLoginTop > div:nth-child(1) > h4{
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+   }
+   .authLoginTop > div:nth-child(1) > p{
+    font-size: 14px;
+    line-height: 20px;
+   }
+   .authLoginTop{
+    gap: 24px;
+   }
+   .inputWrapper > input{
+    height: 48px;
+    padding: 0 16px;
+    font-size: 16px;
+    line-height: 20px
+   }
+   .inputWrapper > button{
+    border-radius: 16px;
+    height: 48px;
+    padding: 14px 16px;;
+   }
+   .authLogin > p{
+    display: none;
+   }
+   .authOtpTitleBlock{
+    gap: 12px;
+    align-items: center;
+    text-align: center;
+   }
+   .authOtpTitleBlock > h4{
+    font-size: 20px;
+    line-height: 140%;
+    font-weight: 700;
+   }
+   .authOtpTitleBlock > p,a{
+    font-size: 13px;
+    line-height: 16px;
+   }
+   .authOtpTitleBlock > a{
+    color: var(--accent);
+    font-weight: 500;
+   }
+   .authOtpContent{
+    gap: 12px;
+   }
+   .authOtp{
+    gap: 12px;
+    text-align: center;
+   }
+   .authOtpCodeWrapper{
+    height: auto;
+    justify-content: center;
+   }
+   .authOtpCodeWrapper > input{
+    width: 58px!important;
+    text-align: center;
+    font-weight: 500;
+    padding: 16px 8px;
+    font-size: 32px;
+    line-height: 32px;
+   }
+   .authModalUserTop{
+    gap: 12px;
+    align-items: center;
+    text-align: center;
+   }
+   .authModalUserTop > div:nth-child(2) > h4{
+    font-size: 20px;
+    line-height: 140%;
+    font-weight: 700;
+   }
+    .authModalUserTop > div:nth-child(2) > p{
+        font-size: 13px;
+        line-height: 20px;
+    }
+    .authModalUser{
+        gap: 12px;
+    }
+    .authModalUserBottom > button{
+        border-radius: 16px;
+        height: 48px;
+        padding: 14px 16px;
+    }
+    .authModalProfile, .authModalProfileTop{
+        gap: 12px;
+    }
+    .authModalProfileTop > h4{
+        font-size: 20px;
+        text-align: center;
+        max-width: 100%;
+    }
+    .authModalProfileTop > p{
+        font-size: 13px;
+        line-height: 16px;
+        text-align: center;
+    }
+    .authModalProfileInputWrapper{
+        gap: 8px;
+    }
+    .authModalProfileInputWrapper > p{
+        display: none;
+    }
+    .authModalProfileInputWrapper > input{
+        height: 48px;
+    }
+    .authModalProfileInputWrapper > button{
+        height: 48px;
+        border-radius: 16px;
+    }
+    .finishRegistration{
+        gap: 12px;
+    }
+    .finishRegistrationTop{
+        gap: 12px;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+    .finishRegistrationTop > div:nth-child(2) > h4{
+        font-size: 20px;
+        line-height: 140%;
+    }
+    .finishRegistrationTop > div:nth-child(2) > p{
+        font-size: 13px;
+        line-height: 16px;
+        max-width: 100%;
+    }
+    .finishRegistration > button{
+        border-radius: 16px;
+        height: 48px;
+        padding: 14px 16px;
+        gap :12px;
+        p{
+            font-size: 16px;
+            line-height: 16px;
+        }
+    }
+
 }

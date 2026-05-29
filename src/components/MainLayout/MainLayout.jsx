@@ -9,6 +9,8 @@ import { ScrollToTop } from '../ScrollToTop';
 import { useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useRef } from 'react';
+import { AuthModal } from '../AuthModal';
+import { useAuthModal } from '../../context/AuthModalContext.jsx';
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
@@ -19,13 +21,31 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
         maxWidth: 768
     })
 
-    console.log(pathname)
+    const { 
+        isAuthModalOpen, 
+        openAuthModal, 
+        closeAuthModal, 
+    } = useAuthModal();
+
+    useEffect(() => {
+        const protectedRoutes = ['/account'];
+
+        const isProtected = protectedRoutes.some(route =>
+            pathname.startsWith(route)
+        );
+
+        if (!isProtected && isAuthModalOpen && isMobile) {
+            closeAuthModal();
+        }
+    }, [pathname, isAuthModalOpen, closeAuthModal]);
+
+
 
     useEffect(()=>{
         loadOrders()
     },[]);
 
-    console.log('mainLayoutOrders = ', orders)
+    // console.log('mainLayoutOrders = ', orders)
 
     const contentRef = useRef(null);
 
@@ -71,6 +91,8 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
                     
                 </div>
             </div>
+            {isAuthModalOpen && <AuthModal onClose={closeAuthModal}/>}
+
         </>
     )
 }

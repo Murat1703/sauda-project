@@ -676,7 +676,7 @@ a.link{
         width: 100%;
         height: 320px;
     }
-    .mobileAlternativeWrapper > div > div> div > div {
+    .mobileAlternativeWrapper > div > div> div > a {
         height: 320px;
         align-items: flex-end;
         justify-content: end;
@@ -685,7 +685,7 @@ a.link{
         background: var(--Dark-D0, #FFF);
         padding: 8px;
     }
-    .mobileAlternativeWrapper > div > div> div > div > div:nth-child(2){
+    .mobileAlternativeWrapper > div > div> div > a > div:nth-child(1){
         height: 146px;
     }
     .mobileReviewsWrapper{
