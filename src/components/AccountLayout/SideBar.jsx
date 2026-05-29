@@ -18,6 +18,7 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
     const {user, logout, fetchUser } = useAuth();
 
     const [link, setLink] = useState('');
+    console.log(user)
 
     // useEffect(()=>{
     //     fetchUser();

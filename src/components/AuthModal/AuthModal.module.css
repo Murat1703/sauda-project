@@ -387,6 +387,9 @@ p.error{
         justify-content: space-between;
         padding-bottom: 90px;
    } 
+   .closeModalBtn{
+    display: none;
+   }
    .authModalContent{
         top: auto;
         margin-left: auto;
@@ -598,5 +601,6 @@ p.error{
             line-height: 16px;
         }
     }
+
 
 }

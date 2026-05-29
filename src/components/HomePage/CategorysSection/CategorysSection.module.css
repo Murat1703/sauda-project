@@ -33,6 +33,7 @@
     border-radius: 20px;
     background: var(--Dark-D5, #EEEFF0);
     padding-top: 35px;
+    cursor: pointer;
 }
 .categoryCardItem > h4 {
     text-align: center;
@@ -40,11 +41,16 @@
     font-size: 16px;
     line-height: 24px;
     font-weight: 500;
+    position: relative;
+    z-index: 2;
 }
 .categoryCardItem > img{
     position: absolute;
     bottom: 0;
     left: 0;
+    width: 90%;
+    bottom: -50px;
+    z-index: 1;
 }
 .categorysSlider > button{
     position: absolute;
@@ -82,5 +88,8 @@
     }
     .prevBtn{
         left: -8px;
+    }
+    .categoryCardItem > img{
+        bottom: -10px;
     }
 }

@@ -2,7 +2,7 @@ import { Title } from '../../Title'
 import cls from './CategorysSection.module.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import "swiper/css";
 import "swiper/css/navigation";
 import img1 from './images/build.png'
@@ -12,7 +12,23 @@ import img4 from './images/electricity.png'
 import img5 from './images/engineer.png'
 import img6 from './images/finish.png'
 
+import { useCategories } from '../../../stores/useCategories.js';
+
 export const CategorysSection = () =>{
+
+    const {
+        categories,
+        loadCategories,
+        loadingCategories,
+        errLoadingCategories
+    } = useCategories();
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
+
+    console.log(categories)
+
 
     const swiperRef = useRef(null);
 
@@ -40,42 +56,16 @@ export const CategorysSection = () =>{
                             }
                         }}
                     >
-                        <SwiperSlide>
+                        {categories?.map((item,index)=>{
+                            return(
+                        <SwiperSlide key={item.id}>
                             <div className={cls.categoryCardItem}>
-                                <h4>Стройматериалы</h4>
-                                <img src={img1} alt='category-name'/>
+                                <h4>{item.name}</h4>
+                                <img src={item.image_url} alt={`${item.name}`}/>
                             </div>
                         </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.categoryCardItem}>
-                                <h4>Электроинструменты</h4>
-                                <img src={img2} alt='category-name'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.categoryCardItem}>
-                                <h4>Ручные инструменты</h4>
-                                <img src={img3} alt='category-name'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.categoryCardItem}>
-                                <h4>Электрика</h4>
-                                <img src={img4} alt='category-name'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.categoryCardItem}>
-                                <h4>Инженерные системы</h4>
-                                <img src={img5} alt='category-name'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.categoryCardItem}>
-                                <h4>Финишная отделка</h4>
-                                <img src={img6} alt='category-name'/>
-                            </div>
-                        </SwiperSlide>
+                            )
+                        })}
                     </Swiper>
                     <button 
                         className={cls.prevBtn}

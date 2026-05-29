@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, act } from 'react';
 import cls from './CatalogMenu.module.css'
 import buildIcon from './icons/build.svg'
 import electroIcon from './icons/electro.svg'
@@ -12,6 +12,8 @@ import fastenersIcon from './icons/fasteners.svg'
 import workWearIcon from './icons/workwear.svg'
 import cleaningIcon from './icons/cleaning.svg'
 import gardenIcon from './icons/garden.svg'
+import { useCategories } from '../../stores/useCategories.js';
+import { ShowSubCategoryIcon } from '../../../public/assets/icons/ShowSubCategoryIcon.jsx';
 
 export const Menu = [
   {
@@ -311,9 +313,25 @@ export const Menu = [
 
 export const CatalogMenu = () =>{
 
-    const [activeID, setActiveID] = useState(Menu[0].id);
 
-    const activeCategory = Menu.find(cat => cat.id === activeID);
+    const {categoriesTree, loadingCategoriesTree, errLoadingCategoriesTree, loadCategoriesTree} = useCategories();
+
+    useEffect(()=>{
+      loadCategoriesTree();
+    },[])
+    console.log(categoriesTree)
+
+
+
+    const [activeID, setActiveID] = useState(null);
+    useEffect(() => {
+      if (categoriesTree.length > 0 && !activeID) {
+        setActiveID(categoriesTree[0].id);
+      }
+    }, [categoriesTree, activeID]);
+
+
+    const activeCategory = categoriesTree?.find(cat => cat.id === activeID);
 
     const chunkByPattern = (arr, pattern) => {
         let result = [];
@@ -327,11 +345,9 @@ export const CatalogMenu = () =>{
         return result;
     };
 
-    const columns = chunkByPattern(activeCategory.children, [2, 3, 2]);
+    const columns = chunkByPattern(activeCategory?.children || [], [2, 3, 2]);
 
-    console.log(activeCategory)
 
-    console.log(columns)
 
 
     return(
@@ -340,68 +356,26 @@ export const CatalogMenu = () =>{
             <div className={cls.catalogMenuInner}>
                 <div className={cls.catalogMenuLeft}>
                     <ul>
-                        {Menu.map((item, index)=>(
+                        {categoriesTree?.map((item, index)=>(
                             <li key={item.id} onMouseEnter={()=>setActiveID(item.id)} className={item.id == activeID ? `${cls.activeItem}`: ""}>
                                 <a href="" onClick={(e)=>e.preventDefault()}>
-                                    {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M20.6186 17.2753C20.6186 17.6062 20.5469 17.9331 20.4083 18.2335C20.2698 18.534 20.0677 18.8008 19.8161 19.0156L17.4915 21H5.66948C4.40578 21 3.38135 19.9756 3.38135 18.7119V14.6695C3.38135 10.0551 5.20476 6.85173 5.20476 6.85173" stroke="#152429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M17.5678 20.6187V15.8136C17.5678 13.0678 18.1591 10.5634 18.6764 8.89755C19.2531 7.04066 19.337 5.06417 18.8956 3.17052C18.8853 3.12638 18.8749 3.08227 18.8644 3.03819C18.8644 3.03819 20.6187 8.11021 20.6187 12.0763V13.5254" stroke="#152429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M11.6187 6.81348H16.4237C17.0525 5.35331 17.5297 4.10586 18.7119 2.99993" stroke="#152429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M18.75 2.99993H5.28813C4.10501 4.21244 3.44008 5.46607 3 6.81348H8.07202" stroke="#152429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M13.7542 3.03812C13.7542 3.03812 10.8559 6.05083 10.7415 9.86438H7.69067C7.91949 5.5932 10.5508 3.03812 10.5508 3.03812" stroke="#152429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg> */}
-                                    <img src={item.icon} alt='icon'/>
-                                    <p>{item.title}</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M0.266533 11.5534C-0.0888443 11.198 -0.0888444 10.6219 0.266533 10.2665L4.62307 5.90995L0.266532 1.55341C-0.0888448 1.19804 -0.0888448 0.621857 0.266532 0.266479C0.621909 -0.0888977 1.19809 -0.0888978 1.55347 0.266479L6.55347 5.26648C6.90884 5.62186 6.90884 6.19804 6.55347 6.55341L1.55347 11.5534C1.19809 11.9088 0.62191 11.9088 0.266533 11.5534Z" fill="#8F9596"/>
-                                    </svg>
+                                    <img src={item.icon_url} alt={`${item.name}`}/>
+                                    <p>{item.name}</p>
+                                    <ShowSubCategoryIcon />
                                 </a>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <nav className={cls.catalogMenuRight}>
-                    <h4 className={cls.activeCategoryTitle}>{activeCategory.title}</h4>
+                    <h4 className={cls.activeCategoryTitle}>{activeCategory?.name}</h4>
                     <ul>
-                        {/* {columns.map((subCategory, index)=>{
+                      {activeCategory?.children.map((child,index)=>{
+                        return(
+                          <li>{child.name}</li>
 
-                            return(
-                            <div >
-                                <div key={subCategory.id}>
-                                        <h5>{subCategory.title}</h5>
-                                        {subCategory.children.map((subChidlren, index)=>(
-                                            <li>
-                                                <a href=""><p>{subChidlren.title}</p><span>{subChidlren.count}</span></a>
-                                            </li>
-                                        ))}
-                                </div>
-                            </div>
-
-                            )
-                        })} */}
-                        {columns.map((column, columnIndex) => (
-                        <div className={cls.column} key={columnIndex}>
-                            {column.map((category) => (
-                            <div className={cls.group} key={category.id}>
-                                <h4>{category.title}</h4>
-
-                                {category.children?.map((child) => (
-                                <div className={cls.item} key={child.id}>
-                                    {/* {child.title} */}
-                                    <li>
-                                        <a href="">
-                                            <p>{child.title}</p>
-                                            <span>
-                                                {child.count}
-                                            </span>
-                                        </a>
-                                    </li>
-                                </div>
-                                ))}
-                            </div>
-                            ))}
-                        </div>
-                        ))}
+                        )
+                      })}
                     </ul>
 
 

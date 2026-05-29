@@ -118,6 +118,7 @@ export const useLogin = () => {
 
 
       const res = await apiProfile(data);
+      await fetchUser();
 
       setProfileStatus(res.data)
       return res.data

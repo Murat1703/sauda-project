@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import cls from './Timer.module.css'
 
 export const Timer = () =>{
 
@@ -35,7 +36,7 @@ export const Timer = () =>{
         <p>
             Переотправить СМС-код можно через{" "}
                 {timer === 0 ? (
-                    <button onClick={reLoadTimer}>
+                    <button className={cls.timerBtn} onClick={reLoadTimer}>
                     Отправить код заново
                     </button>
                 ) : (
