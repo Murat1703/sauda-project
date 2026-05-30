@@ -20,6 +20,7 @@ import { ProductPage } from './pages/ProductPage'
 import { MobileAccountPage } from './pages/Account/MobileAccountPage'
 import { useMediaQuery } from 'react-responsive'
 import { MainAccountMainPage } from './pages/Account/MobileAccountMainPage'
+import { CategoryItemPage } from './pages/CategoryItemPage/CategoryItemPage.jsx'
 
 
 
@@ -111,7 +112,9 @@ function App() {
                 </Route>
                 <Route path='/cart' element={<CartPage />}/>
               </Route>
-              <Route path={`/product/:id`} element={<ProductPage isMobileScroll={isMobileScroll}/>}/>          
+              <Route path={`/product/:id`} element={<ProductPage isMobileScroll={isMobileScroll}/>}/>     
+              {/* <Route path={`/catalog/categories/:slug`} element={<CategoryItemPage isMobileScroll={isMobileScroll}/>}/> */}
+              <Route path={`/catalog/categories/*`} element={<CategoryItemPage isMobileScroll={isMobileScroll}/>}/>  
             </Route> 
           </Routes>
           <ToastContainer 

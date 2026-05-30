@@ -5,14 +5,8 @@ import { Navigation } from "swiper/modules";
 import { useRef, useEffect } from 'react';
 import "swiper/css";
 import "swiper/css/navigation";
-import img1 from './images/build.png'
-import img2 from './images/electro.png'
-import img3 from './images/hand.png'
-import img4 from './images/electricity.png'
-import img5 from './images/engineer.png'
-import img6 from './images/finish.png'
-
 import { useCategories } from '../../../stores/useCategories.js';
+import { Link } from 'react-router-dom';
 
 export const CategorysSection = () =>{
 
@@ -58,12 +52,12 @@ export const CategorysSection = () =>{
                     >
                         {categories?.map((item,index)=>{
                             return(
-                        <SwiperSlide key={item.id}>
-                            <div className={cls.categoryCardItem}>
-                                <h4>{item.name}</h4>
-                                <img src={item.image_url} alt={`${item.name}`}/>
-                            </div>
-                        </SwiperSlide>
+                                <SwiperSlide key={item.id}>
+                                    <Link to={`/catalog/categories/${item.slug}`} className={cls.categoryCardItem}>
+                                            <h4>{item.name}</h4>
+                                            <img src={item.image_url} alt={`${item.name}`}/>
+                                    </Link>
+                                </SwiperSlide>
                             )
                         })}
                     </Swiper>

@@ -14,6 +14,7 @@ import cleaningIcon from './icons/cleaning.svg'
 import gardenIcon from './icons/garden.svg'
 import { useCategories } from '../../stores/useCategories.js';
 import { ShowSubCategoryIcon } from '../../../public/assets/icons/ShowSubCategoryIcon.jsx';
+import { Link } from 'react-router-dom';
 
 export const Menu = [
   {
@@ -358,11 +359,11 @@ export const CatalogMenu = () =>{
                     <ul>
                         {categoriesTree?.map((item, index)=>(
                             <li key={item.id} onMouseEnter={()=>setActiveID(item.id)} className={item.id == activeID ? `${cls.activeItem}`: ""}>
-                                <a href="" onClick={(e)=>e.preventDefault()}>
+                                <Link to={`/catalog/categories/${item.slug}`} >
                                     <img src={item.icon_url} alt={`${item.name}`}/>
                                     <p>{item.name}</p>
                                     <ShowSubCategoryIcon />
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
@@ -372,7 +373,11 @@ export const CatalogMenu = () =>{
                     <ul>
                       {activeCategory?.children.map((child,index)=>{
                         return(
-                          <li>{child.name}</li>
+                          <li>
+                            <a href={`/catalog/categories/${child.slug}`}>
+                              {child.name}
+                            </a>
+                          </li>
 
                         )
                       })}
