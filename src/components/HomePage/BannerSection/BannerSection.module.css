@@ -13,16 +13,16 @@
     border: 1px solid var(--Dark-D50, #8F9596);
     background: #FFF;
 }
-.nextBtn, .prevBtn{
+.banner > button{
     position: absolute;
     top: 50%;
     margin-top: -28px;
     z-index: 10;
 }
-.prevBtn{
+.banner > button:nth-child(1){
     left: 16px;
 }
-.nextBtn{
+.banner > button:nth-child(3){
     right: 16px;
 }
 @media (max-width:768px){
@@ -37,5 +37,8 @@
     }
     .homePageWrapper{
         gap: 24px;
+    }
+    .banner > button{
+        display: none;
     }
 }

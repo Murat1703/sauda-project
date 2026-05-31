@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import { SortIcon } from '../../../public/assets/icons/SortIcon';
 import { ProductCard } from '../../components/ProductCard/ProductCard.jsx';
 import { useFavorites } from '../../hooks/useFavorites.js';
+import { useMediaQuery } from 'react-responsive';
+import { MobileSortIcon } from '../../../public/assets/icons/MobileSortIcon.jsx';
+import { MobileFiltersIcon } from '../../../public/assets/icons/MobileFiltersIcon.jsx';
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
     const {slug} = useParams();
@@ -41,11 +44,11 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         });
     },[currentSlug])
 
-    console.log('currentSlug', currentSlug)
+    // console.log('currentSlug', currentSlug)
 
-    console.log('products CategoryItemPage, ', products)
+    // console.log('products CategoryItemPage, ', products)
 
-    console.log('categoryItemPage', categoryItem)
+    // console.log('categoryItemPage', categoryItem)
 
     const {favorites, toggleFavorites} = useFavorites();
 
@@ -54,7 +57,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     }
 
 
-
+    const isMobile = useMediaQuery({maxWidth: 768})
 
     return(
         <div className={cls.catalogItemPageWrapper}>
@@ -76,14 +79,22 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                     <Title>
                         {categoryItem.category?.name}
                     </Title>
+                    {isMobile && 
+                        <div className={cls.catalogItemCounter}>
+                            <p>Найдено:</p>
+                            <p>{products?.total} товаров</p>
+                        </div>
+                    }
                 </div>
                 <div className={cls.catalogItemChilds}>
                     {categoryItem.category?.has_children && 
-                        categoryItem.children?.map((item, index)=>{
+                        categoryItem.children?.map((item)=>{
                             return(
                                 <Link 
                                     to={`/catalog/categories/${categoryItem.category.slug}/${item.slug}`} 
-                                    className={cls.categoryItemChild} key={item.id}>
+                                    className={cls.categoryItemChild} 
+                                    key={item.slug}
+                                >
                                     <div>
                                         <div className={cls.categoryItemChildImg}>
                                             <img 
@@ -131,6 +142,18 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                             <p>{products?.total} товаров</p>
                         </div>
                     </div>
+                    {isMobile && 
+                    <div className={cls.mobileCatalogItemPageProductsTop}>
+                        <button>
+                            <MobileSortIcon /> 
+                            <p>По популярности</p>
+                        </button>
+                        <button>
+                            <MobileFiltersIcon />
+                            <p>Фильтры</p>
+                        </button>
+                    </div>
+                    }
                     <div className={cls.catalogItemPageProductsList}>
                         {products?.data?.map((product, index)=>{
                             return(

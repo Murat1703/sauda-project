@@ -68,10 +68,11 @@
     background: #FFF;
     z-index: 10;
 }
-.prevBtn{
+
+.categorysSlider > button:nth-child(2){
     left: -16px;
 }
-.nextBtn{
+.categorysSlider > button:nth-child(3){
     right: -16px;
 }
 
@@ -92,5 +93,8 @@
     }
     .categoryCardItem > img{
         bottom: -10px;
+    }
+    .categorysSlider > button{
+        display: none;
     }
 }

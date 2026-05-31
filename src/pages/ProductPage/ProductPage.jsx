@@ -79,6 +79,12 @@ export const ProductPage = ({isMobileScroll}) =>{
 
     console.log('productPage product = ',product)
 
+    const [mobileCount, setMobileCount] = useState(5);
+
+    const handleShowAll = () =>{
+        setMobileCount(product?.product?.attributes.length)
+    }
+
     return(
         <div className={cls.productPageWrapper} >
             {!isMobile &&
@@ -518,96 +524,33 @@ export const ProductPage = ({isMobileScroll}) =>{
                         {active == 0 && 
                             <div className={cls.text}>
                                 <div className={cls.textItem}>
-                                    <span>Бренд</span>
-                                    <div className={cls.line}></div>
-                                    <p>{product?.brand}</p>
+                                            <span>Бренд</span>
+                                            <div className={cls.line}></div>
+                                            <p>{product?.product?.brand.name}</p>
                                 </div>
-                                <div className={cls.textItem}>
-                                    <span>Напряжение аккумулятора, В</span>
-                                    <div className={cls.line}></div>
-                                    <p>20</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Максимальный крутящий момент, Н/м</span>
-                                    <div className={cls.line}></div>
-                                    <p>40</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Количество скоростей работы</span>
-                                    <div className={cls.line}></div>
-                                    <p>1350</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Тип двигателя 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <g clipPath="url(#clip0_1020_761)">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_1020_761">
-                                            <rect width="16" height="16" fill="white"/>
-                                            </clipPath>
-                                        </defs>
-                                        </svg>
+                                {product?.product?.attributes.slice(0,mobileCount).map((attr)=>{
+                                    return(
+                                        <div className={cls.textItem} key={attr.id}>
+                                            <span>{attr.name}</span>
+                                            <div className={cls.line}></div>
+                                            <p>{attr.value}</p>
+                                        </div>
+                                    )
+                                })}
 
-                                    </span>
-                                    <div className={cls.line}></div>
-                                    <p>Щеточный</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>
-                                        Тип патрона 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <g clipPath="url(#clip0_1020_761)">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_1020_761">
-                                            <rect width="16" height="16" fill="white"/>
-                                            </clipPath>
-                                        </defs>
-                                        </svg>
-                                    </span>
-                                    <div className={cls.line}></div>
-                                    <p>Быстрозажимной</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Диаметр зажимаемой оснастки</span>
-                                    <div className={cls.line}></div>
-                                    <p>0.8-10 мм</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Тип аккумулятора</span>
-                                    <div className={cls.line}></div>
-                                    <p>Li-Ion</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Код товара</span>
-                                    <div className={cls.line}></div>
-                                    <p>{product?.id}</p>
-                                </div>
+                                {mobileCount !== product?.product?.attributes.length &&
                                 <div>
-                                    <a href="" className={cls.link}>Все характеристики</a>
+                                    <a 
+                                        className={cls.link}
+                                        onClick={handleShowAll}
+                                    >Все характеристики</a>
                                 </div>
+                                }
                             </div>
                         }
                         {active == 1 && 
                             <div className={cls.textDescriptionItemsMobile}>
-                                    <div className={cls.textDescriptionItem}>
-                                        <p>Аккумуляторная дрель-шуруповёрт MTX MCDL-12-02 — компактный и универсальный инструмент для бытового ремонта, сборки мебели и монтажных работ. Модель работает от Li-Ion аккумулятора напряжением 12 В и развивает крутящий момент до 20 Н·м, что обеспечивает уверенное закручивание крепежа и сверление различных материалов. Инструмент подходит для работы с деревом, пластиком и металлом, позволяя сверлить отверстия диаметром до 20 мм в древесине и до 6 мм в металле.</p>
-                                    </div>
-                                    <div className={cls.textDescriptionItem}>
-                                        <h4>Надежный инструмент</h4>
-                                        <p>Двухскоростной редуктор и регулировка крутящего момента (18+1 ступеней) позволяют точно подобрать режим работы под конкретную задачу — от аккуратной сборки мебели до сверления отверстий. Частота вращения регулируется в диапазоне до 1350 об/мин, а функция реверса облегчает как монтаж, так и демонтаж крепежа.</p>
-                                    </div>
-                                    <div className={cls.textDescriptionItem}>
-                                        <h4>Бесшумная работа</h4>
-                                        <p>Инструмент оснащён быстрозажимным патроном, что позволяет быстро менять биты и сверла без дополнительных ключей. Для удобства работы предусмотрена подсветка рабочей зоны и эргономичная прорезиненная рукоятка, обеспечивающая надёжный хват даже при длительном использовании.</p>
-                                    </div>
-                                    <div className={cls.textDescriptionItem}>
-                                        <h4>Экономично и выгодно</h4>
-                                        <p>В комплект поставки входят два аккумулятора ёмкостью 2 А·ч, зарядное устройство и удобный кейс для хранения и транспортировки. Благодаря запасному аккумулятору можно работать практически без перерывов, меняя батарею по мере разрядки.</p>
-                                    </div>
+                                <TextInfo html={product?.product?.description}/>
                             </div>
                         }
                     </div>

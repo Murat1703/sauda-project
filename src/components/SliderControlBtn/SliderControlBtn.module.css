@@ -9,3 +9,9 @@
     border: 1px solid var(--Dark-D50, #8F9596);
     background: #FFF;
 }
+
+@media (max-width: 768px){
+    .sliderControlBtn{
+        display: none;
+    }
+}
