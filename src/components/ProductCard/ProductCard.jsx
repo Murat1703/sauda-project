@@ -19,6 +19,8 @@ export const ProductCard = ({product, isFavorite}) =>{
 
     const {addToCart} = useCart();
     const {toggleFavorites} = useFavorites();
+
+    console.log(product,'productCard')
     
     return(
         <>
@@ -59,6 +61,8 @@ export const ProductCard = ({product, isFavorite}) =>{
                         <HeartIcon />:<HeartIconFilled />
                         }
                     </button>
+                    {product?.is_hit && <Badge type={`hit`}>Хит</Badge>}
+                    {product?.is_new && <Badge type={`new`}>Новинка</Badge>}
                 </div>
                 <div className={cls.productCardInfo}>
                     <div className={cls.productCardInfoTop}>
@@ -73,9 +77,9 @@ export const ProductCard = ({product, isFavorite}) =>{
                         <div className={cls.productCardPriceWrapper}>
                             <div className={cls.discountPrice}>
                                 {
-                                product?.discountPercent && 
+                                product?.old_price && 
                                 <>
-                                <span>{product?.oldPrice} ₸</span>
+                                <span>{product?.old_price} ₸</span>
                                 <Badge type={'discount'}>-{product?.discount_percent}%</Badge>
                                 </>
                                 }

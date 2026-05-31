@@ -165,12 +165,13 @@
     color: #8F9596;
 }
 .catalogItemPageProductsList{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
 }
 .catalogItemPageProductsList > div{
-    width: 25%;
+    width: 100%;
 }
 /**/

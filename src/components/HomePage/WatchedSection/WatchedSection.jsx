@@ -37,7 +37,7 @@ export const WatchedSection = ({products}) =>{
                             }
                         }}
                     >
-                        {products.map((product, index)=>{
+                        {products?.map((product, index)=>{
                             return(
                             <SwiperSlide                                     key={product.id}>                            
                                     <ProductCard 

@@ -19,6 +19,7 @@ export const RecommendedSection = ({products}) =>{
     const handleMakeFavorite = (productId) => {
         toggleFavorites(productId)
     };
+    console.log('recomendedprodducts',products)
 
 
     return(
@@ -51,8 +52,8 @@ export const RecommendedSection = ({products}) =>{
                             <SwiperSlide key={product.id}>
                                 <ProductCard 
                                     product={product} 
-                                    isFavorite={favorites.includes(product.id)} 
-                                    addToFavorite={() => handleMakeFavorite(product.id)} />
+                                    isFavorite={favorites.includes(product?.slug)} 
+                                    addToFavorite={() => handleMakeFavorite(product?.slug)} />
                             </SwiperSlide>)
                         })}
 

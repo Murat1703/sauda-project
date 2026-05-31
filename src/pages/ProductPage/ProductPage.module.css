@@ -237,6 +237,9 @@
     align-items: flex-start;
     flex: 1 0 0;
 }
+.text > a{
+    color: var(--accent);
+}
 .textItem{
     display: flex;
     align-items: flex-end;

@@ -10,8 +10,18 @@ import logo4 from './images/181c6ec575498bb2eea094890c78670b0d443647.png'
 import logo5 from './images/40d7ff5690924f53ea6df124a5d30ee3d1c58c2a.png'
 import logo6 from './images/4d90c09036e8c5b35ecc2d9a0de066c7ac14cf0f.png'
 import { Title } from '../../Title';
+import { useBrands } from '../../../stores/useBrands';
+import { useEffect } from 'react';
+
+
 
 export const AboutSection = () =>{
+
+    const {brands, loadBrands, loadingBrands} = useBrands();
+
+    useEffect(()=>{
+        loadBrands()
+    },[])
     return(
         <section className={cls.aboutSectionWrapper}>
             <div className={cls.aboutSectionContent}>
@@ -32,46 +42,19 @@ export const AboutSection = () =>{
                             }
                         }}
                     >
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo1} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo2} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo3} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo4} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo5} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo6} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo1} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className={cls.logoSliderItem}>
-                                <img src={logo1} alt='logo-phillips'/>
-                            </div>
-                        </SwiperSlide>
+                        {brands?.map((brand, index)=>{
+                            return(
+                                <SwiperSlide>
+                                    <div className={cls.logoSliderItem}>
+                                        <img 
+                                            src={`${brand.logo_url}`} 
+                                            alt={`${brand.name}`}
+                                            lazy={`true`}
+                                        />
+                                    </div>
+                                </SwiperSlide>
+                            )
+                        })}
                     </Swiper>
                 </div>
                 <div className={cls.aboutSectionInfo}>

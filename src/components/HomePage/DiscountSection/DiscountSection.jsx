@@ -43,7 +43,7 @@ export const DiscountSection = ({productsWithDiscount}) =>{
                             }
                         }}
                     >
-                        {productsWithDiscount.map((product,index)=>{
+                        {productsWithDiscount?.map((product,index)=>{
                             return(
                                 <SwiperSlide key={product.id}>
                                     <ProductCard 

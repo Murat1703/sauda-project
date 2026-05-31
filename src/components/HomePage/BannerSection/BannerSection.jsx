@@ -2,13 +2,15 @@ import cls from './BannerSection.module.css'
 import { Banner } from '../Banner';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation} from "swiper/modules";
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import "swiper/css";
 import "swiper/css/navigation";
 
-
 export const BannerSection = () =>{
     const swiperRef = useRef(null);
+
+
+
 
     return(
         <section className={cls.banner}>

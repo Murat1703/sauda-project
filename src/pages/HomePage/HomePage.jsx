@@ -9,6 +9,7 @@ import { DiscountSection } from '../../components/HomePage/DiscountSection';
 import { AboutSection } from '../../components/HomePage/AboutSection';
 import { BannerSection } from '../../components/HomePage/BannerSection/BannerSection.jsx';
 import { useEffect } from 'react';
+import { Loader } from '../../components/Loader/Loader.jsx';
 
 export const HomePage = () =>{
 
@@ -22,16 +23,21 @@ export const HomePage = () =>{
     console.log('homepage',products)
 
     const productsWithDiscount = products?.data?.filter(product => product.old_price !== null)
+
+    if (loadingProducts) return null
  
     return(
+        <>
+        {loadingProducts && <Loader />}
         <div className={cls.homePageWrapper}>
             <BannerSection />
             <CategorysSection />
-            <RecommendedSection products={products.data}/>
+            <RecommendedSection products={products?.data}/>
             <AdvantagesSection />
-            <WatchedSection products={products.data}/>
+            <WatchedSection products={products?.data}/>
             <DiscountSection productsWithDiscount={productsWithDiscount}/>
             <AboutSection />
         </div>
+        </>
     )
 }

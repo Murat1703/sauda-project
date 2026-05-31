@@ -28,6 +28,11 @@ import { CartIcon } from '../../../public/assets/icons/CartIcon.jsx';
 import { PickUpIcon } from '../../../public/assets/icons/PickUpIcon.jsx';
 import { StandartDeliveryIcon } from '../../../public/assets/icons/StandartDeliveryIcon.jsx';
 import { ExpressDeliveryIcon } from '../../../public/assets/icons/ExpressDeliveryIcon.jsx';
+import { ReviewItemStar } from '../../../public/assets/icons/ReviewIconStar.jsx';
+import { SnackBar } from '../../components/SnackBar/SnackBar.jsx';
+import { HeartIcon } from '../../../public/assets/icons/HeartIcon.jsx';
+import { HeartIconFilled } from '../../../public/assets/icons/HeartIconFilled.jsx';
+import { RepostIcon } from '../../../public/assets/icons/RepostIcon.jsx';
 
 
 
@@ -145,80 +150,23 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 </Swiper>
 
                             </div>
-                            {/* <div className={cls.text}>
+                            <div className={cls.text}>
                                 <div className={cls.textItem}>
-                                    <span>Бренд</span>
-                                    <div className={cls.line}></div>
-                                    <p>{product?.product?.brand}</p>
+                                            <span>Бренд</span>
+                                            <div className={cls.line}></div>
+                                            <p>{product?.product?.brand.name}</p>
                                 </div>
-                                <div className={cls.textItem}>
-                                    <span>Напряжение аккумулятора, В</span>
-                                    <div className={cls.line}></div>
-                                    <p>20</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Максимальный крутящий момент, Н/м</span>
-                                    <div className={cls.line}></div>
-                                    <p>40</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Количество скоростей работы</span>
-                                    <div className={cls.line}></div>
-                                    <p>1350</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Тип двигателя 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <g clipPath="url(#clip0_1020_761)">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_1020_761">
-                                            <rect width="16" height="16" fill="white"/>
-                                            </clipPath>
-                                        </defs>
-                                        </svg>
-
-                                    </span>
-                                    <div className={cls.line}></div>
-                                    <p>Щеточный</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>
-                                        Тип патрона 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <g clipPath="url(#clip0_1020_761)">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_1020_761">
-                                            <rect width="16" height="16" fill="white"/>
-                                            </clipPath>
-                                        </defs>
-                                        </svg>
-                                    </span>
-                                    <div className={cls.line}></div>
-                                    <p>Быстрозажимной</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Диаметр зажимаемой оснастки</span>
-                                    <div className={cls.line}></div>
-                                    <p>0.8-10 мм</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Тип аккумулятора</span>
-                                    <div className={cls.line}></div>
-                                    <p>Li-Ion</p>
-                                </div>
-                                <div className={cls.textItem}>
-                                    <span>Код товара</span>
-                                    <div className={cls.line}></div>
-                                    <p>{product?.id}</p>
-                                </div>
-                                <div>
-                                    <a href="" className={cls.link}>Все характеристики</a>
-                                </div>
-                            </div> */}
+                                {product?.product?.attributes.slice(0,5).map((attr, index)=>{
+                                    return(
+                                        <div className={cls.textItem} key={attr.id}>
+                                            <span>{attr.name}</span>
+                                            <div className={cls.line}></div>
+                                            <p>{attr.value}</p>
+                                        </div>
+                                    )
+                                })}
+                                <a href='#specifications'>Все характеристики</a>
+                            </div>
                         </div>
                         <div className={cls.productSpecificationsDesc}>
                             <div className={cls.productSpecificationsDescContent}>
@@ -242,7 +190,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         <p>Альтернатива</p>
                                     </button>
                                 </div> 
-                                <div className={cls.middle}>
+                                <div className={cls.middle} id='specifications'>
                                     <div>
                                         <div className={cls.textItem}>
                                             <span>Бренд</span>
@@ -260,139 +208,6 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         })}
                                     </div>
                                 </div>
-                                {/* <div className={cls.middle}>
-                                    <div>
-                                        <div className={cls.textItem}>
-                                            <span>Бренд</span>
-                                            <div className={cls.line}></div>
-                                            <p>{product?.product?.brand}</p>
-                                        </div>
-                                        <div className={cls.textItem}>
-                                            <span>Страна производитель</span>
-                                            <div className={cls.line}></div>
-                                            <p>Япония</p>
-                                        </div>
-                                        <div className={cls.textItem}>
-                                            <span>Напряжение аккумулятора, В</span>
-                                            <div className={cls.line}></div>
-                                            <p>40</p>
-                                        </div>
-                                        <div className={cls.textItem}>
-                                            <span>Максимальный крутящий момент, Н/м</span>
-                                            <div className={cls.line}></div>
-                                            <p>20</p>
-                                        </div>
-                                        <div className={cls.textItem}>
-                                            <span>Количество скоростей работы</span>
-                                            <div className={cls.line}></div>
-                                            <p>1350</p>
-                                        </div>
-                                        <div className={cls.textItem}>
-                                            <span>Тип двигателя</span>
-                                            <div className={cls.line}></div>
-                                            <p>Щеточный</p>
-                                        </div>
-                                        <div className={cls.textItem}>
-                                            <span>Тип патрона</span>
-                                            <div className={cls.line}></div>
-                                            <p>Быстрозажимной</p>
-                                        </div> 
-                             
-                                    </div>
-                                    <div>
-                                        <div className={cls.textItem}>
-                                            <span>Диаметр зажимаемой оснастки
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <g clipPath="url(#clip0_157_48951)">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_157_48951">
-                                                    <rect width="16" height="16" fill="white"/>
-                                                    </clipPath>
-                                                </defs>
-                                                </svg>
-                                            </span>
-                                            <div className={cls.line}></div>
-                                            <p>0.8-10 мм</p>
-                                        </div> 
-                                        <div className={cls.textItem}>
-                                            <span>
-                                                Тип аккумулятора
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <g clipPath="url(#clip0_157_48951)">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_157_48951">
-                                                    <rect width="16" height="16" fill="white"/>
-                                                    </clipPath>
-                                                </defs>
-                                                </svg>
-                                            </span>
-                                            <div className={cls.line}></div>
-                                            <p>Li-Ion</p>
-                                        </div> 
-                                        <div className={cls.textItem}>
-                                            <span>
-                                                Код товара
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <g clipPath="url(#clip0_157_48951)">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_157_48951">
-                                                    <rect width="16" height="16" fill="white"/>
-                                                    </clipPath>
-                                                </defs>
-                                                </svg>
-                                            </span>
-                                            <div className={cls.line}></div>
-                                            <p>{product?.id}</p>
-                                        </div>
-                                        <div className={cls.textItem}>
-                                            <span>
-                                                Возможность быстрой смены патрона
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <g clipPath="url(#clip0_157_48951)">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_157_48951">
-                                                    <rect width="16" height="16" fill="white"/>
-                                                    </clipPath>
-                                                </defs>
-                                                </svg>
-                                            </span>
-                                            <div className={cls.line}></div>
-                                            <p>Есть</p>
-                                        </div>  
-                                        <div className={cls.textItem}>
-                                            <span>
-                                                Количество аккумуляторов
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <g clipPath="url(#clip0_157_48951)">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M8.00007 2.32801C4.86751 2.32801 2.32807 4.86745 2.32807 8.00001C2.32807 11.1326 4.86751 13.672 8.00007 13.672C11.1326 13.672 13.6721 11.1326 13.6721 8.00001C13.6721 4.86745 11.1326 2.32801 8.00007 2.32801ZM0.87207 8.00001C0.87207 4.06332 4.06338 0.872009 8.00007 0.872009C11.9368 0.872009 15.1281 4.06332 15.1281 8.00001C15.1281 11.9367 11.9368 15.128 8.00007 15.128C4.06338 15.128 0.87207 11.9367 0.87207 8.00001ZM7.27207 5.44001C7.27207 5.03795 7.59801 4.71201 8.00007 4.71201H8.00647C8.40853 4.71201 8.73447 5.03795 8.73447 5.44001C8.73447 5.84207 8.40853 6.16801 8.00647 6.16801H8.00007C7.59801 6.16801 7.27207 5.84207 7.27207 5.44001ZM8.00007 7.27201C8.40213 7.27201 8.72807 7.59795 8.72807 8.00001V10.56C8.72807 10.9621 8.40213 11.288 8.00007 11.288C7.59801 11.288 7.27207 10.9621 7.27207 10.56V8.00001C7.27207 7.59795 7.59801 7.27201 8.00007 7.27201Z" fill="#9DA5B2"/>
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_157_48951">
-                                                    <rect width="16" height="16" fill="white"/>
-                                                    </clipPath>
-                                                </defs>
-                                                </svg>
-                                            </span>
-                                            <div className={cls.line}></div>
-                                            <p>2</p>
-                                        </div> 
-                                        <div className={cls.textItem}>
-                                            <span>
-                                                Дополнительные функции
-                                            </span>
-                                            <div className={cls.line}></div>
-                                            <p>подсветка рабочей зоны</p>
-                                        </div> 
-                                    </div>
-                                </div> */}
                                 <div className={cls.bottom}>
                                     {active == 0 &&
                                     <>
@@ -533,13 +348,18 @@ export const ProductPage = ({isMobileScroll}) =>{
             <div className={cls.mobileProductPageContent}>
                 {loadingProduct && <Loader />}
                 <div className={cls.mobileBreadCrumbs}>
-                    <BreadCrumbs>Каталог</BreadCrumbs>
-                    <BreadCrumbs> - </BreadCrumbs>
-                    <BreadCrumbs> Электроинструменты </BreadCrumbs>
-                    <BreadCrumbs> - </BreadCrumbs>
-                    <BreadCrumbs> Электроинструменты </BreadCrumbs>
-                    <BreadCrumbs> - </BreadCrumbs>
-                    <BreadCrumbs> Шуруповерт </BreadCrumbs>
+                    <BreadCrumbs>
+                        Каталог
+                    </BreadCrumbs>
+                    {product?.product?.breadcrumbs?.map((breadcrumbItem, index)=>{
+                        return (
+                        <div key={breadcrumbItem.slug}>
+                            <span>-</span>
+                            <Link to={`/catalog/categories/${breadcrumbItem.slug}`} >{breadcrumbItem.name}</Link>
+                        </div>
+                        )
+                    })}
+
                 </div>
                 <div className={cls.mobileProductImgWrapper}>
                     <div className={cls.mobileProductImgSlider}>
@@ -552,36 +372,17 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     spaceBetween={10}
                                     modules={[FreeMode]}
                                 >
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-1.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-2.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-3.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-4.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-5.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-6.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-7.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-8.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-9.jpg" />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                    <img src="https://swiperjs.com/demos/images/abstract-10.jpg" />
-                                    </SwiperSlide>
+                                    {product?.product?.images.map((item, index)=>{
+                                        return(
+                                        <SwiperSlide>
+                                            <img 
+                                                src={item.url} 
+                                                alt={`${product?.product?.name}`} 
+                                                lazy={`true`}
+                                            />
+                                        </SwiperSlide>
+                                        )
+                                    })}
                         </Swiper>
                     </div>
                 </div>
@@ -589,56 +390,38 @@ export const ProductPage = ({isMobileScroll}) =>{
                     <div className={cls.mobileProductInfoWrapperTop}>
                         <div className={cls.mobileRating}>
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                <path d="M5.24163 0.366076C5.44825 -0.122112 6.1401 -0.122111 6.34672 0.366077L7.52542 3.15103C7.61207 3.35576 7.80482 3.4958 8.0263 3.51495L11.0392 3.77535C11.5673 3.821 11.7811 4.479 11.3807 4.82636L9.09627 6.80797C8.92834 6.95364 8.85471 7.18023 8.90495 7.39679L9.58832 10.3427C9.70811 10.8591 9.14839 11.2658 8.69428 10.9922L6.10374 9.43199C5.9133 9.31729 5.67505 9.31729 5.48461 9.43199L2.89407 10.9922C2.43996 11.2658 1.88024 10.8591 2.00003 10.3427L2.6834 7.39679C2.73363 7.18023 2.66001 6.95364 2.49208 6.80797L0.207664 4.82636C-0.192782 4.479 0.0210152 3.821 0.549158 3.77535L3.56205 3.51495C3.78353 3.4958 3.97628 3.35576 4.06293 3.15103L5.24163 0.366076Z" fill="#FF4D00"/>
-                                </svg>
-
+                                <ReviewItemStar />
                                 <p>5.0</p>
                             </div>
                             <span>157 отзывов</span>
                         </div>
                         <div className={cls.mobileTopButtons}>
                             <button
-                                onClick={()=>{toggleFavorites(product?.id);
-                                !favorites.includes(product?.id)&&
+                                onClick={()=>{toggleFavorites(product?.product?.slug);
+                                !favorites.includes(product?.product?.slug)&&
                                 toast(
-                                    <div className={cls.toastContent}>
-                                        <div>
-                                            <p>Товар добавлен в избранное</p>
-                                        </div>
-                                        <Link to='/account/favorites'>
-                                            Нажмите, чтобы перейти
-                                        </Link>
-                                    </div>
+                                    <SnackBar text="Товар добавлен в избранное"/>
                                 )}
                                 }
                             >
-                                {favorites.includes(product?.id)? 
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M9.99462 4.27985C8.32849 2.332 5.55011 1.80804 3.46257 3.59168C1.37503 5.37532 1.08113 8.35748 2.72049 10.467C4.08351 12.2209 8.20847 15.9201 9.56041 17.1174C9.71166 17.2513 9.78729 17.3183 9.8755 17.3446C9.9525 17.3676 10.0367 17.3676 10.1137 17.3446C10.2019 17.3183 10.2776 17.2513 10.4288 17.1174C11.7808 15.9201 15.9057 12.2209 17.2687 10.467C18.9081 8.35748 18.6501 5.35656 16.5267 3.59168C14.4032 1.8268 11.6607 2.332 9.99462 4.27985Z" fill="#FF4D00" stroke="#FF4D00" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg> :                               
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path fillRule="evenodd" clipRule="evenodd" d="M9.99428 4.27985C8.32816 2.332 5.54978 1.80804 3.46224 3.59168C1.37469 5.37532 1.0808 8.35748 2.72015 10.467C4.08317 12.2209 8.20813 15.9201 9.56007 17.1174C9.71133 17.2513 9.78695 17.3183 9.87517 17.3446C9.95216 17.3676 10.0364 17.3676 10.1134 17.3446C10.2016 17.3183 10.2772 17.2513 10.4285 17.1174C11.7804 15.9201 15.9054 12.2209 17.2684 10.467C18.9078 8.35748 18.6498 5.35656 16.5263 3.59168C14.4029 1.8268 11.6604 2.332 9.99428 4.27985Z" stroke="#8F9596" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-
+                                {favorites.includes(product?.product?.slug)? 
+                                    <HeartIconFilled /> :<HeartIcon/>
                                 }
                             </button>
                             <button>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M17.3261 10.5062C17.5296 10.3318 17.6313 10.2446 17.6686 10.1409C17.7013 10.0498 17.7013 9.9502 17.6686 9.85914C17.6313 9.75539 17.5296 9.6682 17.3261 9.49383L10.2672 3.44331C9.917 3.14315 9.74191 2.99306 9.59367 2.98939C9.46483 2.98619 9.34177 3.04279 9.26035 3.14269C9.16667 3.25764 9.16667 3.48825 9.16667 3.94948V7.52886C7.38777 7.84007 5.75966 8.74146 4.54976 10.0949C3.23069 11.5704 2.50103 13.48 2.5 15.4591V15.9691C3.37445 14.9157 4.46626 14.0638 5.70063 13.4716C6.78891 12.9495 7.96535 12.6403 9.16667 12.5588V16.0505C9.16667 16.5117 9.16667 16.7424 9.26035 16.8573C9.34177 16.9572 9.46483 17.0138 9.59367 17.0106C9.74191 17.0069 9.917 16.8569 10.2672 16.5567L17.3261 10.5062Z" stroke="#8F9596" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
+                                <RepostIcon />
                             </button>
                         </div>
                     </div>
                     <div className={cls.mobileProductTitleBlock}>
-                        <Title>{product?.title}</Title>
-                        <span>Код: {product?.id}</span>
+                        <Title>{product?.product?.name}</Title>
+                        <span>Код: {product?.product?.sku}</span>
                     </div>
                     <div className={cls.mobileProductPriceBlock}>
                         <div className={cls.mobileProductPriceValue}>
-                            {product?.oldPrice && <div className={cls.oldPrice}><p>{product?.oldPrice} ₸</p>
-                            <Badge type="discount">-{product?.discountPercent}%</Badge></div>}
-                            <p className={cls.mobileFinalPrice}>{product?.finalPrice} ₸</p>
+                            {product?.product?.old_price && <div className={cls.oldPrice}><p>{product?.product?.old_price} ₸</p>
+                            <Badge type="discount">-{product?.product?.discount_percent}%</Badge></div>}
+                            <p className={cls.mobileFinalPrice}>{product?.product?.price} ₸</p>
                         </div>
                         <div 
                             className={`${cls.mobileProductActionBtn} ${
@@ -831,7 +614,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                 </div>
                 <div className={cls.mobileAlternativeWrapper}>
                     <Title>Альтернатива</Title>
-                    <Swiper 
+                    {/* <Swiper 
                         slidesPerView={2.2}
                         spaceBetween={8}
                     >
@@ -843,7 +626,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                             </SwiperSlide>
                         )
                     })}
-                    </Swiper>
+                    </Swiper> */}
 
                 </div>
                 <div className={cls.mobileReviewsWrapper}>
