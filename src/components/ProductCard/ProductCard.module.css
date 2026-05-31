@@ -1,4 +1,5 @@
 .productCard{
+    width: 100%;
     height: 480px;
     padding: 12px;
     display: flex;
@@ -18,6 +19,14 @@
     border-radius: 10px;
     position: relative;
     overflow: hidden;
+}
+.productCardImagesWrapper > div{
+    position: relative;
+}
+.productCardImagesWrapper  > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .favoriteBtn{
     display: flex;

@@ -3,17 +3,20 @@ import { BreadCrumbs } from '../../../components/AccountLayout'
 import cls from './FavoritesPage.module.css'
 import { useFavorites } from '../../../hooks/useFavorites'
 import { ProductCard } from '../../../components/ProductCard'
-import { useProducts } from '../../../hooks/useProducts'
+// import { useProducts } from '../../../hooks/useProducts'
 import { useEffect } from 'react'
 import { Loader } from '../../../components/Loader'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { useProducts } from '../../../stores/useProducts'
 
 export const FavoritesPage = () =>{
     const {favorites, toggleFavorites} = useFavorites();
 
-    const {loadProductsByIds, productsArrByIds, loadingProductsByIds} = useProducts();
+    const {productsBySlugs, loadProductsBySlugs, loadingProductsBySlugs, errLoadingProductsBySlugs} = useProducts();
+
+    console.log(productsBySlugs)
 
     const isMobile = useMediaQuery({
         maxWidth: 768
@@ -21,7 +24,7 @@ export const FavoritesPage = () =>{
 
     useEffect(()=>{
         if (favorites.length > 0) {
-            loadProductsByIds(favorites);
+            loadProductsBySlugs(favorites);
         }
 
     },[favorites]);
@@ -44,7 +47,6 @@ export const FavoritesPage = () =>{
         console.log(filter)
     }
     
-    const categoryItems = ["Керамическая плитка", "Ручные инструменты", "Бетонные смеси", "Инструменты для монтажа", "Электроприборы", "Строительные детали", "Гидроизоляция"]
     
 
 
@@ -84,11 +86,12 @@ export const FavoritesPage = () =>{
                         </div>
                     </div>
                 }
-                {loadingProductsByIds && <Loader />}
+                {loadingProductsBySlugs && <Loader />}
                 {favorites.length > 0 && 
                 <>
                 
-                    {!isMobile &&<div className={cls.favoritesFilters}>
+                    {!isMobile &&
+                    <div className={cls.favoritesFilters}>
                         <div className={cls.favoriteFilterItem}>
                             <p>Сортировать</p>
                             <div className={cls.filterWrapper}>
@@ -148,13 +151,14 @@ export const FavoritesPage = () =>{
                         </button>
                     </div>}
                     <div className={cls.favoritesList}>
-                        {productsArrByIds?.map((favoriteItem, index)=>{
+                        {productsBySlugs?.map((favoriteItem, index)=>{
+                            console.log(favoriteItem)
                             return(
                                 <ProductCard 
-                                    key={favoriteItem.id} 
-                                    product={favoriteItem} 
-                                    isFavorite={favorites.includes(favoriteItem.id)}
-                                    addToFavorite={() => toggleFavorites(favoriteItem.id)}
+                                    key={favoriteItem.data.product.slug} 
+                                    product={favoriteItem.data.product} 
+                                    isFavorite={favorites.includes(favoriteItem.data.product.slug)}
+                                    addToFavorite={() => toggleFavorites(favoriteItem.data.product.slug)}
                                 />
                             )
                         })}

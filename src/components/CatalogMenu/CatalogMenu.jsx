@@ -15,312 +15,321 @@ import gardenIcon from './icons/garden.svg'
 import { useCategories } from '../../stores/useCategories.js';
 import { ShowSubCategoryIcon } from '../../../public/assets/icons/ShowSubCategoryIcon.jsx';
 import { Link } from 'react-router-dom';
+import { useProducts } from '../../stores/useProducts.js';
 
-export const Menu = [
-  {
-    id: 'building-materials',
-    title: 'Стройматериалы',
-    icon: buildIcon,
-    children: [
-      {
-        id: 'wall-facade',
-        title: 'Стеновые и фасадные материалы',
-        children: [
-          { id: '1', title: 'Кирпичи', count: 60 },
-          { id: '2', title: 'Бетонные блоки', count: 16 },
-          { id: '3', title: 'Газоблок', count: 45 },
-          { id: '4', title: 'Гипсокартон', count: 32 },
-          { id: '5', title: 'Потолочные панели', count: 50 },
-          { id: '6', title: 'Кровельные материалы', count: 90 },
-          { id: '7', title: 'Теплоизоляция', count: 27 },
-          { id: '8', title: 'Сэндвич панели', count: 35 },
-          { id: '9', title: 'Фасадные панели', count: 70 },
-          { id: '10', title: 'Клинкер', count: 25 },
-        ],
-      },
-      {
-        id: 'fences',
-        title: 'Заборы и ограждения',
-        children: [
-          { id: '11', title: 'Ленты заборные', count: 60 },
-          { id: '12', title: 'Ворота и калитки', count: 150 },
-          { id: '13', title: 'Секционные заборы', count: 200 },
-          { id: '14', title: 'Евроштакетник', count: 120 },
-          { id: '15', title: 'Профнастил', count: 95 },
-          { id: '16', title: 'Сетки', count: 130 },
-        ],
-      },
-      {
-        id: 'wood',
-        title: 'Древесно-плитные материалы',
-        children: [
-          { id: '17', title: 'ДВП', count: 63 },
-          { id: '18', title: 'ДСП', count: 13 },
-          { id: '19', title: 'ЛДСП', count: 3 },
-          { id: '20', title: 'МДВП', count: 16 },
-          { id: '21', title: 'МДФ-37', count: 21 },
-          { id: '22', title: 'Мебельные щиты', count: 104 },
-        ],
-      },
-      {
-        id: 'dry-mixes',
-        title: 'Сухие строительные смеси',
-        children: [
-          { id: '23', title: 'Цементно-песчаные смеси', count: 85 },
-          { id: '24', title: 'Ровнители для пола', count: 50 },
-          { id: '25', title: 'Штукатурки', count: 75 },
-          { id: '26', title: 'Шпаклевки', count: 40 },
-          { id: '27', title: 'Кладочные и монтажные смеси', count: 95 },
-          { id: '28', title: 'Смеси для печей и каминов', count: 30 },
-          { id: '29', title: 'Смеси для фасадов', count: 70 },
-          { id: '30', title: 'Ремонтные составы', count: 55 },
-        ],
-      },
-      {
-        id: 'paving-slabs',
-        title: 'Тротуарная плитка, бордюры и решетки',
-        children: [
-          { id: '36', title: 'Плитка тротуарная', count: 90 },
-          { id: '37', title: 'Клинкер тротуарный', count: 75 },
-          { id: '38', title: 'Ступени для уличных лестниц', count: 80 },
-          { id: '39', title: 'Решетки газонные', count: 70 },
-          { id: '40', title: 'Уличная тактиильная плитка', count: 65 },
-          { id: '41', title: 'Бордюрный камень', count: 88 },
-        ],
-      },
-      {
-        id: 'roof',
-        title: 'Кровля, водосточные системы',
-        children: [
-          { id: '42', title: 'Водосточные системы ', count: 60 },
-          { id: '43', title: 'Металлочерепица', count: 150 },
-          { id: '44', title: 'Колпаки для заборных столбов', count: 75 },
-        ],
-      },
-      {
-        id: 'metall',
-        title: 'Металлопрокат',
-        children: [
-          { id: '45', title: 'Арматура ', count: 100 },
-          { id: '46', title: 'Сетки армирующие', count: 150 },
-          { id: '47', title: 'Уголок стальной', count: 75 },
-          { id: '48', title: 'Трубы ВГП', count: 250 },
-          { id: '49', title: 'Трубы стальные', count: 300 },
-          { id: '50', title: 'Полоса стальная', count: 350 },
-          { id: '51', title: 'Квадрат стальной', count: 400 },
-          { id: '52', title: 'Двутавр', count: 500 },
-          { id: '52', title: 'Швеллер стальной', count: 450 },
-        ],
-      },
-    ],
-  },
+// export const Menu = [
+//   {
+//     id: 'building-materials',
+//     title: 'Стройматериалы',
+//     icon: buildIcon,
+//     children: [
+//       {
+//         id: 'wall-facade',
+//         title: 'Стеновые и фасадные материалы',
+//         children: [
+//           { id: '1', title: 'Кирпичи', count: 60 },
+//           { id: '2', title: 'Бетонные блоки', count: 16 },
+//           { id: '3', title: 'Газоблок', count: 45 },
+//           { id: '4', title: 'Гипсокартон', count: 32 },
+//           { id: '5', title: 'Потолочные панели', count: 50 },
+//           { id: '6', title: 'Кровельные материалы', count: 90 },
+//           { id: '7', title: 'Теплоизоляция', count: 27 },
+//           { id: '8', title: 'Сэндвич панели', count: 35 },
+//           { id: '9', title: 'Фасадные панели', count: 70 },
+//           { id: '10', title: 'Клинкер', count: 25 },
+//         ],
+//       },
+//       {
+//         id: 'fences',
+//         title: 'Заборы и ограждения',
+//         children: [
+//           { id: '11', title: 'Ленты заборные', count: 60 },
+//           { id: '12', title: 'Ворота и калитки', count: 150 },
+//           { id: '13', title: 'Секционные заборы', count: 200 },
+//           { id: '14', title: 'Евроштакетник', count: 120 },
+//           { id: '15', title: 'Профнастил', count: 95 },
+//           { id: '16', title: 'Сетки', count: 130 },
+//         ],
+//       },
+//       {
+//         id: 'wood',
+//         title: 'Древесно-плитные материалы',
+//         children: [
+//           { id: '17', title: 'ДВП', count: 63 },
+//           { id: '18', title: 'ДСП', count: 13 },
+//           { id: '19', title: 'ЛДСП', count: 3 },
+//           { id: '20', title: 'МДВП', count: 16 },
+//           { id: '21', title: 'МДФ-37', count: 21 },
+//           { id: '22', title: 'Мебельные щиты', count: 104 },
+//         ],
+//       },
+//       {
+//         id: 'dry-mixes',
+//         title: 'Сухие строительные смеси',
+//         children: [
+//           { id: '23', title: 'Цементно-песчаные смеси', count: 85 },
+//           { id: '24', title: 'Ровнители для пола', count: 50 },
+//           { id: '25', title: 'Штукатурки', count: 75 },
+//           { id: '26', title: 'Шпаклевки', count: 40 },
+//           { id: '27', title: 'Кладочные и монтажные смеси', count: 95 },
+//           { id: '28', title: 'Смеси для печей и каминов', count: 30 },
+//           { id: '29', title: 'Смеси для фасадов', count: 70 },
+//           { id: '30', title: 'Ремонтные составы', count: 55 },
+//         ],
+//       },
+//       {
+//         id: 'paving-slabs',
+//         title: 'Тротуарная плитка, бордюры и решетки',
+//         children: [
+//           { id: '36', title: 'Плитка тротуарная', count: 90 },
+//           { id: '37', title: 'Клинкер тротуарный', count: 75 },
+//           { id: '38', title: 'Ступени для уличных лестниц', count: 80 },
+//           { id: '39', title: 'Решетки газонные', count: 70 },
+//           { id: '40', title: 'Уличная тактиильная плитка', count: 65 },
+//           { id: '41', title: 'Бордюрный камень', count: 88 },
+//         ],
+//       },
+//       {
+//         id: 'roof',
+//         title: 'Кровля, водосточные системы',
+//         children: [
+//           { id: '42', title: 'Водосточные системы ', count: 60 },
+//           { id: '43', title: 'Металлочерепица', count: 150 },
+//           { id: '44', title: 'Колпаки для заборных столбов', count: 75 },
+//         ],
+//       },
+//       {
+//         id: 'metall',
+//         title: 'Металлопрокат',
+//         children: [
+//           { id: '45', title: 'Арматура ', count: 100 },
+//           { id: '46', title: 'Сетки армирующие', count: 150 },
+//           { id: '47', title: 'Уголок стальной', count: 75 },
+//           { id: '48', title: 'Трубы ВГП', count: 250 },
+//           { id: '49', title: 'Трубы стальные', count: 300 },
+//           { id: '50', title: 'Полоса стальная', count: 350 },
+//           { id: '51', title: 'Квадрат стальной', count: 400 },
+//           { id: '52', title: 'Двутавр', count: 500 },
+//           { id: '52', title: 'Швеллер стальной', count: 450 },
+//         ],
+//       },
+//     ],
+//   },
 
-  {
-    id: 'power-tools',
-    title: 'Электроинструменты',
-    icon: electroIcon,
-    children: [
-      {
-        id: 'drills',
-        title: 'Дрели и перфораторы',
-        children: Array.from({ length: 12 }, (_, i) => ({
-          id: `pt-drill-${i}`,
-          title: `Дрель модель ${i + 1}`,
-          count: 20 + i * 5,
-        })),
-      },
-      {
-        id: 'grinders',
-        title: 'Шлифовальные инструменты',
-        children: Array.from({ length: 12 }, (_, i) => ({
-          id: `pt-grind-${i}`,
-          title: `Шлифмашина ${i + 1}`,
-          count: 15 + i * 4,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'power-tools',
+//     title: 'Электроинструменты',
+//     icon: electroIcon,
+//     children: [
+//       {
+//         id: 'drills',
+//         title: 'Дрели и перфораторы',
+//         children: Array.from({ length: 12 }, (_, i) => ({
+//           id: `pt-drill-${i}`,
+//           title: `Дрель модель ${i + 1}`,
+//           count: 20 + i * 5,
+//         })),
+//       },
+//       {
+//         id: 'grinders',
+//         title: 'Шлифовальные инструменты',
+//         children: Array.from({ length: 12 }, (_, i) => ({
+//           id: `pt-grind-${i}`,
+//           title: `Шлифмашина ${i + 1}`,
+//           count: 15 + i * 4,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'hand-tools',
-    title: 'Ручные инструменты',
-    icon: handToolsIcon,
-    children: [
-      {
-        id: 'tools',
-        title: 'Инструменты',
-        children: Array.from({ length: 15 }, (_, i) => ({
-          id: `ht-${i}`,
-          title: `Инструмент ${i + 1}`,
-          count: 10 + i * 3,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'hand-tools',
+//     title: 'Ручные инструменты',
+//     icon: handToolsIcon,
+//     children: [
+//       {
+//         id: 'tools',
+//         title: 'Инструменты',
+//         children: Array.from({ length: 15 }, (_, i) => ({
+//           id: `ht-${i}`,
+//           title: `Инструмент ${i + 1}`,
+//           count: 10 + i * 3,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'electricity',
-    title: 'Электрика',
-    icon: electricityIcon,
-    children: [
-      {
-        id: 'cables',
-        title: 'Кабели и проводка',
-        children: Array.from({ length: 15 }, (_, i) => ({
-          id: `el-${i}`,
-          title: `Кабель ${i + 1}`,
-          count: 30 + i * 7,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'electricity',
+//     title: 'Электрика',
+//     icon: electricityIcon,
+//     children: [
+//       {
+//         id: 'cables',
+//         title: 'Кабели и проводка',
+//         children: Array.from({ length: 15 }, (_, i) => ({
+//           id: `el-${i}`,
+//           title: `Кабель ${i + 1}`,
+//           count: 30 + i * 7,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'engineering',
-    title: 'Инженерные системы',
-    icon: engineerIcon,
-    children: [
-      {
-        id: 'systems',
-        title: 'Системы',
-        children: Array.from({ length: 12 }, (_, i) => ({
-          id: `eng-${i}`,
-          title: `Система ${i + 1}`,
-          count: 20 + i * 6,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'engineering',
+//     title: 'Инженерные системы',
+//     icon: engineerIcon,
+//     children: [
+//       {
+//         id: 'systems',
+//         title: 'Системы',
+//         children: Array.from({ length: 12 }, (_, i) => ({
+//           id: `eng-${i}`,
+//           title: `Система ${i + 1}`,
+//           count: 20 + i * 6,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'finishing',
-    title: 'Финишная отделка',
-    icon: finishingIcon,
-    children: [
-      {
-        id: 'finish',
-        title: 'Отделка',
-        children: Array.from({ length: 14 }, (_, i) => ({
-          id: `fin-${i}`,
-          title: `Материал ${i + 1}`,
-          count: 25 + i * 4,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'finishing',
+//     title: 'Финишная отделка',
+//     icon: finishingIcon,
+//     children: [
+//       {
+//         id: 'finish',
+//         title: 'Отделка',
+//         children: Array.from({ length: 14 }, (_, i) => ({
+//           id: `fin-${i}`,
+//           title: `Материал ${i + 1}`,
+//           count: 25 + i * 4,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'home',
-    title: 'Товары для дома',
-    icon: homeIcon,
-    children: [
-      {
-        id: 'home-items',
-        title: 'Дом',
-        children: Array.from({ length: 12 }, (_, i) => ({
-          id: `home-${i}`,
-          title: `Товар ${i + 1}`,
-          count: 18 + i * 5,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'home',
+//     title: 'Товары для дома',
+//     icon: homeIcon,
+//     children: [
+//       {
+//         id: 'home-items',
+//         title: 'Дом',
+//         children: Array.from({ length: 12 }, (_, i) => ({
+//           id: `home-${i}`,
+//           title: `Товар ${i + 1}`,
+//           count: 18 + i * 5,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'plumbing',
-    title: 'Сантехника',
-    icon: pumblingIcon,
-    children: [
-      {
-        id: 'plumb',
-        title: 'Сантехника',
-        children: Array.from({ length: 15 }, (_, i) => ({
-          id: `pl-${i}`,
-          title: `Сантехника ${i + 1}`,
-          count: 22 + i * 6,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'plumbing',
+//     title: 'Сантехника',
+//     icon: pumblingIcon,
+//     children: [
+//       {
+//         id: 'plumb',
+//         title: 'Сантехника',
+//         children: Array.from({ length: 15 }, (_, i) => ({
+//           id: `pl-${i}`,
+//           title: `Сантехника ${i + 1}`,
+//           count: 22 + i * 6,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'fasteners',
-    title: 'Крепеж и фурнитура',
-    icon: fastenersIcon,
-    children: [
-      {
-        id: 'fix',
-        title: 'Крепеж',
-        children: Array.from({ length: 15 }, (_, i) => ({
-          id: `fix-${i}`,
-          title: `Крепеж ${i + 1}`,
-          count: 50 + i * 10,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'fasteners',
+//     title: 'Крепеж и фурнитура',
+//     icon: fastenersIcon,
+//     children: [
+//       {
+//         id: 'fix',
+//         title: 'Крепеж',
+//         children: Array.from({ length: 15 }, (_, i) => ({
+//           id: `fix-${i}`,
+//           title: `Крепеж ${i + 1}`,
+//           count: 50 + i * 10,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'workwear',
-    title: 'Спецодежда',
-    icon: workWearIcon,
-    children: [
-      {
-        id: 'wear',
-        title: 'Одежда',
-        children: Array.from({ length: 12 }, (_, i) => ({
-          id: `wear-${i}`,
-          title: `Одежда ${i + 1}`,
-          count: 12 + i * 4,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'workwear',
+//     title: 'Спецодежда',
+//     icon: workWearIcon,
+//     children: [
+//       {
+//         id: 'wear',
+//         title: 'Одежда',
+//         children: Array.from({ length: 12 }, (_, i) => ({
+//           id: `wear-${i}`,
+//           title: `Одежда ${i + 1}`,
+//           count: 12 + i * 4,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'cleaning',
-    title: 'Клининг и химия',
-    icon: cleaningIcon,
-    children: [
-      {
-        id: 'clean',
-        title: 'Химия',
-        children: Array.from({ length: 12 }, (_, i) => ({
-          id: `clean-${i}`,
-          title: `Средство ${i + 1}`,
-          count: 20 + i * 3,
-        })),
-      },
-    ],
-  },
+//   {
+//     id: 'cleaning',
+//     title: 'Клининг и химия',
+//     icon: cleaningIcon,
+//     children: [
+//       {
+//         id: 'clean',
+//         title: 'Химия',
+//         children: Array.from({ length: 12 }, (_, i) => ({
+//           id: `clean-${i}`,
+//           title: `Средство ${i + 1}`,
+//           count: 20 + i * 3,
+//         })),
+//       },
+//     ],
+//   },
 
-  {
-    id: 'garden',
-    title: 'Сад и досуг',
-    icon: gardenIcon,
-    children: [
-      {
-        id: 'garden-items',
-        title: 'Сад',
-        children: Array.from({ length: 12 }, (_, i) => ({
-          id: `garden-${i}`,
-          title: `Садовый товар ${i + 1}`,
-          count: 15 + i * 5,
-        })),
-      },
-    ],
-  },
-];
+//   {
+//     id: 'garden',
+//     title: 'Сад и досуг',
+//     icon: gardenIcon,
+//     children: [
+//       {
+//         id: 'garden-items',
+//         title: 'Сад',
+//         children: Array.from({ length: 12 }, (_, i) => ({
+//           id: `garden-${i}`,
+//           title: `Садовый товар ${i + 1}`,
+//           count: 15 + i * 5,
+//         })),
+//       },
+//     ],
+//   },
+// ];
 
 export const CatalogMenu = () =>{
 
 
-    const {categoriesTree, loadingCategoriesTree, errLoadingCategoriesTree, loadCategoriesTree} = useCategories();
+    const {categoriesTree, 
+      loadingCategoriesTree, 
+      errLoadingCategoriesTree, 
+      loadCategoriesTree
+    } = useCategories();
+
+    const {products, loadingProducts, loadProducts} = useProducts();
 
     useEffect(()=>{
       loadCategoriesTree();
     },[])
     console.log(categoriesTree)
+
+    console.log(products)
 
 
 
@@ -348,6 +357,12 @@ export const CatalogMenu = () =>{
 
     const columns = chunkByPattern(activeCategory?.children || [], [2, 3, 2]);
 
+    console.log(activeCategory)
+    // loadProducts({
+    //   category_slug: activeCategory?.children
+    //     .map(child => child.slug)
+    //     .join(',')
+    // });
 
 
 
@@ -359,24 +374,29 @@ export const CatalogMenu = () =>{
                     <ul>
                         {categoriesTree?.map((item, index)=>(
                             <li key={item.id} onMouseEnter={()=>setActiveID(item.id)} className={item.id == activeID ? `${cls.activeItem}`: ""}>
-                                <Link to={`/catalog/categories/${item.slug}`} >
+                                <div>
                                     <img src={item.icon_url} alt={`${item.name}`}/>
                                     <p>{item.name}</p>
                                     <ShowSubCategoryIcon />
-                                </Link>
+                                </div>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <nav className={cls.catalogMenuRight}>
-                    <h4 className={cls.activeCategoryTitle}>{activeCategory?.name}</h4>
+                    <Link to={`/catalog/categories/${activeCategory?.slug}`}>
+                    <h4 
+                      className={cls.activeCategoryTitle}
+                    >{activeCategory?.name}</h4>
+                    </Link>
                     <ul>
                       {activeCategory?.children.map((child,index)=>{
                         return(
-                          <li>
-                            <a href={`/catalog/categories/${child.slug}`}>
+                          <li key={child.slug}>
+                            <a href={`/catalog/categories/${activeCategory.slug}/${child.slug}`}>
                               {child.name}
                             </a>
+                            {/* <span>{products?.data?.length}</span> */}
                           </li>
 
                         )

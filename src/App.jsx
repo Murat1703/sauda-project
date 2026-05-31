@@ -112,7 +112,7 @@ function App() {
                 </Route>
                 <Route path='/cart' element={<CartPage />}/>
               </Route>
-              <Route path={`/product/:id`} element={<ProductPage isMobileScroll={isMobileScroll}/>}/>     
+              <Route path={`/products/:slug`} element={<ProductPage isMobileScroll={isMobileScroll}/>}/>     
               {/* <Route path={`/catalog/categories/:slug`} element={<CategoryItemPage isMobileScroll={isMobileScroll}/>}/> */}
               <Route path={`/catalog/categories/*`} element={<CategoryItemPage isMobileScroll={isMobileScroll}/>}/>  
             </Route> 

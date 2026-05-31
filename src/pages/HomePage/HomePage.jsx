@@ -1,7 +1,8 @@
 import cls from './HomePage.module.css'
 import { CategorysSection } from '../../components/HomePage/CategorysSection';
 import { RecommendedSection } from '../../components/HomePage/RecommendedSection';
-import { useProducts } from '../../hooks/useProducts.js';
+// import { useProducts } from '../../hooks/useProducts.js';
+import { useProducts } from '../../stores/useProducts.js';
 import { AdvantagesSection } from '../../components/HomePage/AdvantagesSection';
 import { WatchedSection } from '../../components/HomePage/WatchedSection/WatchedSection.jsx';
 import { DiscountSection } from '../../components/HomePage/DiscountSection';
@@ -18,15 +19,17 @@ export const HomePage = () =>{
         loadProducts();
     },[])
 
-    const productsWithDiscount = products.filter(product => product.hasDiscount== true)
+    console.log('homepage',products)
+
+    const productsWithDiscount = products?.data?.filter(product => product.old_price !== null)
  
     return(
         <div className={cls.homePageWrapper}>
             <BannerSection />
             <CategorysSection />
-            <RecommendedSection products={products}/>
+            <RecommendedSection products={products.data}/>
             <AdvantagesSection />
-            <WatchedSection products={products}/>
+            <WatchedSection products={products.data}/>
             <DiscountSection productsWithDiscount={productsWithDiscount}/>
             <AboutSection />
         </div>

@@ -1,0 +1,14 @@
+.textInfoData,
+.textInfoData > p> span,
+.textInfoData > span,
+.textInfoData > ul > li > span,
+.textInfoData > ol > li > span {
+    color: #425358!important;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+ol li{
+    list-style-type: disc;
+    margin-left: 16px;
+}

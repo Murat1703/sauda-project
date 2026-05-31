@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useRef } from 'react';
 import { AuthModal } from '../AuthModal';
 import { useAuthModal } from '../../context/AuthModalContext.jsx';
+import { useProducts } from '../../stores/useProducts.js';
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
@@ -83,7 +84,7 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
                 <div className={cls.mainWrapper} id='main-scroll' ref={contentRef}>
                     <main className={cls.main}>
                         <Suspense fallback={<Loader/>}>
-                            <Outlet />
+                            <Outlet  />
                         </Suspense>
                     </main>
                    

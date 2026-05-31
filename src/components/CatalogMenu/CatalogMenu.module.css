@@ -63,7 +63,7 @@
 .catalogMenuLeft > ul > li.activeItem{
     background: var(--bg);
 }
-.catalogMenuLeft > ul > li > a{
+.catalogMenuLeft > ul > li > div{
     height: 100%;
     display: flex;
     width: 100%;
@@ -82,6 +82,11 @@
     flex-direction: column;
     gap: 40px;
     align-items: flex-start;
+}
+.catalogMenuRight > a:nth-child(1):hover {
+    h4{
+        color: var(--accent);
+    }
 }
 .activeCategoryTitle{
     font-size: 32px;

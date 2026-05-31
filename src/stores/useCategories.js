@@ -17,6 +17,11 @@ export const useCategories = create((set, get) => ({
   errLoadingCategoryItem: null,
 
   loadCategories: async () => {
+    const { categories, loadingCategories } = get();
+
+    if (loadingCategories) return;
+    if (categories.length > 0) return
+
     try {
       set({
         loadingCategories: true,
@@ -43,6 +48,11 @@ export const useCategories = create((set, get) => ({
   },
 
   loadCategoriesTree: async () => {
+    const { categoriesTree, loadingCategoriesTree } = get();
+
+    if (loadingCategoriesTree) return;
+    if (categoriesTree.length > 0) return
+
     try {
       set({
         loadingCategoriesTree: true,
@@ -67,6 +77,13 @@ export const useCategories = create((set, get) => ({
   },
 
   loadCategoryItem: async (slug) =>{
+    if (!slug) return;
+    const { categoryItem, loadingCategoryItem } = get();
+
+    if (loadingCategoryItem) return;
+    if (categoryItem?.category?.slug === slug) return;
+
+
     try {
       set({
         loadingCategoryItem: true,
