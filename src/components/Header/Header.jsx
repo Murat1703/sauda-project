@@ -157,7 +157,7 @@ export const Header = ({ordersCount}) =>{
             </div>
         </header>
         }
-        {isOpen && <CatalogMenu />}
+        {isOpen && <CatalogMenu onClose={handleCloseMenu}/>}
         {isMobile && 
         <div className={cls.mobileControlPanel}>
             <ControlBtn 

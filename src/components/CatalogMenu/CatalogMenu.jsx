@@ -12,7 +12,7 @@ import { SearchMobileIcon } from '../../../public/assets/icons/SearchMobileIcon.
 
 
 
-export const CatalogMenu = () =>{
+export const CatalogMenu = ({onClose}) =>{
 
 
     const {categoriesTree, 
@@ -67,11 +67,11 @@ export const CatalogMenu = () =>{
                 {isMobile && 
                 <div className={cls.catalogMenuMobileTop}>
                   <div>
-                    <button onClick={openSubMenu ?()=>{setOpenSubMenu(false)}: null}>
+                    <button onClick={openSubMenu ?()=>{setOpenSubMenu(false)}: onClose}>
                       <ArrowBackMobile />
                     </button>
                     <p>{openSubMenu ? `${activeCategory?.name}`: "Каталог"}</p>
-                    <button onClick={()=>setOpenSubMenu(false)}>
+                    <button onClick={onClose}>
                       <CloseIconMobile />
                     </button>
                   </div>
