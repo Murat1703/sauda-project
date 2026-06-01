@@ -45,6 +45,5 @@ export const BannerSection = () =>{
                     <ArrowNext />
             </SliderControlBtn>
         </section>
-
     )
 }

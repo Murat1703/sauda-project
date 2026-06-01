@@ -33,6 +33,10 @@ export const Header = ({ordersCount}) =>{
         setIsOpen(!isOpen)
     }
 
+    const handleCloseMenu = () =>{
+        if (isOpen) setIsOpen(false)
+    }
+
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
     const { isAuth, setIsAuth, user, loading } = useAuth();
@@ -47,7 +51,6 @@ export const Header = ({ordersCount}) =>{
         closeAuthModal, 
         step, 
         setStep } = useAuthModal();
-    console.log('isAuthModalOpen = ',isAuthModalOpen)
 
     const [showProfileMenu, setShowProfileMenu] = useState(false);
 
@@ -157,27 +160,44 @@ export const Header = ({ordersCount}) =>{
         {isOpen && <CatalogMenu />}
         {isMobile && 
         <div className={cls.mobileControlPanel}>
-            <ControlBtn nav='/' onClick={()=>closeAuthModal()}>
-                <MobileControlPanelHome isActive={pathname == '/'}/>
+            <ControlBtn 
+                nav='/' 
+                onClick={()=>{
+                    closeAuthModal(); }
+                }
+                onTouch={handleCloseMenu}
+            >
+                <MobileControlPanelHome isActive={pathname == '/' && isOpen==false}/>
                 <p>Главная</p>
             </ControlBtn>
-            <ControlBtn nav='/'>
-                <MobileControlPanelCatalog />
+            <ControlBtn  
+                onClick={()=>handleToMenu()}
+            >
+                <MobileControlPanelCatalog isActive={isOpen==true}/>
                 <p>Каталог</p>
             </ControlBtn>
-            <ControlBtn nav='/account/favorites'>
-                <MobileControlPanelFavorites isActive={pathname == '/account/favorites'}/>
+            <ControlBtn 
+                nav='/account/favorites'
+                onTouch={handleCloseMenu}
+            >
+                <MobileControlPanelFavorites isActive={pathname == '/account/favorites' && isOpen == false}/>
                 <p>Избранное</p>
                 {favorites.length!== 0 && <CounterBadge count={favorites.length}/>}
             </ControlBtn>
-            <ControlBtn nav='/cart'>
-                <MobileControlPanelCart isActive={pathname == '/cart'}/>
+            <ControlBtn 
+                nav='/cart'
+                onTouch={handleCloseMenu}
+            >
+                <MobileControlPanelCart isActive={pathname == '/cart' && isOpen==false}/>
                 <p>Корзина</p>
                 {cartItems.length!== 0 && <CounterBadge count={cartItems.length}/>}
             </ControlBtn>
-            <ControlBtn  nav="/account">
+            <ControlBtn  
+                nav="/account"
+                onTouch={handleCloseMenu}
+            >
                 <MobileControlPanelAccount 
-                isActive={(pathname == '/account'||pathname =='/account/orders'||pathname=='/account/reviews'||pathname=='/account/profile'|| pathname == '/login')}/>
+                isActive={(pathname == '/account'||pathname =='/account/orders'||pathname=='/account/reviews'||pathname=='/account/profile'|| pathname == '/login')&& isOpen==false}/>
                 <p>Профиль</p>
             </ControlBtn>
         </div>}

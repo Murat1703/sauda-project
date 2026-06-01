@@ -53,7 +53,10 @@ export const useProducts = create((set, get) => ({
     const { product } = get();
 
     if (!slug) return;
-    if (product?.product?.slug === slug) return;
+    if (product?.product?.slug === slug){
+        set({loadingProduct: false});
+        return
+    };
 
 
     try {
