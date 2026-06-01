@@ -67,7 +67,9 @@ export const CatalogMenu = ({onClose}) =>{
                 {isMobile && 
                 <div className={cls.catalogMenuMobileTop}>
                   <div>
-                    <button onClick={openSubMenu ?()=>{setOpenSubMenu(false)}: onClose}>
+                    <button 
+                      onClick={openSubMenu ?()=>{setOpenSubMenu(false)}: onClose}
+                    >
                       <ArrowBackMobile />
                     </button>
                     <p>{openSubMenu ? `${activeCategory?.name}`: "Каталог"}</p>
@@ -106,7 +108,7 @@ export const CatalogMenu = ({onClose}) =>{
                 <nav 
                   className={`${cls.catalogMenuRight} ${isMobile && openSubMenu ? `${cls.openSubMenu}` : '' } `}
                 >
-                    {!isMobile ?<Link to={`/catalog/categories/${activeCategory?.slug}`}>
+                    {!isMobile ?<Link to={`/catalog/categories/${activeCategory?.slug}`} onClick={onClose}>
                     <h4 
                       className={cls.activeCategoryTitle}
                     >{activeCategory?.name}</h4>

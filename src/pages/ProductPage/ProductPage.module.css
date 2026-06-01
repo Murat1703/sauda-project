@@ -447,7 +447,7 @@ a.link{
     }
     .mobileProductImgSlider > div > div:nth-child(2){
         width: 100%;
-        height: 10px;
+        /* height: 10px; */
     }
     .mobileProductImgSlider > div > div > div > img{
         width: 100%;

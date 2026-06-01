@@ -19,7 +19,7 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { useMediaQuery } from 'react-responsive';
 import { Button } from '../../components/Button';
 import { ProductCard } from '../../components/ProductCard';
@@ -371,12 +371,12 @@ export const ProductPage = ({isMobileScroll}) =>{
                     <div className={cls.mobileProductImgSlider}>
                         <Swiper
                                     style={{
-                                    '--swiper-navigation-color': '#fff',
-                                    '--swiper-pagination-color': '#FF4D00',
+                                        '--swiper-navigation-color': '#fff',
+                                        '--swiper-pagination-color': '#FF4D00',
                                     }}
                                     pagination={true}
                                     spaceBetween={10}
-                                    modules={[FreeMode]}
+                                    modules={[FreeMode, Pagination]}
                                 >
                                     {product?.product?.images.map((item, index)=>{
                                         return(
@@ -425,9 +425,14 @@ export const ProductPage = ({isMobileScroll}) =>{
                     </div>
                     <div className={cls.mobileProductPriceBlock}>
                         <div className={cls.mobileProductPriceValue}>
-                            {product?.product?.old_price && <div className={cls.oldPrice}><p>{product?.product?.old_price} ₸</p>
-                            <Badge type="discount">-{product?.product?.discount_percent}%</Badge></div>}
-                            <p className={cls.mobileFinalPrice}>{product?.product?.price} ₸</p>
+                            {product?.product?.old_price && 
+                            <div className={cls.oldPrice}>
+                                <p>{product?.product?.old_price} ₸</p>
+                                <Badge type="discount">-{product?.product?.discount_percent}%</Badge>
+                            </div>}
+                            <p className={cls.mobileFinalPrice}>
+                                {product?.product?.price} ₸
+                            </p>
                         </div>
                         <div 
                             className={`${cls.mobileProductActionBtn} ${

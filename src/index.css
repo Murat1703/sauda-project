@@ -202,3 +202,23 @@ body {
 .swiper-slide-thumb-active{
   border: 2px solid var(--accent)!important;
 }
+
+@media (max-width:768px){
+  .swiper-pagination-bullets{
+    bottom: 0!important;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+  .swiper-pagination-bullet{
+    width: 4px!important;
+    height: 4px!important;
+    margin: 0!important;
+  } 
+  .swiper-pagination-bullet-active{
+    width: 6px!important;
+    height: 6px!important;
+  }
+}

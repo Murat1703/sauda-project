@@ -71,6 +71,9 @@
     gap: 12px;
     align-self: stretch;
 }
+.catalogMenuLeft ul li div svg{
+    margin-left: auto;
+}
 .catalogMenuLeft > ul > li > a > p{
     flex: 1 0 0;
 }

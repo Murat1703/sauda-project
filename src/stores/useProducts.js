@@ -7,14 +7,17 @@ export const useProducts = create((set, get) => ({
   products: [],
   product: {},
   productsBySlugs: [],
+  testProductsBySlugs: {},
 
   loadingProducts: false,
   loadingProduct: false,
   loadingProductsBySlugs: false,
+  testLoadingProductsBySlugs : false,
 
   errLoadingProducts: null,
   errLoadingProduct: null,
   errLoadingProductsBySlugs: null,
+  errLoadingTestProductsBySlugs: null,
 
   loadProducts: async (params = {}) => {
     const { products, loadingProducts, loadedProducts } = get();
@@ -25,8 +28,8 @@ export const useProducts = create((set, get) => ({
 
     try {
       set({
-        loadingProduct: true,
-        errLoadingProduct: null,
+        loadingProducts: true,
+        errLoadingProducts: null,
       });
 
       const res = await apiProducts(params);
@@ -116,6 +119,48 @@ export const useProducts = create((set, get) => ({
       });
     }
   },
+
+  testLoadProductsBySlugs: async (slugs)=>{
+    const { testProductsBySlugs, testLoadingProductsBySlugs } = get();
+
+    if (testLoadingProductsBySlugs) return;
+
+    const missingSlugs = slugs.filter((slug) => !testProductsBySlugs[slug]);
+
+    if (missingSlugs.length === 0) return;
+
+    try {
+      set({
+        testLoadingProductsBySlugs: true,
+        errLoadingTestProductsBySlugs: null,
+      });
+
+      const res = await Promise.all(
+        missingSlugs.map(async (slug) => {
+          const data = await apiProduct(slug);
+
+          return [slug, data];
+        })
+      );
+
+      set((state) => ({
+        productsBySlugs: {
+          ...state.productsBySlugs,
+          ...Object.fromEntries(res),
+        },
+      }));
+    } catch (error) {
+      set({
+        errLoadingTestProductsBySlugs:
+          error?.response?.data?.message || error.message,
+      });
+    } finally {
+      set({
+        testLoadingProductsBySlugs: false,
+      });
+    }
+
+  }
 
   
 }));

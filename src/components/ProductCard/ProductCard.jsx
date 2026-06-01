@@ -20,7 +20,7 @@ export const ProductCard = ({product, isFavorite}) =>{
     const {addToCart} = useCart();
     const {toggleFavorites} = useFavorites();
 
-    console.log(product,'productCard')
+    // console.log(product,'productCard')
     
     return(
         <>
