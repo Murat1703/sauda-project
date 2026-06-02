@@ -598,32 +598,25 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <p>Смотреть все отзывы</p>
                     </button>
                 </div>
+                {product?.product?.warranty_text && 
                 <div className={cls.mobileGarantyWrapper}>
                     <Title>
                         Гарантия
                     </Title>
                     <div className={cls.mobileGarantyItems}>
                         <div className={cls.textDescriptionItem}>
-                                        <p>Мы понимаем, что покупки в интернете требуют доверия. Поэтому мы обеспечиваем прозрачную и понятную систему гарантий для каждого клиента.</p>
+                            <TextInfo html={product?.product?.warranty_text}/>
                         </div>
-                        <div className={cls.textDescriptionItem}>
-                                        <h4>Гарантия подлинности товаров</h4>
-                                        <p>Все продавцы проходят проверку перед размещением на платформе. Мы стремимся к тому, чтобы вы получали только оригинальную и качественную продукцию.</p>
-                        </div>
-                        <div className={cls.textDescriptionItem}>
-                                        <h4>Возврат и обмен без лишних сложностей</h4>
-                                        <p>Если товар не соответствует описанию, имеет дефекты или просто не подошёл — вы можете оформить возврат или обмен в установленный срок. Процесс максимально упрощён и не требует лишней бюрократии.</p>
-                        </div>
-                        {!showMoreGaranty &&
+                        {/* {!showMoreGaranty &&
                         <a onClick={()=>setShowMoreGaranty(true)}>
                             <p>Читать полностью</p>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path fillRule="evenodd" clipRule="evenodd" d="M4.35656 7.85653C4.71194 7.50115 5.28812 7.50115 5.64349 7.85653L10 12.2131L14.3566 7.85653C14.7119 7.50115 15.2881 7.50115 15.6435 7.85653C15.9989 8.21191 15.9989 8.78809 15.6435 9.14346L10.6435 14.1435C10.2881 14.4988 9.71194 14.4988 9.35656 14.1435L4.35656 9.14346C4.00118 8.78809 4.00118 8.21191 4.35656 7.85653Z" fill="#FF5302"/>
                             </svg>
                         </a>
-                        }
+                        } */}
 
-                        {showMoreGaranty && 
+                        {/* {showMoreGaranty && 
                         <>
 
                         <div className={cls.textDescriptionItem}>
@@ -639,10 +632,10 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         <p>Продавцы обязаны соблюдать стандарты качества и сроки доставки. За нарушения предусмотрены санкции вплоть до блокировки.</p>
                         </div>
 
-                        </>}
+                        </>} */}
                     </div>
                 </div>
-
+                }
 
             </div>
             }

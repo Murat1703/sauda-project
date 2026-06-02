@@ -14,6 +14,7 @@ import { MobileFiltersIcon } from '../../../public/assets/icons/MobileFiltersIco
 import { FilterMoreIcon } from '../../../public/assets/icons/FilterMoreIcon.jsx';
 import { CheckIcon } from '../../../public/assets/icons/CheckIcon.jsx';
 import { ArrowBackMobile } from '../../../public/assets/icons/ArrowBackMobile.jsx';
+import { Loader } from '../../components/Loader/Loader.jsx';
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
     const {slug} = useParams();
@@ -364,7 +365,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                             <p>{products?.total} товаров</p>
                         </div>
                     </div>
-                    {isMobile && 
+                    {isMobile && products?.data?.length !== 0  && 
                     <div className={cls.mobileCatalogItemPageProductsTop}>
                         <button onClick={()=>setShowMobileSort(true)}>
                             <MobileSortIcon /> 
@@ -377,6 +378,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                     </div>
                     }
                     <div className={cls.catalogItemPageProductsList}>
+                        {loadingProducts && <Loader />}
+                        {products?.data?.length == 0 && <p>Товаров не найдено</p>}
                         {products?.data?.map((product, index)=>{
                             return(
                             <ProductCard 
