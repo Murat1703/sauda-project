@@ -80,8 +80,14 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
         <>
             <ScrollToTop />
             <div className={cls.mainLayout} >
-                <Header ordersCount={orders?.length} />
-                <div className={cls.mainWrapper} id='main-scroll' ref={contentRef}>
+                <Header 
+                    ordersCount={orders?.length} 
+                />
+                <div 
+                    className={cls.mainWrapper} 
+                    id='main-scroll' 
+                    ref={contentRef}
+                >
                     <main className={cls.main}>
                         <Suspense fallback={<Loader/>}>
                             <Outlet  />

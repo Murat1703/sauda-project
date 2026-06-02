@@ -205,7 +205,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         </div>
                                         {product?.product?.attributes.map((attr, index)=>{
                                             return(
-                                                <div className={cls.textItem}>
+                                                <div className={cls.textItem} key={attr.id}>
                                                     <span>{attr.name}</span>
                                                     <div className={cls.line}></div>
                                                     <p>{attr.value}</p>
@@ -535,7 +535,10 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 </div>
                                 {product?.product?.attributes.slice(0,mobileCount).map((attr)=>{
                                     return(
-                                        <div className={cls.textItem} key={attr.id}>
+                                        <div 
+                                            className={cls.textItem} 
+                                            key={attr.id}
+                                        >
                                             <span>{attr.name}</span>
                                             <div className={cls.line}></div>
                                             <p>{attr.value}</p>

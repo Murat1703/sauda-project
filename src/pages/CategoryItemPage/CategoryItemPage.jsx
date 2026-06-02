@@ -12,6 +12,8 @@ import { useMediaQuery } from 'react-responsive';
 import { MobileSortIcon } from '../../../public/assets/icons/MobileSortIcon.jsx';
 import { MobileFiltersIcon } from '../../../public/assets/icons/MobileFiltersIcon.jsx';
 import { FilterMoreIcon } from '../../../public/assets/icons/FilterMoreIcon.jsx';
+import { CheckIcon } from '../../../public/assets/icons/CheckIcon.jsx';
+import { ArrowBackMobile } from '../../../public/assets/icons/ArrowBackMobile.jsx';
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
     const {slug} = useParams();
@@ -102,14 +104,14 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
 
     const [showPriceFilter, setShowPriceFilter] = useState(false); 
 
-    const [minPrice, setMinPrice] = useState(0);
+    const [minPrice, setMinPrice] = useState(5000);
     const [maxPrice, setMaxPrice] = useState(200000);
-    const PRICE_MIN = 0;
-    const PRICE_MAX = 200000;
 
     const [activeSlider, setActiveSlider] = useState(null);
 
-    const [showAvailibility, setShowAvailibility] = useState(false); 
+    const [showAvailibility, setShowAvailibility] = useState(false);
+    
+    const[filtersList, setShowFiltersList] = useState(false);
 
     return(
         <>
@@ -221,30 +223,34 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 <div className={cls.priceFilterBottomAvailibility}>
                                     <div className={cls.availibilityItem}>
                                         <div className={cls.availibilityRadioBtnWrapper}>
-                                            <input type="radio" id="availibility1" name="availibility" 
-                                            value="all" 
-                                            defaultChecked 
-                                            />
                                         </div>
                                         <p>В наличии</p>
+                                        <input 
+                                            type="radio" 
+                                            id="availibility1"
+                                            name="availibility" 
+                                            value="all" 
+                                            defaultChecked 
+                                        />
+
                                     </div>
                                     <div className={cls.availibilityItem}>
                                         <div className={cls.availibilityRadioBtnWrapper}>
-                                            <input 
-                                            type="radio" 
-                                            id="availibility2" name="availibility" value="waiting"  
-                                            />
                                         </div>
                                         <p>Ожидаем поступления</p>
+                                        <input 
+                                            type="radio" 
+                                            id="availibility2" name="availibility" value="waiting"  
+                                        />
                                     </div>
                                     <div className={cls.availibilityItem}>
                                         <div className={cls.availibilityRadioBtnWrapper}>
-                                            <input 
-                                            type="radio" 
-                                            id="availibility3" name="availibility" value="out_of_stock"  
-                                            />
                                         </div>
                                         <p>Нет в наличии</p>
+                                        <input 
+                                            type="radio" 
+                                            id="availibility3" name="availibility" value="out_of_stock"  
+                                        />
                                     </div>
                                 </div>
                                 }
@@ -256,36 +262,34 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 </div>
                                 {showPriceFilter &&
                                 <div className={cls.priceFilterSliderWrapper}>
-                                    <div>
-                                        <p>{minPrice}</p>
+                                    <div className={cls.priceValuesWrapper}>
+                                        <div>
+                                            <p>{minPrice}</p>
+                                        </div>
+                                        <div>
+                                            <p>{maxPrice}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p>{maxPrice}</p>
+                                    <div className={cls.priceSliderWrapper}>
+                                        <input 
+                                            type="range" 
+                                            min={5000}
+                                            max={200000}
+                                            step={1}
+                                            value={minPrice}
+                                            onChange={(e)=>setMinPrice(Number(e.target.value)) }
+
+                                        />
+                                        <input 
+                                            type="range" 
+                                            min={5000}
+                                            max={200000}
+                                            value={maxPrice}
+                                            step={1}
+                                            onChange={(e)=>setMaxPrice(Number(e.target.value)) }
+                                        />
                                     </div>
-                                    <input 
-                                        type="range" 
-                                        min={PRICE_MIN}
-                                        max={PRICE_MAX}
-                                        step={1}
-                                        value={minPrice}
-                                        onChange={(e)=>setMinPrice(Math.min(Number(e.target.value), maxPrice - 1)) }
-                                        onClick={()=>{setActiveSlider('min')}}
-                                        style={{
-                                            zIndex: activeSlider === 'min' ? 1 : 0
-                                        }}
-                                    />
-                                    <input 
-                                        type="range" 
-                                        min={PRICE_MIN}
-                                        max={PRICE_MAX}
-                                        value={maxPrice}
-                                        step={1}
-                                        onChange={(e)=>setMaxPrice(Math.max(Number(e.target.value), minPrice + 1))}
-                                        onClick={()=>{setActiveSlider('max')}}
-                                        style={{
-                                            zIndex: activeSlider === 'max' ? 1 : 0
-                                        }}
-                                    />
+
                                     {console.log('minPrice', minPrice)}
                                     {console.log('maxPrice', maxPrice)}
                                 </div>
@@ -298,27 +302,35 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 </div>
                                 {showAvailibility &&
                                 <div className={cls.availibilityList}>
-                                    <div className={cls.availibilityItem}>
+                                    <div className={cls.availibilityInStore}>
                                         <div>
-                                            <input type="checkbox" id="store1" name="store1" value="store1" />
+                                            <CheckIcon />
                                         </div>
                                         <p>ул. Магазин 1 адрес</p>
+                                        <input type="checkbox" id="store1" name="store1" value="store1" />
+
                                     </div>
-                                    <div className={cls.availibilityItem}>
+                                    <div className={cls.availibilityInStore}>
                                         <div>
-                                            <input type="checkbox" id="store2" name="store2" value="store2" />
+                                            <CheckIcon />
                                         </div>
                                         <p>ул. Магазин 2 адрес</p>
+                                        <input type="checkbox" id="store2" name="store2" value="store2" />
                                     </div>
-                                    <div className={cls.availibilityItem}>
+                                    <div className={cls.availibilityInStore}>
                                         <div>
-                                            <input type="checkbox" id="store3" name="store3" value="store3" />
+                                            <CheckIcon />
                                         </div>
                                         <p>ул. Магазин 3 адрес</p>
+                                        <input type="checkbox" id="store3" name="store3" value="store3" />
+
                                     </div>
                                 </div>
                                 }
                             </div>
+                            <button className={cls.resetFiltersBtn}>
+                                <p>Сбросить фильтры</p>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -358,7 +370,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                             <MobileSortIcon /> 
                             <p>По популярности</p>
                         </button>
-                        <button>
+                        <button onClick={()=>setShowFiltersList(true)}>
                             <MobileFiltersIcon />
                             <p>Фильтры</p>
                         </button>
@@ -380,8 +392,14 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
             </div>
         </div>
         {showMobileSort &&
-        <div className={cls.mobileSortModal}>
-            <div className={cls.mobileSortContent}>
+        <div 
+            className={cls.mobileSortModal} 
+            onClick={()=>setShowMobileSort(false)}
+        >
+            <div 
+                onClick={(e)=>e.stopPropagation()}
+                className={cls.mobileSortContent}
+            >
                 <h4>Сортировка</h4>
                 <ul>
                     <li>
@@ -414,6 +432,159 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                     <p>Применить</p>
                 </button>
             </div>
+        </div>
+        }
+        {filtersList &&
+        <div className={cls.filtersList}>
+            <div className={cls.mobileFiltersTop}>
+                <button onClick={()=>setShowFiltersList(false)}>
+                    <ArrowBackMobile />
+                </button>
+                <h4>Фильтры</h4>
+                <button >
+                    <p>Сбросить</p>
+                </button>
+            </div>
+            <div className={cls.catalogItemPageFiltersBottom}>
+                <h4>Фильтры</h4>
+                <div className={cls.catalogItemPageFiltersContent}>
+                            <div className={cls.priceFilter}>
+                                <p>Со скидкой <span>8</span></p>
+                                <div 
+                                    onClick={()=>{
+                                        if (priceFilter)setSort(null);else
+                                        setSort('discount');
+                                        setPriceFilter(!priceFilter)}}
+                                    className={`${cls.switchBtn} ${priceFilter? cls.priceFilterActive: ""}`}
+                                >
+                                    <div></div>
+                                </div>
+                            </div>
+                            <div 
+                                className={cls.priceItem} 
+                            >
+                                <div 
+                                    className={showFilter? cls.filtersShowed: ""}
+                                    onClick={()=>setShowFilter(!showFilter)}
+                                >
+                                    <h4>По наличию</h4>
+                                    <FilterMoreIcon />
+                                </div>
+                                {showFilter &&
+                                <div className={cls.priceFilterBottomAvailibility}>
+                                    <div className={cls.availibilityItem}>
+                                        <div className={cls.availibilityRadioBtnWrapper}>
+                                        </div>
+                                        <p>В наличии</p>
+                                        <input 
+                                            type="radio" 
+                                            id="availibility1"
+                                            name="availibility" 
+                                            value="all" 
+                                            defaultChecked 
+                                        />
+
+                                    </div>
+                                    <div className={cls.availibilityItem}>
+                                        <div className={cls.availibilityRadioBtnWrapper}>
+                                        </div>
+                                        <p>Ожидаем поступления</p>
+                                        <input 
+                                            type="radio" 
+                                            id="availibility2" name="availibility" value="waiting"  
+                                        />
+                                    </div>
+                                    <div className={cls.availibilityItem}>
+                                        <div className={cls.availibilityRadioBtnWrapper}>
+                                        </div>
+                                        <p>Нет в наличии</p>
+                                        <input 
+                                            type="radio" 
+                                            id="availibility3" name="availibility" value="out_of_stock"  
+                                        />
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                            <div className={cls.filterItem}>
+                                <div onClick={()=>setShowPriceFilter(!showPriceFilter)} className={`${showPriceFilter? cls.filtersShowed: ""}`}>
+                                    <p>Стоимость, ₸ </p>
+                                    <FilterMoreIcon />
+                                </div>
+                                {showPriceFilter &&
+                                <div className={cls.priceFilterSliderWrapper}>
+                                    <div className={cls.priceValuesWrapper}>
+                                        <div>
+                                            <p>{minPrice}</p>
+                                        </div>
+                                        <div>
+                                            <p>{maxPrice}</p>
+                                        </div>
+                                    </div>
+                                    <div className={cls.priceSliderWrapper}>
+                                        <input 
+                                            type="range" 
+                                            min={5000}
+                                            max={200000}
+                                            step={1}
+                                            value={minPrice}
+                                            onChange={(e)=>setMinPrice(Number(e.target.value)) }
+
+                                        />
+                                        <input 
+                                            type="range" 
+                                            min={5000}
+                                            max={200000}
+                                            value={maxPrice}
+                                            step={1}
+                                            onChange={(e)=>setMaxPrice(Number(e.target.value)) }
+                                        />
+                                    </div>
+
+                                    {console.log('minPrice', minPrice)}
+                                    {console.log('maxPrice', maxPrice)}
+                                </div>
+                                }
+                            </div>
+                            <div className={cls.filterItem}>
+                                <div onClick={()=>setShowAvailibility(!showAvailibility)} className={`${showAvailibility? cls.filtersShowed: ""}`}>
+                                    <p>В наличии в магазине</p>
+                                    <FilterMoreIcon />
+                                </div>
+                                {showAvailibility &&
+                                <div className={cls.availibilityList}>
+                                    <div className={cls.availibilityInStore}>
+                                        <div>
+                                            <CheckIcon />
+                                        </div>
+                                        <p>ул. Магазин 1 адрес</p>
+                                        <input type="checkbox" id="store1" name="store1" value="store1" />
+
+                                    </div>
+                                    <div className={cls.availibilityInStore}>
+                                        <div>
+                                            <CheckIcon />
+                                        </div>
+                                        <p>ул. Магазин 2 адрес</p>
+                                        <input type="checkbox" id="store2" name="store2" value="store2" />
+                                    </div>
+                                    <div className={cls.availibilityInStore}>
+                                        <div>
+                                            <CheckIcon />
+                                        </div>
+                                        <p>ул. Магазин 3 адрес</p>
+                                        <input type="checkbox" id="store3" name="store3" value="store3" />
+
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                            <button className={cls.sumbitMobileBtn} onClick={()=>setShowFiltersList(false)}>
+                                <p>Применить</p>
+                            </button>
+                </div>
+            </div>
+
         </div>
         }
         </>

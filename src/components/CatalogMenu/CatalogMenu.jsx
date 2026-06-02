@@ -9,6 +9,7 @@ import { ArrowBackMobile } from '../../../public/assets/icons/ArrowBackMobile.js
 import { CloseIconMobile } from '../../../public/assets/icons/CloseIconMobile.jsx';
 import { SearchIcon } from '../../../public/assets/icons/SearchIcon.jsx';
 import { SearchMobileIcon } from '../../../public/assets/icons/SearchMobileIcon.jsx';
+import { Search } from '../Search/Search.jsx';
 
 
 
@@ -56,7 +57,9 @@ export const CatalogMenu = ({onClose}) =>{
       maxWidth: 768
     })
 
-    const [openSubMenu, setOpenSubMenu] = useState(false)
+    const [openSubMenu, setOpenSubMenu] = useState(false);
+
+    const [searchString, setSearchString] = useState("");
 
 
 
@@ -79,7 +82,12 @@ export const CatalogMenu = ({onClose}) =>{
                   </div>
                   <div>
                     <SearchMobileIcon />
-                    <input type="text"  placeholder='Поиск'/>
+                    <input 
+                      type="text"  
+                      placeholder='Поиск' 
+                      value={searchString} 
+                      onChange={(e)=>setSearchString(e.target.value)}
+                    />
                   </div>
                 </div>
                 }
@@ -139,6 +147,7 @@ export const CatalogMenu = ({onClose}) =>{
             </div>
         </div>
         <div className={cls.bg}></div>
+        {isMobile && searchString && <Search text={searchString} onClose={()=>setSearchString("")}/>}
         </>
     )
 }

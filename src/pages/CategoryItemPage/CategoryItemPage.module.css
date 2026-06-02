@@ -207,7 +207,7 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
-    border-radius: 32px;
+    border-radius: 50%;
     border: 1px solid var(--Dark-D10, #E1E2E3);
     background: var(--Dark-D0, #FFF);
     position: relative;
@@ -250,10 +250,15 @@
 }
 .priceFilterSliderWrapper{
     display: flex;
+    flex-direction: column;
     width: 100%;
     position:relative
 }
-.priceFilterSliderWrapper> div{
+.priceFilterSliderWrapper > div:nth-child(1){
+    display: flex;
+    align-items: center;
+}
+.priceFilterSliderWrapper > div > div{
     display: flex;
     padding: 10px 8px;
     align-items: center;
@@ -261,59 +266,57 @@
     flex: 1 0 0;
     position: relative;
 }
-.priceFilterSliderWrapper> div:nth-child(1){
+.priceFilterSliderWrapper> div:nth-child(1) > div:nth-child(1){
     border-radius: 6px 0 0 6px;
     border: 1px solid var(--Dark-D10, #E1E2E3);
     background: var(--Dark-D0, #FFF);
 }
-.priceFilterSliderWrapper> div:nth-child(2){
+.priceFilterSliderWrapper> div:nth-child(1) > div:nth-child(2){
     border-radius: 0 6px 6px 0;
     border: 1px solid var(--Dark-D10, #E1E2E3);
     background: var(--Dark-D0, #FFF);
     justify-content: flex-end;
 }
-
-.priceFilterSliderWrapper::after{
+.priceSliderWrapper{
+    position: relative;
+    height: 16px;
+    margin-top: -6px;
+}
+.priceSliderWrapper::after{
     position: absolute;
     content: '';
     width: 100%;
     height: 2px;
     background: var(--accent);
-    bottom:0 ;
+    bottom: 10px;
     z-index: 1;
 }
-.priceFilterSliderWrapper > input{
+.priceSliderWrapper > input[type=range]{
     position: absolute;
-    width: 100%;
-    bottom: 0px;
-    left: 0;
-    pointer-events:auto;
     border: none;
     outline: none;
-    height: 2px;
     background: transparent;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    z-index: 1;
-    /* z-index: 1; */
+    width: 100%;
 }
-/* .priceFilterSliderWrapper > input:nth-child(3){
-    z-index: 10000;
-} */
-.priceFilterSliderWrapper > input[type=range]::-webkit-slider-thumb{
+.priceSliderWrapper > input[type=range]::-webkit-slider-thumb{
+    position: relative;
+    z-index: 4;
     width: 16px;
     height: 12px;
-    pointer-events:auto;
+    flex-shrink: 0;
+    z-index: 2;
     border-radius: 6px;
-    background: var(--accent);
     border: 2px solid var(--Dark-D0, #FFF);
-    -webkit-appearance: none;   
-    cursor: pointer;
-    z-index: 1;
-    border: none!important;
-    outline: none!important;
+    background: var(--Dark-Orange-O100, #FF5303);
+
+    -webkit-appearance: none;
 }
+
+
+
 .availibilityList{
     display: flex;
     flex-direction: column;
@@ -324,16 +327,17 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    position: relative;
 }
 .availibilityItem > div{
     position: relative;
     width: 16px;
     height: 16px;
-    border-radius: var(--Rounding-xs, 4px);
+    border-radius: 50%;
     border: 1px solid var(--Dark-D10, #E1E2E3);
     background: var(--Dark-D0, #FFF);
 }
-.availibilityItem > div > input{
+.availibilityItem  > input{
     width: 100%;
     height: 100%;
     opacity: 0;
@@ -342,16 +346,63 @@
     top:0;
     left:0;
 }
-.availibilityItem > div:has(input:checked){
+.availibilityItem:has(input:checked) > div{
     background: var(--accent);
 }
-
-
-
-
-
-
-
+.availibilityItem:has(input:checked) > div::after{
+    position:absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--white);
+    content: '';
+}
+.availibilityInStore{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+.availibilityInStore > input{
+    width:100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+}
+.availibilityInStore > div{
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--Dark-D10, #E1E2E3);
+    background: var(--Dark-D0, #FFF);
+}
+.availibilityInStore > div > svg{
+    display: none;
+}
+.availibilityInStore:has(input:checked) > div > svg{
+    display: block;
+}
+.resetFiltersBtn{
+    display: flex;
+    padding: 11px 20px 11px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+    border-radius: 12px;
+    background: var(--white);
+    p{
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: .16px;
+        color: var(--text);
+        font-weight: 500;
+    }
+}
+.resetFiltersBtn:hover{
+    background: var(--footer-text);
+}
 
 
 .catalogItemPageProducts{
@@ -542,7 +593,7 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 16px;
         padding: 8px 0 24px 0;
     }
     .mobileSortContent > ul > li{
@@ -580,6 +631,9 @@
         border: 5px solid var(--accent);
     }
     .mobileSortContent > button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 16px 0;
         height: 48px;
         background: var(--accent);
@@ -589,6 +643,79 @@
             color: var(--white);
             font-size: 16px;
             line-height: 24px;
+        }
+    }
+    .filtersList{
+        position: fixed;
+        gap: 8px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100dvh;
+        z-index: 10000000000;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+    }
+    .mobileFiltersTop{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        border-radius: 0 0 20px 20px;
+        background: #FFF;
+    }
+    .mobileFiltersTop > h4{
+        font-size:16px;
+        line-height: 140%;
+    }
+    .mobileFiltersTop > button:last-child{
+        display: flex;
+        height: 32px;
+        padding: 0 14px;
+        align-items: center;
+        gap: 8px;
+        border-radius: 12px;
+        background: var(--Dark-D5, #EEEFF0);
+    }
+    .catalogItemPageFiltersBottom{
+        gap: 8px;
+        height: 100%;
+    }
+    .catalogItemPageFiltersBottom > h4{
+        display: none;
+    }
+    .catalogItemPageFiltersContent{
+        gap: 8px;
+        height: 100%;
+    }
+    .priceFilter, .priceItem , .filterItem{
+        padding:12px 16px;
+        background-color: var(--white);
+        border-radius: 14px;
+    }
+    .priceFilter > p{
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px; /* 150% */
+        letter-spacing: 0.16px;
+    }
+    .sumbitMobileBtn{
+        margin: auto 16px 16px 16px;
+        padding: 16px 0;
+        height: 48px;
+        background-color: var(--accent);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: stretch;
+        p{
+            color: var(--white);
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;;
         }
     }
 }

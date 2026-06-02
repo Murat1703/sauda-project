@@ -1,0 +1,93 @@
+.searchWrapper{
+    position: fixed;
+    width: 100%;
+    top: 83px;
+    height: calc(100dvh - 83px);
+    background: rgba(0, 0, 0, 0.40);
+    backdrop-filter: blur(2px);
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+}
+.searchResults{
+    margin-top: 8px;
+    width: 60%;
+    padding: 35px 16px;
+    background: var(--white);
+    border-radius: 20px;;
+    height: fit-content;
+}
+.searchResultsItems{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.searchResultsItems > p{
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 171.429% */
+    color: var(--Dark-D50, #8F9596);
+}
+.searchResultsItems > a{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+.imgWrapper{
+    border-radius: 10px;
+    border: 1px solid var(--Dark-D3, #F3F4F5);
+    width: 82px;
+    height: 82px;
+    position: relative;
+}
+.imgWrapper > img{
+    width: 100%;
+    height: 100%;
+}
+.textContent{
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+.resultPrice{
+    display: flex;
+    flex-direction: column;
+}
+.resultPrice > p:nth-child(1){
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 150% */
+}
+.discountWrapper{
+    display: flex;
+    gap: 8px;
+}
+.oldPrice{
+    position: relative;
+    color: var(--Dark-D50, #8F9596);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 200% */
+}
+.oldPrice::after{
+    content: '';
+    width: 100%;
+    position: absolute;
+    height: 1px;
+    background: var(--accent);
+    left: 0;
+    bottom: 10px;
+}
+@media (max-width:768px){
+    .searchWrapper{
+        top: 116px;
+    }
+    .searchResults{
+        width: 100%;
+        border-radius: 0 0 16px 16px;
+    }
+}

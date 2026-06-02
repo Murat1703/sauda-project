@@ -4,6 +4,9 @@ import { Button, ControlBtn } from '../Button'
 import { useMediaQuery } from 'react-responsive'
 import { YoutubeFooterIcon } from '../../../public/assets/icons/YoutubeFooterIcon'
 import { InstagramFooterIcon } from '../../../public/assets/icons/InstagramFooterIcon'
+import { useCategories } from '../../stores/useCategories.js'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export const Footer = () =>{
 
@@ -80,6 +83,12 @@ export const Footer = () =>{
         }
     ]
 
+    const{categories, loadCategories, loadingCategories, errLoadingCategories}= useCategories();
+
+    useEffect(()=>{
+        loadCategories();
+    },[])
+
     const isMobile = useMediaQuery({maxWidth: 768})
 
     return(
@@ -102,20 +111,47 @@ export const Footer = () =>{
                 </div>
                 <div className={cls.footerLinksWrapper}>
                     <div className={cls.footerLinksContent}>
-                        {
-                            Menu.map((item, index)=>{
+                        <ul>
+                            <h4>Каталог</h4>
+                            {categories?.slice(0,5).map((item,index)=>{
                                 return(
-                                    <ul key={index}>
-                                        <h4>{item.label}</h4>
-                                        {item.children && item.children.map((children, index)=>(
-                                            <li key={index}>
-                                                <a href={children.link}>{children.label}</a>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <li key={item.id}>
+                                        <Link to={`/catalog/categories/${item.slug}`}>{item.name}</Link>
+                                    </li>
                                 )
-                            })
-                        }
+                            })}
+                            <li><a>Полный каталог</a></li>
+                        </ul>
+                        <ul>
+                            <h4>Покупателям</h4>
+                            <li>
+                                <Link>Акции</Link>
+                            </li>
+                            <li>
+                                <Link>Доставка и оплата</Link>
+                            </li>
+                            <li>
+                                <Link>Отследить заказ</Link>
+                            </li>
+                            <li>
+                                <Link>Помощь 24/7</Link>
+                            </li>
+                        </ul>
+                        <ul>
+                            <h4>Компания</h4>
+                            <li>
+                                <Link>О нас</Link>
+                            </li>
+                            <li>
+                                <Link>Адреса магазинов и ПВЗ</Link>
+                            </li>
+                            <li>
+                                <Link>Новости</Link>
+                            </li>
+                            <li>
+                                <Link>Контакты</Link>
+                            </li>
+                        </ul>
                     </div>
                     <div className={cls.footerContacts}>
                         <div>

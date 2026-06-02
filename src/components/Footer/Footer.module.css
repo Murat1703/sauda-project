@@ -96,6 +96,7 @@
 }
 .footerContacts > div:nth-child(1) > a{
     font-size: 22px;
+    color: #F3F4F5;
     font-style: normal;
     font-weight: 500;
     line-height: 26px; /* 118.182% */
