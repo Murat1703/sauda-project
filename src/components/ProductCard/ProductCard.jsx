@@ -88,6 +88,7 @@ export const ProductCard = ({product, isFavorite}) =>{
                                 <span>{product?.price} ₸</span>
                             </div>
                         </div>
+                        {product?.stock_quantity == 0 ? <p>Нет в наличии</p> :
                         <button className={cls.productCardBtn} onClick={()=>{
                             addToCart(product.id);
                             toast(
@@ -103,7 +104,7 @@ export const ProductCard = ({product, isFavorite}) =>{
                         }}>
                             <CartIcon />
                             <p>В корзину</p>
-                        </button>
+                        </button>}
                     </div>
                     <Link 
                         className={cls.productCardLink} 

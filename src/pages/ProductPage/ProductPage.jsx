@@ -276,7 +276,9 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 <p>{product?.product?.price} ₸</p>
                             </div>
                         </div>
-                        <div className={cls.cartBtnBlock}>
+                        {product?.product?.stock_quantity ==0 ? 
+                        <p>Нет в наличии</p>
+                        :<div className={cls.cartBtnBlock}>
                             {!add &&
                             <button onClick={()=>setAdd(true)}>
                                 <CartIcon />
@@ -318,6 +320,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                             </div>
                             }
                         </div>
+                        }
                         <div className={cls.productDeliveryBlock}>
                             {product?.product?.delivery.pickup.available && 
                             <div className={cls.productDeliveryItem}>
@@ -434,6 +437,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 {product?.product?.price} ₸
                             </p>
                         </div>
+                        {product?.product?.stock_quantity == 0? <p>Нет в наличии</p>:
                         <div 
                             className={`${cls.mobileProductActionBtn} ${
                                 counter > 0 ? cls.mobileProductActiveCartBtn : ''
@@ -476,6 +480,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                             </div>
                             }
                         </div>
+                        }
                         <div className={cls.mobileProductDeliveryItems}>
                             <div className={cls.productDeliveryBlock}>
                                 <div className={cls.productDeliveryItem}>
@@ -639,7 +644,7 @@ export const ProductPage = ({isMobileScroll}) =>{
 
             </div>
             }
-            {isMobileScroll && <div className={cls.fixedBottomWrapper}>
+            {isMobileScroll && product?.product?.stock_quantity>0 && <div className={cls.fixedBottomWrapper}>
                 <button 
                     className={cls.bottomFixedBtn} 
                     onClick={()=>setAdd(true)}

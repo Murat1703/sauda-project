@@ -108,11 +108,12 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     const [minPrice, setMinPrice] = useState(5000);
     const [maxPrice, setMaxPrice] = useState(200000);
 
-    const [activeSlider, setActiveSlider] = useState(null);
 
     const [showAvailibility, setShowAvailibility] = useState(false);
     
     const[filtersList, setShowFiltersList] = useState(false);
+
+    console.log('categoryItemPage products', products)
 
     return(
         <>
