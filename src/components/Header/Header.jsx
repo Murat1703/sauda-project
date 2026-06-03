@@ -24,10 +24,15 @@ import { MobileControlPanelFavorites } from '../../../public/assets/icons/Mobile
 import { MobileControlPanelCart } from '../../../public/assets/icons/MobileControlPanelCart.jsx';
 import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileControlPanelAccount.jsx';
 import { Search } from '../Search';
+import { useLanguage } from '../../stores/useLanguage.js';
 
 export const Header = ({ordersCount}) =>{
 
     const[activeLang, setActiveLang] = useState('ru');
+    const{lang, setLang} = useLanguage();
+
+    console.log(lang)
+    
     const[isOpen, setIsOpen] = useState(false);
 
     const handleToMenu = () =>{
@@ -124,10 +129,10 @@ export const Header = ({ordersCount}) =>{
                     </div>
                     }
                     <div className={cls.langWrapper}>
-                        <button className={activeLang=='ru'?`${cls.active}`: ''} onClick={()=>setActiveLang('ru')}>
+                        <button className={activeLang=='ru'?`${cls.active}`: ''} onClick={()=>{setActiveLang('ru'); setLang('ru')}}>
                             <p>Рус</p>
                         </button>
-                        <button onClick={()=>setActiveLang('kk')} className={activeLang=='kk'?`${cls.active}`: ''}>
+                        <button onClick={()=>{setActiveLang('kk'); setLang('kk')}} className={activeLang=='kk'?`${cls.active}`: ''}>
                             <p>қаз</p>
                         </button>
                     </div>

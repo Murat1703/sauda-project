@@ -90,14 +90,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     }
 
 
-    useEffect(()=>{
 
-        loadProducts({
-            category_slug:currentSlug,
-            sort
-        })
-
-    }, [sort, currentSlug])
 
     const[priceFilter,setPriceFilter] = useState(null);
 
@@ -116,13 +109,10 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     const [showPriceFilter, setShowPriceFilter] = useState(false); 
 
     const [minPrice, setMinPrice] = useState(0);
-
     const [maxPrice, setMaxPrice] = useState(200000);
 
     const absoluteMin = categoryFiltersList?.price?.min || 0;
-    const absoluteMax = categoryFiltersList?.price?.max || 2000;
-
-
+    const absoluteMax = categoryFiltersList?.price?.max || 200000;
 
     useEffect(()=>{
         setMinPrice(absoluteMin);
@@ -138,9 +128,45 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
 
 
 
-    console.log('categoryItemPage products', currentSlug)
-    console.log('categoryItemPage filters', categoryFiltersList)
-    console.log(products)
+    // console.log('categoryItemPage products', currentSlug)
+    // console.log('categoryItemPage filters', categoryFiltersList)
+    // console.log(products)
+
+    const [sortOptions, setSortOptions] = useState({
+        sort_discount: null,
+        sort_price: null,
+        sort_popular: null,
+        sort_new: null,
+        sort_reviews: null
+    });
+    useEffect(()=>{
+
+        loadProducts({
+            category_slug:currentSlug,
+            sort: sortOptions.sort_discount || sortOptions.sort_price,
+            ...(sortOptions.sort_popular && {
+                is_hit: sortOptions.sort_popular
+            }),
+            ...(sortOptions.sort_new && {
+                is_new: sortOptions.sort_new
+            }),
+        })
+
+    }, [sortOptions,  currentSlug])
+
+
+    console.log(sortOptions)
+
+    const handleReset = () =>{
+        setSortOptions({
+            sort_discount: null,
+            sort_price: null,
+            sort_popular: null,
+            sort_new: null,
+            sort_reviews: null
+        })
+    }
+
     return(
         <>
         <div className={cls.catalogItemPageWrapper}>
@@ -229,8 +255,14 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 <p>Со скидкой <span>8</span></p>
                                 <div 
                                     onClick={()=>{
-                                        if (priceFilter)setSort(null);else
-                                        setSort('discount');
+                                            setSortOptions((prev)=>({
+                                                ...prev,
+                                                sort_price: prev.sort_price == null? "discount": null,
+                                                sort_new: null,
+                                                sort_popular: null
+                                            }))
+                                        // if (priceFilter)setSort(null);else
+                                        // setSort('discount');
                                         setPriceFilter(!priceFilter)}}
                                     className={`${cls.switchBtn} ${priceFilter? cls.priceFilterActive: ""}`}
                                 >
@@ -406,7 +438,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 </div>
                                 }
                             </div>
-                            <button className={cls.resetFiltersBtn}>
+                            <button className={cls.resetFiltersBtn} onClick={handleReset}>
                                 <p>Сбросить фильтры</p>
                             </button>
                         </div>
@@ -419,17 +451,30 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 <p>Сортировка</p>
                                 <div className={cls.sortList}>
                                     <button 
-                                        className={`${cls.active} ${sort=='price_desc'? cls.descBtn: ""}`} 
-                                        onClick={handlePriceSort}
+                                        className={`${
+                                            sortOptions.sort_price === "price_asc" || 
+                                            sortOptions.sort_price === "price_desc"? 
+                                            cls.active: 
+                                            ""}
+                                            ${sortOptions.sort_price=='price_desc'? cls.descBtn: ""}`} 
+                                        onClick={()=>setSortOptions((prev)=>({...prev, sort_price: prev.sort_price == "price_asc"? "price_desc": "price_asc"}))}
                                     >
                                         <SortIcon />
                                         <p>по цене</p>
                                     </button>
-                                    <button>
+                                    <button 
+                                        className={`${sortOptions.sort_popular? cls.active: ""}`}
+                                        onClick={()=>setSortOptions((prev)=>({...prev, sort_popular: prev.sort_popular == 1? 0: 1}))}>
                                         <p>по популярности</p>
                                     </button>
-                                    <button>
-                                        <p>по рейтингу</p>
+                                    <button 
+                                        className={`${sortOptions.sort_new? cls.active: ""}`}
+
+                                        onClick={()=>setSortOptions((prev)=>({
+                                            ...prev, 
+                                            sort_new: prev.sort_new == 1? 0: 1,
+                                            }))}>
+                                        <p>по новизне</p>
                                     </button>
                                     <button>
                                         <p>по отзывам</p>
@@ -446,7 +491,13 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                     <div className={cls.mobileCatalogItemPageProductsTop}>
                         <button onClick={()=>setShowMobileSort(true)}>
                             <MobileSortIcon /> 
-                            <p>По популярности</p>
+                            <p>
+                                {sortOptions.sort_price == 'price_asc' && "Цена по возрастанию"}
+                                {sortOptions.sort_price == 'price_desc' && "Цена по убыванию"}
+                                {sortOptions.sort_popular == 1 && "По популярности"}
+                                {sortOptions.sort_popular == 1 || sortOptions.sort_price ==null && "По популярности"}
+                                {console.log('sortOptions', sortOptions)}
+                            </p>
                         </button>
                         <button onClick={()=>setShowFiltersList(true)}>
                             <MobileFiltersIcon />
@@ -482,17 +533,39 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
             >
                 <h4>Сортировка</h4>
                 <ul>
-                    <li>
+                    <li onClick={()=>
+                        setSortOptions((prev)=>({
+                            ...prev, 
+                            sort_popular: 1,
+                            sort_price: null
+                        }))
+                    }>
                         <div></div>
                         <p>По популярности</p>
                         <input type="radio" name="mobileSort" value="popularity" defaultChecked />
                     </li>
-                    <li onClick={()=>setSort('price_asc')}>
+                    <li onClick={()=>
+                        setSortOptions((prev)=>({
+                            ...prev, 
+                            sort_popular: null,
+                            sort_price: "price_asc"
+                        }))
+                    }>
                         <div></div>
                         <p>Цена по возрастанию</p>
-                        <input type="radio" name="mobileSort" value="price_asc"  />
+                        <input 
+                            type="radio" 
+                            name="mobileSort" 
+                            value="price_asc"  
+                        />
                     </li>
-                    <li onClick={()=>setSort('price_desc')}>
+                    <li onClick={()=>
+                        setSortOptions((prev)=>({
+                            ...prev, 
+                            sort_popular: null,
+                            sort_price: "price_desc"
+                        }))
+                    }>
                         <div></div>
                         <p>Цена по убыванию</p>
                         <input type="radio" name="mobileSort" value="price_desc"  />
@@ -521,7 +594,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                     <ArrowBackMobile />
                 </button>
                 <h4>Фильтры</h4>
-                <button >
+                <button onClick={handleReset}>
                     <p>Сбросить</p>
                 </button>
             </div>
@@ -532,10 +605,19 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 <p>Со скидкой <span>8</span></p>
                                 <div 
                                     onClick={()=>{
-                                        if (priceFilter)setSort(null);else
-                                        setSort('discount');
-                                        setPriceFilter(!priceFilter)}}
-                                    className={`${cls.switchBtn} ${priceFilter? cls.priceFilterActive: ""}`}
+                                        setSortOptions((prev)=>(
+                                            {
+                                                ...prev,
+                                                sort_discount: prev===null ?"discount": null,
+                                                sort_popular: null,
+                                                sort_price: null,
+                                                sort_new: null,
+                                                sort_reviews: null
+                                            }
+                                        ))
+                                       }}
+                                    className={`${cls.switchBtn}
+                                    ${sortOptions.sort_discount!==null? cls.priceFilterActive: ""}`}
                                 >
                                     <div></div>
                                 </div>
@@ -583,6 +665,56 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             id="availibility3" name="availibility" value="out_of_stock"  
                                         />
                                     </div>
+                                </div>
+                                }
+                            </div>
+                            <div 
+                                className={cls.priceItem} 
+                            >
+                                <div 
+                                    className={showCharateristicsFilters? cls.filtersShowed: ""}
+                                    onClick={()=>setShowCharacteristicsFilters(!showCharateristicsFilters)}
+                                >
+                                    <h4>По характеристикам</h4>
+                                    <FilterMoreIcon />
+                                </div>
+                                {showCharateristicsFilters &&
+                                <div className={cls.characterisiticsItems}>
+                                    {categoryFiltersList?.attributes?.map((characteristic, index)=>{
+                                        return(
+                                            <div 
+                                                className={cls.characterisiticsItem} 
+                                                key={characteristic.id}
+                                                onClick={()=>  setShowOptionId(prev => prev === characteristic.id ? null : characteristic.id)}
+                                            >
+                                                {/* <div className={cls.characteristicCheckBoxWrapper}>
+                                                </div> */}
+                                                <p>{characteristic.name}</p>
+                                                {characteristic.id == showOptionId && 
+                                                <div 
+                                                className={cls.characterisiticsItemOptions}
+                                                >
+                                                    {characteristic?.options?.map((option,index)=>{
+                                                        return(
+                                                            <div className={cls.characterisiticsItemOption}>
+                                                                <p>{option.value}</p>
+                                                                <span>{option.count}</span>
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                                }
+                                                {/* <input 
+                                                    type="checkBox" 
+                                                    id={characteristic.id}
+                                                    name="characteristic" 
+                                                    value="all" 
+                                                /> */}
+
+                                            </div>
+
+                                        )
+                                    })}
                                 </div>
                                 }
                             </div>

@@ -500,13 +500,14 @@
     }
 }
 .sortList > button.active{
-    background: var(--text);
+    background: var(--text)!important;
     p{
         color: var(--white);
     }
 }
 .descBtn > svg{
     transform: rotate(180deg);
+    background: var(--text)!important;
 }
 .catalogItemCounter{
     display: flex;
