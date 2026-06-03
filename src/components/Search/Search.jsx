@@ -3,11 +3,16 @@ import { useSearch } from '../../hooks/useSearch.js'
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '../Badge/Badge.jsx';
+import { useMediaQuery } from 'react-responsive';
 
 export const Search = ({text, onClose}) =>{
     const{searchProducts, loading, err, loadSearchProducts}= useSearch();
 
     const {searchData, loadingSearchData, errLoadingSearchData, loadSearchData} = useSearch();
+
+    const isMobile = useMediaQuery({
+        maxWidth: 768
+    })
 
 
     console.log(text)
@@ -56,13 +61,14 @@ export const Search = ({text, onClose}) =>{
                         })}
                     </div>
                 } */}
-                {searchData?.query_suggestions?.length ==0 && 
+                {searchData?.query_suggestions?.length ==0 && searchData?.suggestions?.length==0 && 
                     <div>
                         По запросу {text} не обнаружено ничего
                     </div>
                 }
                 {searchData?.query_suggestions?.length!==0 && 
                 <div>
+                    <p>Возможно вы имели в виду: </p>
                     {searchData?.query_suggestions?.map((item,index)=>{
                         return(
                         <div key={index}>
@@ -76,7 +82,7 @@ export const Search = ({text, onClose}) =>{
                     <div 
                         className={cls.searchResultsItems}
                         style={{
-                            paddingBottom: searchData?.suggestions?.length<7 ? "0px": "90px"
+                            paddingBottom: (isMobile && searchData?.suggestions?.length<5) ? "0px": "90px"
                         }}
                     >
                         <p>Товары по поиску</p>

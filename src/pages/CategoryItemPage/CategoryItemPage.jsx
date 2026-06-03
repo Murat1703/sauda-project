@@ -14,7 +14,9 @@ import { MobileFiltersIcon } from '../../../public/assets/icons/MobileFiltersIco
 import { FilterMoreIcon } from '../../../public/assets/icons/FilterMoreIcon.jsx';
 import { CheckIcon } from '../../../public/assets/icons/CheckIcon.jsx';
 import { ArrowBackMobile } from '../../../public/assets/icons/ArrowBackMobile.jsx';
-import { Loader } from '../../components/Loader/Loader.jsx';
+import { Loader } from '../../components/Loader';
+import { useCatalogFilters } from '../../hooks/useCatalogFilters.js';
+
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
     const {slug} = useParams();
@@ -42,7 +44,12 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         testProductsBySlugs
     } = useProducts();
 
-
+    const {
+        categoryFiltersList,
+        loadingCategoryFiltersList,
+        errCategoryLoadingFiltersList,
+        loadCategoryFiltersList
+    } = useCatalogFilters();
 
 
     useEffect(()=>{
@@ -50,6 +57,9 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         loadProducts({
             category_slug: currentSlug
         });
+        loadCategoryFiltersList({
+            category_slug: currentSlug
+        })
     },[currentSlug])
 
     // console.log('currentSlug', currentSlug)
@@ -105,16 +115,32 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
 
     const [showPriceFilter, setShowPriceFilter] = useState(false); 
 
-    const [minPrice, setMinPrice] = useState(5000);
+    const [minPrice, setMinPrice] = useState(0);
+
     const [maxPrice, setMaxPrice] = useState(200000);
 
+    const absoluteMin = categoryFiltersList?.price?.min || 0;
+    const absoluteMax = categoryFiltersList?.price?.max || 2000;
+
+
+
+    useEffect(()=>{
+        setMinPrice(absoluteMin);
+        setMaxPrice(absoluteMax);
+    },[absoluteMin, absoluteMax])
 
     const [showAvailibility, setShowAvailibility] = useState(false);
+
+    const [showCharateristicsFilters, setShowCharacteristicsFilters]= useState(false);
+    const [showOptionId, setShowOptionId] = useState(null)
     
     const[filtersList, setShowFiltersList] = useState(false);
 
-    console.log('categoryItemPage products', products)
 
+
+    console.log('categoryItemPage products', currentSlug)
+    console.log('categoryItemPage filters', categoryFiltersList)
+    console.log(products)
     return(
         <>
         <div className={cls.catalogItemPageWrapper}>
@@ -215,6 +241,56 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 className={cls.priceItem} 
                             >
                                 <div 
+                                    className={showCharateristicsFilters? cls.filtersShowed: ""}
+                                    onClick={()=>setShowCharacteristicsFilters(!showCharateristicsFilters)}
+                                >
+                                    <h4>По характеристикам</h4>
+                                    <FilterMoreIcon />
+                                </div>
+                                {showCharateristicsFilters &&
+                                <div className={cls.characterisiticsItems}>
+                                    {categoryFiltersList?.attributes?.map((characteristic, index)=>{
+                                        return(
+                                            <div 
+                                                className={cls.characterisiticsItem} 
+                                                key={characteristic.id}
+                                                onClick={()=>  setShowOptionId(prev => prev === characteristic.id ? null : characteristic.id)}
+                                            >
+                                                {/* <div className={cls.characteristicCheckBoxWrapper}>
+                                                </div> */}
+                                                <p>{characteristic.name}</p>
+                                                {characteristic.id == showOptionId && 
+                                                <div 
+                                                className={cls.characterisiticsItemOptions}
+                                                >
+                                                    {characteristic?.options?.map((option,index)=>{
+                                                        return(
+                                                            <div className={cls.characterisiticsItemOption}>
+                                                                <p>{option.value}</p>
+                                                                <span>{option.count}</span>
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                                }
+                                                {/* <input 
+                                                    type="checkBox" 
+                                                    id={characteristic.id}
+                                                    name="characteristic" 
+                                                    value="all" 
+                                                /> */}
+
+                                            </div>
+
+                                        )
+                                    })}
+                                </div>
+                                }
+                            </div>
+                            <div 
+                                className={cls.priceItem} 
+                            >
+                                <div 
                                     className={showFilter? cls.filtersShowed: ""}
                                     onClick={()=>setShowFilter(!showFilter)}
                                 >
@@ -275,20 +351,20 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                     <div className={cls.priceSliderWrapper}>
                                         <input 
                                             type="range" 
-                                            min={5000}
-                                            max={200000}
+                                            min={absoluteMin}
+                                            max={absoluteMax}
                                             step={1}
                                             value={minPrice}
-                                            onChange={(e)=>setMinPrice(Number(e.target.value)) }
+                                            onChange={(e)=>setMinPrice(Math.min(Number(e.target.value), maxPrice)) }
 
                                         />
                                         <input 
                                             type="range" 
-                                            min={5000}
-                                            max={200000}
+                                            min={absoluteMin}
+                                            max={absoluteMax}
                                             value={maxPrice}
                                             step={1}
-                                            onChange={(e)=>setMaxPrice(Number(e.target.value)) }
+                                            onChange={(e)=>setMaxPrice(Math.max(Number(e.target.value), minPrice)) }
                                         />
                                     </div>
 
@@ -528,20 +604,23 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                     <div className={cls.priceSliderWrapper}>
                                         <input 
                                             type="range" 
-                                            min={5000}
-                                            max={200000}
+                                            min={absoluteMin}
+                                            max={absoluteMax}
                                             step={1}
                                             value={minPrice}
-                                            onChange={(e)=>setMinPrice(Number(e.target.value)) }
-
+                                            onChange={(e)=>setMinPrice(
+                                                Math.min(Number(e.target.value), maxPrice)
+                                            ) }
                                         />
                                         <input 
                                             type="range" 
-                                            min={5000}
-                                            max={200000}
+                                            min={absoluteMin}
+                                            max={absoluteMax}
                                             value={maxPrice}
                                             step={1}
-                                            onChange={(e)=>setMaxPrice(Number(e.target.value)) }
+                                            onChange={(e)=>setMaxPrice(
+                                                Math.max(Number(e.target.value), minPrice)
+                                            ) }
                                         />
                                     </div>
 
