@@ -12,6 +12,7 @@ import { useRef } from 'react';
 import { AuthModal } from '../AuthModal';
 import { useAuthModal } from '../../context/AuthModalContext.jsx';
 import { useProducts } from '../../stores/useProducts.js';
+import { useLanguage } from '../../stores/useLanguage.js';
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
@@ -74,6 +75,10 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
     }, [isMobile, setIsMobileScrolled]);
 
     // console.log(isMobileScroll)
+
+    const {lang} = useLanguage();
+
+    console.log(lang)
 
 
     return(

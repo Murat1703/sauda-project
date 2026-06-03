@@ -257,14 +257,13 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                     onClick={()=>{
                                             setSortOptions((prev)=>({
                                                 ...prev,
-                                                sort_price: prev.sort_price == null? "discount": null,
+                                                sort_discount: prev.sort_discount == null? "discount": null,
+                                                sort_price: null,
                                                 sort_new: null,
                                                 sort_popular: null
                                             }))
-                                        // if (priceFilter)setSort(null);else
-                                        // setSort('discount');
-                                        setPriceFilter(!priceFilter)}}
-                                    className={`${cls.switchBtn} ${priceFilter? cls.priceFilterActive: ""}`}
+                                        }}
+                                    className={`${cls.switchBtn} ${sortOptions.sort_discount? cls.priceFilterActive: ""}`}
                                 >
                                     <div></div>
                                 </div>
@@ -297,7 +296,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                                 >
                                                     {characteristic?.options?.map((option,index)=>{
                                                         return(
-                                                            <div className={cls.characterisiticsItemOption}>
+                                                            <div className={cls.characterisiticsItemOption} key={index}>
                                                                 <p>{option.value}</p>
                                                                 <span>{option.count}</span>
                                                             </div>
@@ -608,7 +607,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                         setSortOptions((prev)=>(
                                             {
                                                 ...prev,
-                                                sort_discount: prev===null ?"discount": null,
+                                                sort_discount: prev.sort_discount===null ?"discount": null,
                                                 sort_popular: null,
                                                 sort_price: null,
                                                 sort_new: null,
@@ -617,7 +616,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                         ))
                                        }}
                                     className={`${cls.switchBtn}
-                                    ${sortOptions.sort_discount!==null? cls.priceFilterActive: ""}`}
+                                    ${sortOptions.sort_discount == 'discount'? cls.priceFilterActive: ""}`}
                                 >
                                     <div></div>
                                 </div>
@@ -696,7 +695,10 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                                 >
                                                     {characteristic?.options?.map((option,index)=>{
                                                         return(
-                                                            <div className={cls.characterisiticsItemOption}>
+                                                            <div 
+                                                            className={cls.characterisiticsItemOption}
+                                                            key={index}
+                                                            >
                                                                 <p>{option.value}</p>
                                                                 <span>{option.count}</span>
                                                             </div>
