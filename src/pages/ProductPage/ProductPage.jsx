@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 import { BreadCrumbs } from '../../components/AccountLayout';
 import { Title } from '../../components/Title';
 import { Badge } from '../../components/Badge';
-import { useCart } from '../../hooks/useCart';
+// import { useCart } from '../../hooks/useCart';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useFavorites } from '../../hooks/useFavorites.js';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useRef } from 'react';
 import DOMPurify from 'dompurify'
 
@@ -33,29 +33,27 @@ import { SnackBar } from '../../components/SnackBar/SnackBar.jsx';
 import { HeartIcon } from '../../../public/assets/icons/HeartIcon.jsx';
 import { HeartIconFilled } from '../../../public/assets/icons/HeartIconFilled.jsx';
 import { RepostIcon } from '../../../public/assets/icons/RepostIcon.jsx';
-
+import { useCart } from '../../stores/useCart.js';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
 
     const {slug} = useParams();
 
-    console.log(slug)
+    // console.log(slug)
 
     const {product, loadProduct, loadingProduct, products, loadingProducts, loadProducts} = useProducts();
-
-    const {addToCart, removeFromCart, decreaseQuantity } =useCart();
 
     useEffect(()=>{
         if (!slug) return;
         loadProduct(slug)
     },[slug])
 
-    console.log(product)
-
     const [add, setAdd] = useState(false);
 
     const [counter, setCounter] = useState(0);
+    useEffect(()=>{
+    },[counter])
 
     const today = new Date().toLocaleDateString('ru-RU', {
         day: 'numeric',
@@ -77,7 +75,6 @@ export const ProductPage = ({isMobileScroll}) =>{
 
     loadingProduct &&  <Loader />
 
-    console.log('productPage product = ',product)
 
     const [mobileCount, setMobileCount] = useState(5);
 
@@ -85,11 +82,19 @@ export const ProductPage = ({isMobileScroll}) =>{
         setMobileCount(product?.product?.attributes.length)
     }
 
+    const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart} = useCart();
+
+
+    const cartItem = cartItems?.find(
+        (item) => item?.product?.id === item.product_id
+    );
+
+    console.log('product_page ', cartItem)
+
     return(
         <div className={cls.productPageWrapper} >
             {!isMobile &&
             <div className={cls.productPageContent}>
-                {/* {loadingProduct && <Loader />} */}
                 <div className={cls.productTitleBlock}>
                     <div>
                         <div className={cls.breadCrumbsBlock}>
@@ -280,9 +285,20 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <p>Нет в наличии</p>
                         :<div className={cls.cartBtnBlock}>
                             {!add &&
-                            <button onClick={()=>setAdd(true)}>
+                            <button 
+                                disabled={cartItem?.product?.slug == product?.product?.slug? true: false}
+                                onClick={()=>{
+                                    setAdd(true); 
+                                    addToCart(
+                                        {
+                                            product_slug: product?.product.slug,
+                                            quantity: 1
+                                    })
+                                    setCounter(counter + 1);
+                                }}
+                            >
                                 <CartIcon />
-                                <p>Добавить в корзину</p>
+                                <p>{cartItem? `Товар в корзине`: `Добавить в корзину`}</p>
                             </button>}
                             {add && 
                             <div className={cls.counter}>
@@ -292,8 +308,8 @@ export const ProductPage = ({isMobileScroll}) =>{
                                             counter !== 0 &&
                                             (setCounter(counter - 1) )
                                             counter == 0? 
-                                            removeFromCart(product.id):
-                                            decreaseQuantity(product.id)
+                                            removeFromCart(cartItem.id):
+                                            changeCount(cartItem.id, counter)
                                         }}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -304,7 +320,9 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     <button
                                         onClick={()=>{
                                             setCounter(counter + 1);
-                                            addToCart(product?.id)
+                                            const cartItemQuantityCount = counter + 1;
+                                            setCounter(cartItemQuantityCount)
+                                            changeCount(cartItem.id, (cartItemQuantityCount))
                                         }}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -373,25 +391,25 @@ export const ProductPage = ({isMobileScroll}) =>{
                 <div className={cls.mobileProductImgWrapper}>
                     <div className={cls.mobileProductImgSlider}>
                         <Swiper
-                                    style={{
-                                        '--swiper-navigation-color': '#fff',
-                                        '--swiper-pagination-color': '#FF4D00',
-                                    }}
-                                    pagination={true}
-                                    spaceBetween={10}
-                                    modules={[FreeMode, Pagination]}
-                                >
-                                    {product?.product?.images.map((item, index)=>{
-                                        return(
-                                        <SwiperSlide>
-                                            <img 
-                                                src={item.url} 
-                                                alt={`${product?.product?.name}`} 
-                                                lazy={`true`}
-                                            />
-                                        </SwiperSlide>
-                                        )
-                                    })}
+                            style={{
+                                '--swiper-navigation-color': '#fff',
+                                '--swiper-pagination-color': '#FF4D00',
+                            }}
+                            pagination={true}
+                            spaceBetween={10}
+                            modules={[FreeMode, Pagination]}
+                        >
+                            {product?.product?.images.map((item)=>{
+                                return(
+                                <SwiperSlide key={item.sku}>
+                                    <img 
+                                        src={item.url} 
+                                        alt={`${product?.product?.name}`} 
+                                        lazy={`true`}
+                                    />
+                                </SwiperSlide>
+                                )
+                            })}
                         </Swiper>
                     </div>
                 </div>
@@ -469,7 +487,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     <button
                                         onClick={()=>{
                                             setCounter(counter + 1);
-                                            addToCart(product?.id)
+                                            changeCount(cartItem.id, counter)
                                         }}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -672,7 +690,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <button
                                         onClick={()=>{
                                             setCounter(counter + 1);
-                                            addToCart(product?.id)
+                                            changeCount(cartItem.id, (counter))
                                         }}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">

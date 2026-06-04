@@ -9,6 +9,7 @@ import { SliderControlBtn } from '../../SliderControlBtn';
 import { useFavorites } from '../../../hooks/useFavorites';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
+import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 
 
 
@@ -16,6 +17,8 @@ export const RecommendedSection = ({products}) =>{
     const swiperRef = useRef();
 
     const {favorites, toggleFavorites} = useFavorites();
+
+    const {favoritesList} = useFavoritesStore();
 
 
     const handleMakeFavorite = (productId) => {
@@ -54,7 +57,9 @@ export const RecommendedSection = ({products}) =>{
                             <SwiperSlide key={product.id}>
                                 <ProductCard 
                                     product={product} 
-                                    isFavorite={favorites.includes(product?.slug)} 
+                                    isFavorite={
+                                        favoritesList?.find(item=> item?.product?.slug === product?.slug)
+                                    } 
                                     addToFavorite={() => handleMakeFavorite(product?.slug)} />
                             </SwiperSlide>)
                         })}

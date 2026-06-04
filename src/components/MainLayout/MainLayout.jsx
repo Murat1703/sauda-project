@@ -13,10 +13,22 @@ import { AuthModal } from '../AuthModal';
 import { useAuthModal } from '../../context/AuthModalContext.jsx';
 import { useProducts } from '../../stores/useProducts.js';
 import { useLanguage } from '../../stores/useLanguage.js';
+import {useCart} from '../../stores/useCart.js'
+
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
     const {orders, loadingOrders, loadOrders} = useOrders();
+
+    const{cartItems, loadCart, cartTotal} = useCart();
+
+    // console.log('cartItems = ',cartItems)
+
+    // useEffect(()=>{
+    //     loadCart();
+    // },[])
+
+    console.log(cartTotal)
 
     const {pathname} = useLocation();
     const isMobile = useMediaQuery({

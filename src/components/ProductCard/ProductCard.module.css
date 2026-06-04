@@ -81,6 +81,11 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* количество строк */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
     line-height: 20px; /* 142.857% */
 }
 .productCardInfo{

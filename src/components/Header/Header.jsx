@@ -11,7 +11,8 @@ import { SideBar } from '../AccountLayout/SideBar.jsx';
 import { useOrders } from '../../hooks/useOrders.js';
 import { CounterBadge } from '../CounterBadge';
 import { useFavorites } from '../../hooks/useFavorites.js';
-import { useCart } from '../../hooks/useCart.js';
+// import { useCart } from '../../hooks/useCart.js';
+import { useCart } from '../../stores/useCart.js';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { CatalogBtnIcon } from '../../../public/assets/icons/CatalogBtnIcon.jsx';
 import { SearchIcon } from '../../../public/assets/icons/SearchIcon.jsx';
@@ -25,6 +26,7 @@ import { MobileControlPanelCart } from '../../../public/assets/icons/MobileContr
 import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileControlPanelAccount.jsx';
 import { Search } from '../Search';
 import { useLanguage } from '../../stores/useLanguage.js';
+import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
 
 export const Header = ({ordersCount}) =>{
 
@@ -75,7 +77,17 @@ export const Header = ({ordersCount}) =>{
 
     const {favorites, toggleFavorites} = useFavorites();
 
-    const {cartItems} = useCart();
+    const {favoritesList} = useFavoritesStore();
+
+    const {cartItems, loadCart} = useCart();
+
+    useEffect(
+        ()=>{
+            if (isAuth == true){
+            loadCart();} else {
+                return }
+        },[]
+    )
 
     const {pathname} = useLocation();
 
@@ -142,7 +154,7 @@ export const Header = ({ordersCount}) =>{
                     <ControlBtn nav='/account/favorites'>
                         <FavoriteHeaderIcon />
                         <p>Избранное</p>
-                        {favorites.length!== 0 && <CounterBadge count={favorites.length}/>}                        
+                        {favoritesList.length!== 0 && <CounterBadge count={favoritesList.length}/>}                        
                     </ControlBtn>
                     <ControlBtn nav='/cart'>
                         <CartBtnIcon />
@@ -196,7 +208,7 @@ export const Header = ({ordersCount}) =>{
             >
                 <MobileControlPanelFavorites isActive={pathname == '/account/favorites' && isOpen == false}/>
                 <p>Избранное</p>
-                {favorites.length!== 0 && <CounterBadge count={favorites.length}/>}
+                {favoritesList.length!== 0 && <CounterBadge count={favoritesList.length}/>}
             </ControlBtn>
             <ControlBtn 
                 nav='/cart'

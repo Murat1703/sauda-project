@@ -10,24 +10,26 @@ import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useProducts } from '../../../stores/useProducts'
+import { useFavoritesStore } from '../../../stores/useFavoritesStore'
 
 export const FavoritesPage = () =>{
     const {favorites, toggleFavorites} = useFavorites();
 
+    const {favoritesList, deleteFromFavoritesList, loadingFavoritesList} = useFavoritesStore();
+
     const {productsBySlugs, loadProductsBySlugs, loadingProductsBySlugs, errLoadingProductsBySlugs} = useProducts();
 
-    console.log(productsBySlugs)
 
     const isMobile = useMediaQuery({
         maxWidth: 768
     })
 
-    useEffect(()=>{
-        if (favorites.length > 0) {
-            loadProductsBySlugs(favorites);
-        }
+    // useEffect(()=>{
+    //     if (favorites.length > 0) {
+    //         loadProductsBySlugs(favorites);
+    //     }
 
-    },[favorites]);
+    // },[favorites]);
 
     const [sortFilter, setSortFilter] = useState('По дате добавления');
     const [showFilter, setShowFilter] = useState(false);
@@ -64,7 +66,7 @@ export const FavoritesPage = () =>{
                 </div>
             </div>
             <div className={cls.pageBottom}>
-                {favorites.length == 0 && 
+                {favoritesList.length == 0 && 
                     <div className={cls.favoritesPageEmpty}>
                         <div className={cls.favoritesInfoBlock}>
                             <div className={cls.titleBlock}>
@@ -86,8 +88,8 @@ export const FavoritesPage = () =>{
                         </div>
                     </div>
                 }
-                {loadingProductsBySlugs && <Loader />}
-                {favorites.length > 0 && 
+                {loadingFavoritesList && <Loader />}
+                {favoritesList.length > 0 && 
                 <>
                 
                     {!isMobile &&
@@ -151,14 +153,13 @@ export const FavoritesPage = () =>{
                         </button>
                     </div>}
                     <div className={cls.favoritesList}>
-                        {productsBySlugs?.map((favoriteItem, index)=>{
-                            console.log(favoriteItem)
+                        {favoritesList?.map((favoriteItem)=>{
                             return(
                                 <ProductCard 
-                                    key={favoriteItem.data.product.slug} 
-                                    product={favoriteItem.data.product} 
-                                    isFavorite={favorites.includes(favoriteItem.data.product.slug)}
-                                    addToFavorite={() => toggleFavorites(favoriteItem.data.product.slug)}
+                                    key={favoriteItem.product.slug} 
+                                    product={favoriteItem.product} 
+                                    isFavorite={favoritesList.find((item) => item.product.slug == favoriteItem.product.slug)}
+                                    isDelete={true}
                                 />
                             )
                         })}

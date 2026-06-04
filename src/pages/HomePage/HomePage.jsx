@@ -13,18 +13,15 @@ import { Loader } from '../../components/Loader/Loader.jsx';
 
 export const HomePage = () =>{
 
-
     const {products, loadingProducts, loadProducts} = useProducts();
 
     useEffect(()=>{
         loadProducts();
     },[])
 
-    console.log('homepage',products)
 
     const productsWithDiscount = products?.data?.filter(product => product.old_price !== null)
 
-    if (loadingProducts) return null
  
     return(
         <>

@@ -120,6 +120,9 @@
 .cartBtnBlock > button:hover{
     background: var(--accent-hover);
 }
+.cartBtnBlock > button:disabled{
+    opacity: .5;
+}
 .counter{
     display: flex;
     align-items: center;

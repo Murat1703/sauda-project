@@ -3,7 +3,7 @@ import cls from './ProductCard.module.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useCart } from '../../hooks/useCart';
+import { useCart } from '../../stores/useCart.js';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { useFavorites } from '../../hooks/useFavorites';
@@ -12,16 +12,30 @@ import { HeartIcon } from '../../../public/assets/icons/HeartIcon';
 import { HeartIconFilled } from '../../../public/assets/icons/HeartIconFilled';
 import { CartIcon } from '../../../public/assets/icons/CartIcon';
 import { SnackBar } from '../SnackBar';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
+import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
+import { useEffect, useState } from 'react';
 
 
+export const ProductCard = ({product, isFavorite, isDelete}) =>{
 
-export const ProductCard = ({product, isFavorite}) =>{
-
-    const {addToCart} = useCart();
+    const {addToCart, cartItems} = useCart();
     const {toggleFavorites} = useFavorites();
+    const {favoritesList, addToFavoritesList, loadFavoritesList, deleteFromFavoritesList} = useFavoritesStore();
 
-    // console.log(product,'productCard')
-    
+    console.log(favoritesList)
+
+    // useEffect(()=>{
+    //     loadFavoritesList();
+    // },[])
+
+    const navigate = useNavigate();
+
+
+    const {isAuth} = useAuth();
+    const [addFavorite, setAddFavorite] = useState(false);
+
     return(
         <>
             <div className={cls.productCard}>
@@ -42,24 +56,41 @@ export const ProductCard = ({product, isFavorite}) =>{
                             } 
                             alt={`${product?.name}`}
                             lazy={`true`}
+                            style={{
+                                opacity: product?.stock_quantity ==0 ? "0.5": "1"
+                            }}
                         />
                     {/* </div> */}
                     <button 
                         className={cls.favoriteBtn} 
                         onClick={()=>{
-                            toggleFavorites(product?.slug);
-                            {!isFavorite ? toast(
-                                <SnackBar text={'Товар добавлен в избранное'}/>
-                            ):toast.error(
-                                <SnackBar text={'Товар удален из избранного'} isDelete={true}/>
-                            )
-                        
-                            }            
+                            const shouldAdd = !addFavorite
+                            setAddFavorite(shouldAdd);
+                            if (isDelete==true) {
+                                deleteFromFavoritesList(product?.id)
+                                toast.error(
+                                    <SnackBar text={'Товар удален из избранного'}/>
+                                );
+                                return;
+                            }
+                            if (isAuth == true){
+                                if (shouldAdd == true){
+                                    addToFavoritesList({
+                                        product_slug: product?.slug
+                                    });
+                                    toast(
+                                    <SnackBar text={'Товар добавлен в избранное'}/>
+                                    )
+                                } else{
+                                    deleteFromFavoritesList(product?.id)
+                                    toast.error(
+                                        <SnackBar text={'Товар удален из избранного'}/>
+                                    )
+                                }
+                            }                            
                         }}
                     >
-                        {!isFavorite? 
-                        <HeartIcon />:<HeartIconFilled />
-                        }
+                        {!isFavorite?<HeartIcon />:<HeartIconFilled />}
                     </button>
                     {product?.is_hit && <Badge type={`hit`}>Хит</Badge>}
                     {product?.is_new && <Badge type={`new`}>Новинка</Badge>}
@@ -80,7 +111,11 @@ export const ProductCard = ({product, isFavorite}) =>{
                                 product?.old_price && 
                                 <>
                                 <span>{product?.old_price} ₸</span>
-                                <Badge type={'discount'}>-{product?.discount_percent}%</Badge>
+                                <Badge 
+                                    type={'discount'}
+                                >
+                                    -{product?.discount_percent}%
+                                </Badge>
                                 </>
                                 }
                             </div>
@@ -89,18 +124,22 @@ export const ProductCard = ({product, isFavorite}) =>{
                             </div>
                         </div>
                         {product?.stock_quantity == 0 ? <p>Нет в наличии</p> :
-                        <button className={cls.productCardBtn} onClick={()=>{
-                            addToCart(product.id);
-                            toast(
-                                <div className={cls.toastContent}>
-                                    <div>
-                                        <p>Товар добавлен в корзину</p>
-                                    </div>
-                                    <Link to='/cart'>
-                                        Нажмите, чтобы перейти
-                                    </Link>
-                                </div>
-                            )
+                        <button 
+                            className={cls.productCardBtn} 
+                            onClick={()=>{
+                                if (isAuth == true) {
+                                    addToCart({
+                                        product_slug: product?.slug,
+                                        quantity: 1
+                                    });
+                                    toast(
+                                        <SnackBar 
+                                            text={'Товар добавлен в корзину'}
+                                        />
+                                    )
+                                } else{
+                                    navigate('/cart')
+                                }
                         }}>
                             <CartIcon />
                             <p>В корзину</p>
