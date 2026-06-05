@@ -199,7 +199,7 @@ export const useFavoritesStore = create((set, get) => ({
     const prevFavoritesList = get().favoritesList || [];
     
     const updatedFavoritesList = prevFavoritesList.filter(
-      (item) => item.product.id !== id
+      (item) => item.product?.id !== id
     );
 
     if (updatedFavoritesList) {

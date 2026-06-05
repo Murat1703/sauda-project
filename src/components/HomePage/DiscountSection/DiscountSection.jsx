@@ -7,15 +7,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { SliderControlBtn } from '../../SliderControlBtn';
-import { useFavorites } from '../../../hooks/useFavorites';
+import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 import { ProductCard } from '../../ProductCard';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
 
-
 export const DiscountSection = ({productsWithDiscount}) =>{
 
-    const {favorites, toggleFavorites} = useFavorites();
+    const {favoritesList} = useFavoritesStore();
     const swiperRef = useRef();
 
 
@@ -45,13 +44,17 @@ export const DiscountSection = ({productsWithDiscount}) =>{
                             }
                         }}
                     >
-                        {productsWithDiscount?.map((product,index)=>{
+                        {productsWithDiscount?.map((discountItem)=>{
+                            console.log(
+favoritesList
+                            )
                             return(
-                                <SwiperSlide key={product.id}>
+                                <SwiperSlide key={discountItem.id}>
                                     <ProductCard 
-                                        product={product}
-                                        isFavorite={favorites.includes(product.slug)} 
-                                        addToFavorite={() => toggleFavorites(product.slug)} 
+                                        product={discountItem}
+                                        isFavorite={
+                                            favoritesList?.find(item=> item?.product?.slug === discountItem?.slug)
+                                        }
                                     />
                                 </SwiperSlide>
                             )

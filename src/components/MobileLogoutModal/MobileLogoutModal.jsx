@@ -14,6 +14,7 @@ export const MobileLogoutModal = ({onClose}) =>{
         logout();
         localStorage.removeItem('reactCardLogin');
         localStorage.removeItem('token');
+        localStorage.removeItem('wishlist');
         navigate('/');
     }
 

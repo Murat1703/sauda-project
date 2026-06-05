@@ -21,6 +21,7 @@ import { MobileAccountPage } from './pages/Account/MobileAccountPage'
 import { useMediaQuery } from 'react-responsive'
 import { MainAccountMainPage } from './pages/Account/MobileAccountMainPage'
 import { CategoryItemPage } from './pages/CategoryItemPage/CategoryItemPage.jsx'
+import { NewOrderPage } from './pages/Account/NewOrderPage/'
 
 
 
@@ -105,6 +106,7 @@ function App() {
                 <Route element={<AccountResponsiveLayout />} >
                   <Route path='/account/orders' element={<OrdersPage />}/>
                   <Route path={`/account/orders/:id`} element={<OrderPage />}/>
+                  <Route path='/account/new-order' element={<NewOrderPage />}/>
                   <Route path='/account/favorites' element={<FavoritesPage />}/>
                   <Route path='/account/reviews' element={<ReviewsPage />}/>
                   <Route path='/account/profile' element={<AccountDetailsPage />}/>

@@ -16,16 +16,7 @@ import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 export const RecommendedSection = ({products}) =>{
     const swiperRef = useRef();
 
-    const {favorites, toggleFavorites} = useFavorites();
-
     const {favoritesList} = useFavoritesStore();
-
-
-    const handleMakeFavorite = (productId) => {
-        toggleFavorites(productId)
-    };
-    console.log('recomendedprodducts',products)
-
 
     return(
         <section className={cls.recommendedSection}>
@@ -59,8 +50,7 @@ export const RecommendedSection = ({products}) =>{
                                     product={product} 
                                     isFavorite={
                                         favoritesList?.find(item=> item?.product?.slug === product?.slug)
-                                    } 
-                                    addToFavorite={() => handleMakeFavorite(product?.slug)} />
+                                    } />
                             </SwiperSlide>)
                         })}
 

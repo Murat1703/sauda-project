@@ -5,7 +5,8 @@ import {  useRef } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { SliderControlBtn } from '../../SliderControlBtn';
-import { useFavorites } from '../../../hooks/useFavorites';
+// import { useFavorites } from '../../../hooks/useFavorites';
+import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
 
@@ -14,7 +15,7 @@ export const WatchedSection = ({products}) =>{
 
     const swiperRef = useRef();
 
-    const {favorites, toggleFavorites} = useFavorites();
+    const {favoritesList, addToFavoritesList} = useFavoritesStore();
 
     return(
         <section className={cls.watchedSectionWrapper}>
@@ -44,8 +45,9 @@ export const WatchedSection = ({products}) =>{
                             <SwiperSlide                                     key={product.id}>                            
                                     <ProductCard 
                                         product={product} 
-                                        isFavorite={favorites.includes(product.slug)} 
-                                        addToFavorite={() => toggleFavorites(product.slug)} 
+                                        isFavorite={
+                                            favoritesList?.find(item=> item?.product?.slug === product?.slug)
+                                        } 
                                     />
                             </SwiperSlide>
                             )

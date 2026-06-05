@@ -35,6 +35,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import {CartRemoveIconMobile} from '../../../public/assets/icons/CartRemoveIconMobile.jsx'
 import { CartRemoveIconMobileDark } from '../../../public/assets/icons/CartRemoveIconMobileDark.jsx';
 import { CartAddIconMobileDark } from '../../../public/assets/icons/CartAddMobileIconDark.jsx';
+import { toast } from 'react-toastify';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -67,7 +68,7 @@ export const ProductPage = ({isMobileScroll}) =>{
         maxWidth: 768
     });
 
-    const{favoritesList, addToFavoritesList, deleteFromFavoritesList} = useFavoritesStore();
+    const{favoritesList, addToFavoritesList, deleteFromFavoritesList, addToLocalFavoritesList, deleteFromLocalFavoritesList} = useFavoritesStore();
 
     const [addToFavorite, setAddToFavorite] = useState(false);
 
@@ -91,6 +92,8 @@ export const ProductPage = ({isMobileScroll}) =>{
     const favoriteItem = favoritesList?.find((item)=>
         item?.product?.slug === product?.product?.slug
     )
+
+    console.log('isAuth', isAuth)
 
     return(
     <>
@@ -272,15 +275,30 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 onClick={()=>{
                                     const flagIsAdd = !addToFavorite;
                                     setAddToFavorite(flagIsAdd);
-                                    if (isAuth == true){
-                                        if (favoriteItem?.product?.slug == product?.product?.slug) {
-                                            deleteFromFavoritesList(product?.product?.id);
-                                            <SnackBar text={'Товар удален из избранного'}/>
-                                        } else{
-                                            addToFavoritesList({
-                                                product_slug: product?.product?.slug
+                                    if (isAuth == false) {
+                                        if (favoriteItem?.product?.slug === product?.product?.slug){
+                                            deleteFromLocalFavoritesList(product?.product?.id);
+                                            <SnackBar text={`Товар удален из избранного `} />
+                                        }else {
+                                            addToLocalFavoritesList({
+                                                product_slug: product?.product?.slug, 
+                                                product: product.product
                                             });
-                                            <SnackBar text={'Товар добавлен в избранное'}/>
+                                            <SnackBar text={`Товар добавлен в избранное`} />
+                                        }
+                                    }else{
+                                        if (favoriteItem?.product?.slug === product?.product?.slug){
+                                            deleteFromFavoritesList(product?.product?.id);
+                                            <SnackBar text={`Товар удален из избранного`} />
+
+                                        }else {
+                                            addToFavoritesList({
+                                                product_slug: product?.product?.slug, 
+                                                product: product.product
+                                            });
+                                            toast(
+                                            <SnackBar text={`Товар добавлен в избранное`}/>
+                                            )
                                         }
                                     }
                                 }}
@@ -454,15 +472,31 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 onClick={()=>{
                                     const flagIsAdd = !addToFavorite;
                                     setAddToFavorite(flagIsAdd);
-                                    if (isAuth == true){
-                                        if (favoriteItem?.product?.slug == product?.product?.slug) {
-                                            deleteFromFavoritesList(product?.product?.id);
-                                            <SnackBar text={'Товар удален из избранного'}/>
-                                        } else{
-                                            addToFavoritesList({
-                                                product_slug: product?.product?.slug
+                                    if (isAuth == false) {
+                                        if (favoriteItem?.product?.slug === product?.product?.slug){
+                                            deleteFromLocalFavoritesList(product?.product?.id);
+                                            <SnackBar text={`Товар удален из избранного `} />
+                                        }else {
+                                            addToLocalFavoritesList({
+                                                product_slug: product?.product?.slug, 
+                                                product: product.product
                                             });
-                                            <SnackBar text={'Товар добавлен в избранное'}/>
+                                            <SnackBar text={`Товар добавлен в избранное`} />
+                                        }
+                                    }else{
+                                        if (favoriteItem?.product?.slug === product?.product?.slug){
+                                            deleteFromFavoritesList(product?.product?.id);
+                                            toast(
+                                            <SnackBar text={`Товар удален из избранного`} />
+                                            )
+                                        }else {
+                                            addToFavoritesList({
+                                                product_slug: product?.product?.slug, 
+                                                product: product.product
+                                            });
+                                            toast(
+                                            <SnackBar text={`Товар добавлен в избранное`}/>
+                                            )
                                         }
                                     }
                                 }}

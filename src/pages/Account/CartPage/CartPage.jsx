@@ -10,7 +10,7 @@ import cls from './CartPage.module.css'
 import { useMediaQuery } from 'react-responsive'
 import { Badge } from '../../../components/Badge'
 import { useFavorites } from '../../../hooks/useFavorites'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { CartRemoveIcon } from '../../../../public/assets/icons/CartRemoveIcon'
 import { CartAddIcon } from '../../../../public/assets/icons/CartAddIcon'
 import { CheckGarrantyIcon } from '../../../../public/assets/icons/CheckGarrantyIcon'
@@ -19,6 +19,7 @@ import { CartAddIconMobile } from '../../../../public/assets/icons/CartAddIconMo
 import { useAuth } from '../../../context/AuthContext'
 import { CartShopIcon } from '../../../../public/assets/icons/CartShopIcon'
 import { ArrowBackMobile } from '../../../../public/assets/icons/ArrowBackMobile'
+import { ArrowRightOrderIcon } from '../../../../public/assets/icons/ArrowRightOrderIcon'
 
 export const CartPage = () =>{
 
@@ -31,7 +32,7 @@ export const CartPage = () =>{
         else return;
     },[isAuth])
 
-
+    const navigate = useNavigate();
 
     
     const {
@@ -263,6 +264,13 @@ export const CartPage = () =>{
                                 {cartTotal?.subtotal}₸
                             </span>
                         </div>
+                        <button 
+                            className={cls.orderBtn}
+                            onClick={()=>navigate('/account/new-order')}
+                        >
+                            <p>Перейти к оформлению</p>
+                            <ArrowRightOrderIcon />
+                        </button>
                     </div>:
                     
                     <div className={cls.shortMobileDetails}>

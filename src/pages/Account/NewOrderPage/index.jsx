@@ -1,0 +1,1 @@
+export {NewOrderPage} from './NewOrderPage'

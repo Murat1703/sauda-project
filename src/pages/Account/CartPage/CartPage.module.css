@@ -164,6 +164,28 @@
     font-weight: inherit;
     line-height: inherit;
 }
+.orderBtn{
+    display: flex;
+    align-self: stretch;
+    height: 60px;
+    padding: 14px 20px 14px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 16px;
+    background: var(--accent);
+    p{
+        font-weight: 500;
+        color: var(--white);
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+.orderBtn:hover{
+    background: var(--accent-hover);
+}
 .cartItem{
     display: flex;
     width: 100%;

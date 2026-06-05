@@ -24,6 +24,8 @@ import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileCo
 import { Search } from '../Search';
 import { useLanguage } from '../../stores/useLanguage.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
+import { useOrdersStore } from '../../stores/useOrdersStore.js';
+
 
 export const Header = ({ordersCount}) =>{
 
@@ -65,7 +67,15 @@ export const Header = ({ordersCount}) =>{
         // localStorage.setItem('reactCardLogin', !isAuth)
     }
 
-    const {orders, loadingOrders, loadOrders} = useOrders();
+    // const {orders, loadingOrders, loadOrders} = useOrders();
+
+    const {orders, loadingOrders, loadOrders} = useOrdersStore();
+
+    useEffect(()=>{
+        loadOrders();
+    },[])
+            console.log('__HEADER_ORDERS = ',orders)
+
 
     const {favoritesList, syncLocalFavorites} = useFavoritesStore();
 
