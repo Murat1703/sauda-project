@@ -5,13 +5,10 @@ import { ControlBtn } from '../Button';
 import { CatalogMenu } from '../CatalogMenu';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { AuthModal } from '../AuthModal/AuthModal.jsx';
 import { useAuthModal } from '../../context/AuthModalContext.jsx'
 import { SideBar } from '../AccountLayout/SideBar.jsx';
 import { useOrders } from '../../hooks/useOrders.js';
 import { CounterBadge } from '../CounterBadge';
-import { useFavorites } from '../../hooks/useFavorites.js';
-// import { useCart } from '../../hooks/useCart.js';
 import { useCart } from '../../stores/useCart.js';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { CatalogBtnIcon } from '../../../public/assets/icons/CatalogBtnIcon.jsx';
@@ -32,8 +29,6 @@ export const Header = ({ordersCount}) =>{
 
     const[activeLang, setActiveLang] = useState('ru');
     const{lang, setLang} = useLanguage();
-
-    console.log(lang)
     
     const[isOpen, setIsOpen] = useState(false);
 
@@ -48,8 +43,6 @@ export const Header = ({ordersCount}) =>{
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
     const { isAuth, setIsAuth, user, loading } = useAuth();
-
-    console.log('header_isAuth = ',isAuth)
 
     const [showModal, setShowModal] = useState(false);
 
@@ -74,19 +67,19 @@ export const Header = ({ordersCount}) =>{
 
     const {orders, loadingOrders, loadOrders} = useOrders();
 
-
-    const {favorites, toggleFavorites} = useFavorites();
-
-    const {favoritesList} = useFavoritesStore();
+    const {favoritesList, syncLocalFavorites} = useFavoritesStore();
 
     const {cartItems, loadCart} = useCart();
 
     useEffect(
         ()=>{
             if (isAuth == true){
-            loadCart();} else {
-                return }
-        },[]
+                loadCart();
+                syncLocalFavorites();
+            } else {
+                    return 
+            }
+        },[isAuth]
     )
 
     const {pathname} = useLocation();

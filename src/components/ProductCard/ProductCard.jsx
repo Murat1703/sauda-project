@@ -22,16 +22,11 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
 
     const {addToCart, cartItems} = useCart();
     const {toggleFavorites} = useFavorites();
-    const {favoritesList, addToFavoritesList, loadFavoritesList, deleteFromFavoritesList} = useFavoritesStore();
+    const {favoritesList, addToFavoritesList, loadFavoritesList, deleteFromFavoritesList, addToLocalFavoritesList, deleteFromLocalFavoritesList} = useFavoritesStore();
 
     console.log(favoritesList)
 
-    // useEffect(()=>{
-    //     loadFavoritesList();
-    // },[])
-
     const navigate = useNavigate();
-
 
     const {isAuth} = useAuth();
     const [addFavorite, setAddFavorite] = useState(false);
@@ -66,20 +61,27 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                         onClick={()=>{
                             const shouldAdd = !addFavorite
                             setAddFavorite(shouldAdd);
-                            if (isDelete==true) {
+                            if ((isDelete==true) && (isAuth == true)) {
                                 deleteFromFavoritesList(product?.id)
                                 toast.error(
                                     <SnackBar text={'Товар удален из избранного'}/>
                                 );
                                 return;
                             }
-                            if (isAuth == true){
+                            if ((isDelete==true) && (isAuth == false)){
+                                deleteFromLocalFavoritesList(product?.id)
+                                toast.error(
+                                    <SnackBar text={'Товар удален из избранного'}/>
+                                );
+                                return;
+                            }
+                            if (isAuth == true && !isDelete){
                                 if (shouldAdd == true){
                                     addToFavoritesList({
                                         product_slug: product?.slug
                                     });
                                     toast(
-                                    <SnackBar text={'Товар добавлен в избранное'}/>
+                                        <SnackBar text={'Товар добавлен в избранное'}/>
                                     )
                                 } else{
                                     deleteFromFavoritesList(product?.id)
@@ -87,7 +89,23 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                         <SnackBar text={'Товар удален из избранного'}/>
                                     )
                                 }
-                            }                            
+                            }  
+                            if (isAuth == false && !isDelete){
+                                if (shouldAdd == true){
+                                    addToLocalFavoritesList({
+                                        product_slug: product?.slug,
+                                        product: product
+                                    });
+                                    toast(
+                                        <SnackBar text={'Товар добавлен в избранное'}/>
+                                    )
+                                } else{
+                                    deleteFromLocalFavoritesList(product?.id)
+                                    toast.error(
+                                        <SnackBar text={'Товар удален из избранного'}/>
+                                    )
+                                }
+                            }                          
                         }}
                     >
                         {!isFavorite?<HeartIcon />:<HeartIconFilled />}

@@ -54,6 +54,13 @@
     border-radius: 18px;
     background: var(--white);
 }
+.productPageInfoTop{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* width: 100%; */
+    align-self: stretch;
+}
 .badges{
     display: flex;
     align-items: center;

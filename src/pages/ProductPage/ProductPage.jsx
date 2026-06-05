@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import cls from './ProductPage.module.css'
 import { useProducts } from '../../stores/useProducts.js';
-import { act, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader } from '../../components/Loader';
 import { Link } from 'react-router-dom';
 import { BreadCrumbs } from '../../components/AccountLayout';
@@ -9,10 +9,6 @@ import { Title } from '../../components/Title';
 import { Badge } from '../../components/Badge';
 // import { useCart } from '../../hooks/useCart';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useFavorites } from '../../hooks/useFavorites.js';
-import { toast, ToastContainer } from 'react-toastify';
-import { useRef } from 'react';
-import DOMPurify from 'dompurify'
 
 // Import Swiper styles
 import 'swiper/css';
@@ -34,13 +30,16 @@ import { HeartIcon } from '../../../public/assets/icons/HeartIcon.jsx';
 import { HeartIconFilled } from '../../../public/assets/icons/HeartIconFilled.jsx';
 import { RepostIcon } from '../../../public/assets/icons/RepostIcon.jsx';
 import { useCart } from '../../stores/useCart.js';
+import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
+import { useAuth } from '../../context/AuthContext.jsx';
+import {CartRemoveIconMobile} from '../../../public/assets/icons/CartRemoveIconMobile.jsx'
+import { CartRemoveIconMobileDark } from '../../../public/assets/icons/CartRemoveIconMobileDark.jsx';
+import { CartAddIconMobileDark } from '../../../public/assets/icons/CartAddMobileIconDark.jsx';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
 
     const {slug} = useParams();
-
-    // console.log(slug)
 
     const {product, loadProduct, loadingProduct, products, loadingProducts, loadProducts} = useProducts();
 
@@ -68,13 +67,11 @@ export const ProductPage = ({isMobileScroll}) =>{
         maxWidth: 768
     });
 
-    const {favorites, toggleFavorites} = useFavorites();
+    const{favoritesList, addToFavoritesList, deleteFromFavoritesList} = useFavoritesStore();
+
+    const [addToFavorite, setAddToFavorite] = useState(false);
 
     const [showMoreGaranty, setShowMoreGaranty] = useState(false);
-
-
-    loadingProduct &&  <Loader />
-
 
     const [mobileCount, setMobileCount] = useState(5);
 
@@ -82,16 +79,22 @@ export const ProductPage = ({isMobileScroll}) =>{
         setMobileCount(product?.product?.attributes.length)
     }
 
-    const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart} = useCart();
+    const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart, errLoadingCart} = useCart();
+
+    const {isAuth} = useAuth();
 
 
     const cartItem = cartItems?.find(
         (item) => item?.product?.id === item.product_id
     );
 
-    console.log('product_page ', cartItem)
+    const favoriteItem = favoritesList?.find((item)=>
+        item?.product?.slug === product?.product?.slug
+    )
 
     return(
+    <>
+        {loadingProduct && <Loader />}
         <div className={cls.productPageWrapper} >
             {!isMobile &&
             <div className={cls.productPageContent}>
@@ -254,15 +257,39 @@ export const ProductPage = ({isMobileScroll}) =>{
                         </div>
                     </div>
                     <div className={cls.right}>
-                        <div className={cls.badges}>
-                            {product?.product?.is_new &&
-                            <Badge type={'new'}>
-                                Новинка
-                            </Badge>}
-                            {product?.product?.is_hit &&
-                            <Badge type={'new'}>
-                                Хит
-                            </Badge>}
+                        <div className={cls.productPageInfoTop}>
+                            <div className={cls.badges}>
+                                {product?.product?.is_new &&
+                                <Badge type={'new'}>
+                                    Новинка
+                                </Badge>}
+                                {product?.product?.is_hit &&
+                                <Badge type={'new'}>
+                                    Хит
+                                </Badge>}
+                            </div>
+                            <button 
+                                onClick={()=>{
+                                    const flagIsAdd = !addToFavorite;
+                                    setAddToFavorite(flagIsAdd);
+                                    if (isAuth == true){
+                                        if (favoriteItem?.product?.slug == product?.product?.slug) {
+                                            deleteFromFavoritesList(product?.product?.id);
+                                            <SnackBar text={'Товар удален из избранного'}/>
+                                        } else{
+                                            addToFavoritesList({
+                                                product_slug: product?.product?.slug
+                                            });
+                                            <SnackBar text={'Товар добавлен в избранное'}/>
+                                        }
+                                    }
+                                }}
+                            >
+                                {favoriteItem?.product?.slug == product?.product?.slug
+                                ?<HeartIconFilled />
+                                :<HeartIcon />
+                                }
+                            </button>
                         </div>
                         <div className={cls.priceBlock}>
                             <div className={cls.priceDiscount}>
@@ -423,16 +450,26 @@ export const ProductPage = ({isMobileScroll}) =>{
                             <span>157 отзывов</span>
                         </div>
                         <div className={cls.mobileTopButtons}>
-                            <button
-                                onClick={()=>{toggleFavorites(product?.product?.slug);
-                                !favorites.includes(product?.product?.slug)&&
-                                toast(
-                                    <SnackBar text="Товар добавлен в избранное"/>
-                                )}
-                                }
+                            <button 
+                                onClick={()=>{
+                                    const flagIsAdd = !addToFavorite;
+                                    setAddToFavorite(flagIsAdd);
+                                    if (isAuth == true){
+                                        if (favoriteItem?.product?.slug == product?.product?.slug) {
+                                            deleteFromFavoritesList(product?.product?.id);
+                                            <SnackBar text={'Товар удален из избранного'}/>
+                                        } else{
+                                            addToFavoritesList({
+                                                product_slug: product?.product?.slug
+                                            });
+                                            <SnackBar text={'Товар добавлен в избранное'}/>
+                                        }
+                                    }
+                                }}
                             >
-                                {favorites.includes(product?.product?.slug)? 
-                                    <HeartIconFilled /> :<HeartIcon/>
+                                {favoriteItem?.product?.slug == product?.product?.slug
+                                ?<HeartIconFilled />
+                                :<HeartIcon />
                                 }
                             </button>
                             <button>
@@ -461,38 +498,46 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 counter > 0 ? cls.mobileProductActiveCartBtn : ''
                             }`}
                         >
-                            <Button onClick={()=>setAdd(true)}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <path d="M12.0003 6.75V4.5C12.0003 2.84315 10.6571 1.5 9.00028 1.5C7.34342 1.5 6.00028 2.84315 6.00028 4.5V6.75M2.69428 7.76397L2.24428 12.564C2.11633 13.9287 2.05236 14.6111 2.27881 15.1382C2.47775 15.6012 2.82637 15.984 3.26879 16.2253C3.77242 16.5 4.4578 16.5 5.82856 16.5H12.172C13.5428 16.5 14.2281 16.5 14.7318 16.2253C15.1742 15.984 15.5228 15.6012 15.7217 15.1382C15.9482 14.6111 15.8842 13.9287 15.7563 12.564L15.3063 7.76397C15.1982 6.61151 15.1442 6.03528 14.885 5.59962C14.6568 5.21594 14.3195 4.90883 13.9162 4.71738C13.4583 4.5 12.8795 4.5 11.722 4.5L6.27856 4.5C5.12104 4.5 4.54229 4.5 4.08434 4.71738C3.68103 4.90883 3.34378 5.21594 3.11552 5.59962C2.85634 6.03528 2.80232 6.61151 2.69428 7.76397Z" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                                <p>{counter == 0?`В Корзину`:`В Корзине`}</p>
+                            <Button 
+                                disabled={cartItem?.product?.slug == product?.product?.slug? true: false}
+                                onClick={()=>{
+                                    setAdd(true);
+                                    addToCart({
+                                        product_slug: product?.product?.slug,
+                                        quantity: 1,
+                                    })
+                                    setCounter(counter + 1)
+                                }}
+                            >
+                                <CartIcon />
+                                <p>
+                                    {counter == 0 || cartItem?.product?.slug == product?.product?.slug ? `В корзине`: `В корзину`}
+                                </p>
                             </Button>
                             {add && 
                             <div className={cls.counter}>
                                 <div className={cls.counterWrapper}>
                                     <button
                                         onClick={()=>{
-                                            counter !== 0 &&
-                                            (setCounter(counter - 1) )
+                                            const checkCounter = counter;
+                                            checkCounter !== 0 &&
+                                            (setCounter(checkCounter - 1) )
                                             counter == 0? removeFromCart(product.id):
-                                            decreaseQuantity(product.id);
+                                            changeCount(product.id, (counter));
                                             counter == 0 && setAdd(false)
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M4.16699 10H15.8337" stroke="#152429" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
+                                        <CartRemoveIconMobileDark />
                                     </button>
                                     <p>{counter}</p>
                                     <button
                                         onClick={()=>{
+                                            if (!errLoadingCart){
                                             setCounter(counter + 1);
-                                            changeCount(cartItem.id, counter)
+                                            changeCount(cartItem.id, counter);} else return null
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M10.0003 4.16669V15.8334M4.16699 10H15.8337" stroke="#152429" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
+                                        <CartAddIconMobileDark />
                                     </button>
                                 </div>
                             </div>
@@ -664,10 +709,11 @@ export const ProductPage = ({isMobileScroll}) =>{
             }
             {isMobileScroll && product?.product?.stock_quantity>0 && <div className={cls.fixedBottomWrapper}>
                 <button 
+                    disabled={cartItem?.product?.slug == product?.product?.slug? true: false}
                     className={cls.bottomFixedBtn} 
                     onClick={()=>setAdd(true)}
                 >
-                    <p>{counter == 0? `В Корзину`: `В корзине`}</p>
+                    <p>{counter == 0 || cartItem?.product?.slug == product?.product?.slug ? `В корзине`: `В корзину`}</p>
                 </button>
                 
                 {add && 
@@ -682,9 +728,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                             counter == 0 && setAdd(false)
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M4.16699 10H15.8337" stroke="#152429" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
+                                        <CartRemoveIconMobileDark />
                         </button>
                         <p>{counter}</p>
                         <button
@@ -693,14 +737,13 @@ export const ProductPage = ({isMobileScroll}) =>{
                                             changeCount(cartItem.id, (counter))
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M10.0003 4.16669V15.8334M4.16699 10H15.8337" stroke="#152429" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
+                                        <CartRemoveIconMobileDark />
                         </button>
                     </div>
                 </div>
                 }
             </div>}
         </div>
+    </>
     )
 }

@@ -11,25 +11,20 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useProducts } from '../../../stores/useProducts'
 import { useFavoritesStore } from '../../../stores/useFavoritesStore'
+import { useAuth } from '../../../context/AuthContext'
 
 export const FavoritesPage = () =>{
     const {favorites, toggleFavorites} = useFavorites();
 
-    const {favoritesList, deleteFromFavoritesList, loadingFavoritesList} = useFavoritesStore();
+    const {isAuth} = useAuth();
 
-    const {productsBySlugs, loadProductsBySlugs, loadingProductsBySlugs, errLoadingProductsBySlugs} = useProducts();
+    const {favoritesList, deleteFromFavoritesList, loadingFavoritesList} = useFavoritesStore();
 
 
     const isMobile = useMediaQuery({
         maxWidth: 768
     })
 
-    // useEffect(()=>{
-    //     if (favorites.length > 0) {
-    //         loadProductsBySlugs(favorites);
-    //     }
-
-    // },[favorites]);
 
     const [sortFilter, setSortFilter] = useState('По дате добавления');
     const [showFilter, setShowFilter] = useState(false);
@@ -50,7 +45,7 @@ export const FavoritesPage = () =>{
     }
     
     
-
+    console.log(favoritesList)
 
     return(
         <>
@@ -153,12 +148,25 @@ export const FavoritesPage = () =>{
                         </button>
                     </div>}
                     <div className={cls.favoritesList}>
+                        {/* {!isAuth && 
+                        favoritesList?.map((favoriteItem)=>{
+                            return(
+                                <ProductCard 
+                                    key={favoriteItem.product_slug} 
+                                    product={favoriteItem.product} 
+                                    // isFavorite={favoritesList.find((item) => item.product_slug == favoriteItem.product.slug)}
+                                    isDelete={true}
+                                />
+                            )
+                        })                        } */}
                         {favoritesList?.map((favoriteItem)=>{
                             return(
                                 <ProductCard 
                                     key={favoriteItem.product.slug} 
                                     product={favoriteItem.product} 
-                                    isFavorite={favoritesList.find((item) => item.product.slug == favoriteItem.product.slug)}
+                                    isFavorite={
+                                        favoritesList.find((item) => item.product.slug == favoriteItem.product.slug)
+                                    }
                                     isDelete={true}
                                 />
                             )
