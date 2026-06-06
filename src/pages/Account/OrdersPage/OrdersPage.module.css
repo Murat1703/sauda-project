@@ -126,9 +126,17 @@
     gap: 8px;
     border-radius: 320px;
 }
+.pendingOrder{
+    background: #d0d0d0;
+    color: #152429;
+}
 .delivered{
     background: rgba(93, 153, 29, 0.09);
     color: #5D991D;
+}
+.completed{
+    background: #5D991D;
+    color: var(--white);
 }
 .processing{
     background: var(--Dark-D10, #E4E5E5);
@@ -138,9 +146,17 @@
     background: rgba(210, 29, 29, 0.09);
     color: #D21D1D;
 }
+.confirmed{
+    background: rgba(23, 172, 70, 0.09);
+    color: #0f79ab9b;
+}
 .shipped{
     background: #DFEFFF;
     color: #005EFF;
+}
+.finished{
+    background: rgb(83, 164, 114);
+    color: var(--accent);
 }
 .orderInformation{
     display: flex;
@@ -363,4 +379,8 @@
     .cancelOrderBtn > svg path {
         fill: #F20;
     }
+    .orderItemBottom > .orderItemPreviewsList{
+        display: none;
+    }
+    
 }

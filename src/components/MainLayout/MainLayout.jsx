@@ -14,21 +14,16 @@ import { useAuthModal } from '../../context/AuthModalContext.jsx';
 import { useProducts } from '../../stores/useProducts.js';
 import { useLanguage } from '../../stores/useLanguage.js';
 import {useCart} from '../../stores/useCart.js'
+import { useOrdersStore } from '../../stores/useOrdersStore.js';
+import { usePaymentMethods } from '../../hooks/usePaymentMethods.js';
 
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
-    const {orders, loadingOrders, loadOrders} = useOrders();
+    const {orders, loadingOrders, loadOrders} = useOrdersStore();
 
     const{cartItems, loadCart, cartTotal} = useCart();
 
-    // console.log('cartItems = ',cartItems)
-
-    // useEffect(()=>{
-    //     loadCart();
-    // },[])
-
-    console.log(cartTotal)
 
     const {pathname} = useLocation();
     const isMobile = useMediaQuery({
@@ -54,12 +49,10 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
     }, [pathname, isAuthModalOpen, closeAuthModal]);
 
 
-
     useEffect(()=>{
         loadOrders()
     },[]);
 
-    // console.log('mainLayoutOrders = ', orders)
 
     const contentRef = useRef(null);
 
@@ -92,13 +85,22 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
 
     console.log(lang)
 
+    const {paymentMethods, loadingPaymentMethods, loadPaymentMethods} = usePaymentMethods();
+
+    useEffect(()=>{
+        loadPaymentMethods();
+    }, [])
+
+
+    // console.log('payment-methods', paymentMethods)
+
 
     return(
         <>
             <ScrollToTop />
             <div className={cls.mainLayout} >
                 <Header 
-                    ordersCount={orders?.length} 
+                    ordersCount={orders?.data?.length} 
                 />
                 <div 
                     className={cls.mainWrapper} 
@@ -111,7 +113,7 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
                         </Suspense>
                     </main>
                    
-                    { (!isMobile ||(pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) && ((pathname!=='/login')) && ((pathname!=='/account/favorites')) )&& <Footer />}
+                    { (!isMobile ||(pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) && ((pathname!=='/login')) && ((pathname!=='/account/favorites')) && (pathname!=='/account/new-order') )&& <Footer />}
                     
                 </div>
             </div>

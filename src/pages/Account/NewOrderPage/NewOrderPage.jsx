@@ -15,6 +15,8 @@ import { PaymentKaspiIcon } from '../../../../public/assets/icons/PaymentKaspiIc
 import kaspiIcon from '../../../../public/assets/icons/kaspi.svg'
 import { PaymentCashIcon } from '../../../../public/assets/icons/PaymentCashIcon'
 import { useOrdersStore } from '../../../stores/useOrdersStore'
+import { PickupIconDelivery } from '../../../../public/assets/icons/PickupIconDelivery'
+import { useMediaQuery } from 'react-responsive'
 
 export const NewOrderPage = () =>{
 
@@ -39,11 +41,13 @@ export const NewOrderPage = () =>{
 // delivery_address	{...}
 // customer_note	[...]
 
+    useEffect(()=>{},[delivery])
+
     const [data, setData] = useState({
-        delivery_method_code: "pickup",
-        payment_method_id: 1,
-        contact_phone: "+77052941444",
-        contact_name: "test_user"
+        delivery_method_code: delivery,
+        payment_method_id: null,
+        contact_phone: user?.user?.phone,
+        contact_name: user?.user?.name
     })
 
     const [activeCity, setActiveCity] = useState(citiesList[0]);
@@ -59,6 +63,11 @@ export const NewOrderPage = () =>{
         loadPoints();
     },[])
 
+    const isMobile = useMediaQuery({
+        maxWidth: 768
+    })
+
+    console.log('sendData. = ', data)
 
     return(
         <div className={cls.newOrderPage}>
@@ -71,6 +80,12 @@ export const NewOrderPage = () =>{
                     Оформление заказа
                 </Title>
             </div>
+            {isMobile && 
+            <div className={cls.mobileTotalOrderCount}>
+                <span>{cartTotal?.items_quantity} товара</span>
+                <span>{cartTotal?.subtotal}₸</span>
+            </div>
+            }
             <div className={cls.newOrderBody}>
                 <div className={cls.newOrderContacts}>
                     <div 
@@ -114,13 +129,27 @@ export const NewOrderPage = () =>{
                             <div className={cls.newOrderDeliveryMethodTop}>
                                 <div 
                                     className={`${cls.pickup} ${delivery=='pickup'? cls.active: ""}`}
-                                    onClick={()=>setDelivery('pickup')}
+                                    onClick={()=>{
+                                        const deliveryMethod = 'pickup';
+                                        setDelivery(deliveryMethod);
+                                        setData((prev)=>({
+                                            ...prev,
+                                            delivery_method_code: deliveryMethod
+                                        }))
+                                    }}
                                 >
                                     <p>Самовывоз</p>
                                 </div>
                                 <div 
-                                    className={`${cls.standart} ${delivery=='standart'? cls.active : ""}`}
-                                    onClick={()=>setDelivery('standart')}
+                                    className={`${cls.standart} ${delivery=='standard'? cls.active : ""}`}
+                                    onClick={()=>{
+                                        setDelivery('standard');
+                                        const deliveryMethod = 'standard';
+                                        setData((prev)=>({
+                                            ...prev,
+                                            delivery_method_code: deliveryMethod
+                                        }))
+                                    }}
                                 >
                                     <p>Доставка до адреса</p>
                                 </div>
@@ -180,6 +209,106 @@ export const NewOrderPage = () =>{
                                     </div>
                                 </div>
                                 }
+                                {delivery=='standard' &&
+                                <div className={cls.deliveryStandart}>
+                                    <div className={cls.pickupCityWrapper}>
+                                        <p>Выберите город</p>
+                                        <div className={cls.pickupCitiesListWrapper}
+                                        onClick={()=>setShowList(!showList)}>
+                                            <div className={cls.activeCity} >
+                                                <LocationIcon />
+                                                <p>{activeCity}</p>
+                                            </div>
+                                            <OrderListArrow />
+                                            {showList && 
+                                            <div className={cls.list}>
+                                                <div>
+                                                    {citiesList.map((city, index)=>{
+                                                        return(
+                                                            <p 
+                                                            key={index}
+                                                            onClick={()=>{
+                                                                setActiveCity(city);
+                                                                const toDataCity = city; 
+                                                                setData((prev)=>({
+                                                                    ...prev,
+                                                                    delivery_address: {
+                                                                        ...prev.delivery_address,
+                                                                        city: toDataCity
+                                                                    }
+                                                                }))
+                                                            }}
+                                                            >{city}
+                                                            </p>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className={cls.deliveryAdressInputs}>
+                                        <div>
+                                            <p>Введите ваш адрес<span>*</span></p>
+                                            <input 
+                                                type="text" placeholder='Введите ваш адрес' 
+                                                onChange={(e)=>{
+                                                    setData((prev)=>({
+                                                        ...prev,
+                                                        delivery_address: {
+                                                            ...prev.delivery_address,
+                                                            street: e.target.value
+                                                        }
+                                                    }))
+                                                }}
+                                            />
+                                            <span>Пример: ул.Макатаева 314</span>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <p>Этаж</p>
+                                                <input 
+                                                    type="text" placeholder='Этаж' 
+                                                />
+                                            </div>
+                                            <div>
+                                                <p>Квартира</p>
+                                                <input 
+                                                    type="text" placeholder='Квартира'
+                                                    onChange={(e)=>{
+                                                        setData((prev)=>({
+                                                            ...prev,
+                                                            delivery_address: {
+                                                                ...prev.delivery_address,
+                                                                apartment: e.target.value
+                                                            }
+                                                        }))
+                                                    }}
+                                                />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div className={cls.deliveryAdressInputs}>
+                                        <div className={cls.notes}>
+                                            <p>Комментарий для курьера</p>
+                                            <input type="text" placeholder='Уточнения для курьера' />
+                                        </div>
+                                    </div>
+                                    <div className={cls.deliveryBtnWrapper}>
+                                        <button>
+                                            <p>Продолжить</p>
+                                        </button>
+                                        <div className={cls.deliveryInfo}>
+                                            <PickupIconDelivery />
+                                            <div>
+                                                <p>Доставка до адреса</p>
+                                                <p>1000₸</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
                             </div>
                         </div>
                         }
@@ -206,7 +335,17 @@ export const NewOrderPage = () =>{
                                     </div>
                                 </div>
                                 <div></div>
-                                <input type="radio" name='payment-method' value={'card'}/>
+                                <input 
+                                    type="radio" 
+                                    name='payment-method' 
+                                    value={'card'}
+                                    onChange={()=>setData((prev)=>(
+                                        {
+                                            ...prev,
+                                            payment_method_id: 1
+                                        }
+                                    ))}
+                                />
                             </div>
                             <div className={cls.newOrderPaymentItem}>
                                 <div className={cls.newOrderLeft}>
@@ -217,7 +356,17 @@ export const NewOrderPage = () =>{
                                     </div>
                                 </div>
                                 <div></div>
-                                <input type="radio" name='payment-method' value={'kaspi'}/>
+                                <input 
+                                    type="radio" 
+                                    name='payment-method' 
+                                    value={'kaspi'}
+                                    onChange={()=>setData((prev)=>(
+                                        {
+                                            ...prev,
+                                            payment_method_id: 3
+                                        }
+                                    ))}
+                                />
                             </div>
                             <div className={cls.newOrderPaymentItem}>
                                 <div className={cls.newOrderLeft}>
@@ -228,7 +377,17 @@ export const NewOrderPage = () =>{
                                     </div>
                                 </div>
                                 <div></div>
-                                <input type="radio" name='payment-method' value={'cash'}/>
+                                <input 
+                                    type="radio" 
+                                    name='payment-method' 
+                                    value={'cash'}
+                                    onChange={()=>setData((prev)=>(
+                                        {
+                                            ...prev,
+                                            payment_method_id: 4
+                                        }
+                                    ))}
+                                />
                             </div>
                         </div>
                         <button 
@@ -286,6 +445,12 @@ export const NewOrderPage = () =>{
                                 <div className={cls.line}></div>
                                 <span>{cartTotal?.subtotal} ₸</span>
                             </div>
+                            <button 
+                                className={cls.newOrderBtn}
+                                onClick={()=>addOrder(data)}
+                            >
+                                <p>Перейти к оплате</p>
+                            </button>
                         </div>
                     </div>
                 </div>

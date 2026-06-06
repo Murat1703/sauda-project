@@ -1,6 +1,7 @@
 .newOrderPage{
     display: flex;
     flex-direction: column;
+    padding-bottom: 80px;
 }
 .newOrderPageTop{
     display: flex;
@@ -339,6 +340,7 @@
     height: 100%;
     opacity: 0;
     position: absolute;
+    left: 0;
 }
 .newOrderPaymentItem > div:nth-child(2){
     position: relative;
@@ -507,4 +509,247 @@
     font-weight: 700;
     line-height: 20px; /* 71.429% */
     color: var(--text);
+}
+.deliveryStandart{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.deliveryAdressInputs{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+}
+.deliveryAdressInputs:nth-child(2) > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.deliveryAdressInputs > div > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.deliveryAdressInputs > div  > p:nth-child(1),
+.deliveryAdressInputs > div:nth-child(2)  > div > p:nth-child(1){
+    font-size: 16px;
+    line-height: 28px;
+    font-weight: 500;
+    color: #152429;
+}
+.deliveryAdressInputs > div > p:nth-child(1) > span{
+    color: var(--accent);
+}
+.deliveryAdressInputs > div > input,
+.deliveryAdressInputs > div:nth-child(2)  > div > input{
+    padding: 12px 18px 13px 18px;
+    display: flex;
+    border-radius: 10px;
+    background: #EEEFF0;
+}
+.deliveryAdressInputs > div:nth-child(1) > input{
+    width: 400px;
+}
+.deliveryAdressInputs > div:nth-child(1) > span:last-child{
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 110%; /* 13.2px */
+    color: #8F9596;
+}
+.deliveryAdressInputs > div:nth-child(2) > input{
+    width: 120px;
+}
+/* .notes > input{
+    width: 658px!important;
+} */
+ .deliveryBtnWrapper{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+ }
+.deliveryBtnWrapper > button{
+    display: flex;
+    width: 249px;
+    padding: 18px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    background: var(--Accent-A100, #FF5302);
+    box-shadow: 0 2px 8px 0 rgba(11, 38, 46, 0.04), 0 2px 2px 0 rgba(11, 38, 46, 0.08);
+    p{
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+        color: var(--white);
+    }
+ }
+.deliveryBtnWrapper > button:hover{
+    background: var(--accent-hover);
+}
+.deliveryInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.deliveryInfo > div{
+    display: flex;
+    flex-direction: column;
+}
+.deliveryInfo > div > p{
+    font-size: 14px;
+    line-height: 140%;
+    color: #152429;
+    font-weight: 400;
+}
+.deliveryInfo > div > p:last-child{
+    font-weight: 700;
+}
+
+@media (max-width:768px){
+    .newOrderPageTop{
+        padding: 10px 16px;
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .newOrderPageTop > a > p{
+        display: none;
+    }
+    .newOrderPageTop > h3{
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+        letter-spacing: .16px;
+        margin: 0 auto;
+    }
+    .mobileTotalOrderCount{
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        background: #FFF;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .mobileTotalOrderCount > span{
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 18px; /* 112.5% */
+    }
+    .mobileTotalOrderCount > span:last-child{
+        font-weight: 700;
+    }
+    .newOrderBody{
+        flex-direction: column;
+        margin-top: 16px;
+    }
+    .newOrderDetails, .newOrderContacts{
+        width: 100%;
+    }
+    .newOrderField{
+        padding: 16px;
+    }
+    .newOrderFieldTitle{
+        align-items: center;
+        gap:8px;
+    }
+    .newOrderFieldContactInfo{
+        padding: 0;
+    }
+    .newOrderFieldContactInfo > div:nth-child(2) > p:nth-child(1),
+    .newOrderFieldContactInfo > div:nth-child(2) > p:nth-child(2){
+        font-size: 14px;
+        line-height: 18px;
+    }
+    .newOrderFieldContactInfo > div:nth-child(2) > p:nth-child(2){
+        line-height: 14px;
+    }
+    .newOrderFieldTitle > p:nth-child(2){
+        font-size: 18px;
+        letter-spacing: -0.18px;
+        font-weight: 500;
+        line-height: 18px;
+    }
+    .newOrderDeliveryMethod{
+        padding: 0;
+    }
+    .pickupCitiesListWrapper{
+        width: 100%;
+    }  
+    .newOrderDeliveryMethodTop > div{
+        padding: 10px 14px;
+        border-radius: 0 14px 14px 0;
+        p{
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+        }
+    }
+    .newOrderDeliveryMethodTop > div.active{
+        border-radius: 14px;
+    }
+    .pickupCityWrapper > p{
+        display: none;
+    }
+    .deliveryAdressInputs > div{
+        width: 100%;
+    }
+    .deliveryAdressInputs {
+        flex-direction: column;
+    }
+    .deliveryAdressInputs > div:nth-child(2)  > div > p{
+        /* flex-direction: column; */
+        display: none;
+    }
+    .deliveryBtnWrapper > button{
+        display: none;
+    }
+    .newOrderPaymentItem{
+        padding: 12px 8px;
+        border-radius: 14px;
+    }
+    .newOrderLeft > div > p:nth-child(1){
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .newOrderLeft > div > p:nth-child(2){
+        font-size: 12px;
+        line-height: 14px;
+    }
+    .newOrderDetails{
+        padding: 16px;
+    }
+    .newOrderDetailsContent{
+        width: 100%;
+    }
+    .newOrderDetailsContent > h4{
+        display: none;
+    }
+    .newCharacteristicItem > span{
+        font-size: 14px;
+        line-height: 16px;
+    }
+    .bottom > span{
+        font-size: 20px;
+        line-height: 20px;
+    }
+    .newOrderPriceBlock{
+        gap: 20px;
+    }
+    .newOrderField > .newOrderBtn{
+        display: none;
+    }
+    .newOrderBtn{
+        padding: 14px 16px;
+        height: 52px;
+        gap: 12px;
+        border-radius: 18px;
+        p{
+            font-size: 16px;
+            line-height: 16px;
+        }
+    }
 }

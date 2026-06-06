@@ -1,14 +1,17 @@
 import { create } from "zustand";
-import { apiGetOrders, apiPostOrder } from "../api/api.orders.js";
+import { apiGetOrder, apiGetOrders, apiPostOrder } from "../api/api.orders.js";
 
 
 
 export const useOrdersStore = create((set, get) => ({
   orders: [],
+  orderItem: {},
 
   loadingOrders: true,
+  loadingOrderItem: true,
 
   errLoadingOrders: null,
+  errLoadingOrderItem: null,
 
   loadOrders: async () => {
     const { orders, loadingOrders } = get();
@@ -34,6 +37,40 @@ export const useOrdersStore = create((set, get) => ({
     } finally {
       set({
         loadingOrders: false,
+      });
+    }
+  },
+
+  loadOrderItem: async (orderId) => {
+    const { orderItem } = get();
+
+    if (!orderId) return;
+
+    // if (String(orderItem?.order?.number) === String(orderId)) {
+    //   return;
+    // }
+
+    try {
+      set({
+        loadingOrderItem: true,
+        errLoadingOrderItem: null,
+        orderItem: null,
+      });
+
+      const res = await apiGetOrder(orderId);
+
+      set({
+        orderItem: res?.data || null,
+      });
+    } catch (error) {
+      set({
+        orderItem: null,
+        errLoadingOrderItem:
+          error?.response?.data?.message || error.message,
+      });
+    } finally {
+      set({
+        loadingOrderItem: false,
       });
     }
   },

@@ -2,16 +2,16 @@ import cls from './OrdersPage.module.css';
 import { AccountTitle, FiltersContainer } from '../../../components/AccountLayout';
 import { BreadCrumbs } from '../../../components/AccountLayout';
 import { useEffect, useState } from 'react';
-import { useOrders } from '../../../hooks/useOrders.js';
 import { Loader } from '../../../components/Loader';
 import { NavLink } from 'react-router-dom';
 import { useDateFormat } from '../../../hooks/useDateFormat.js';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { useOrdersStore } from '../../../stores/useOrdersStore.js';
 
 export const OrdersPage = () =>{
 
-    const {orders, loadingOrders, loadOrders} = useOrders();
+    const {orders, loadingOrders, loadOrders} = useOrdersStore();
 
     useEffect(()=>{
         loadOrders()
@@ -23,17 +23,26 @@ export const OrdersPage = () =>{
     
     const status = (item) =>{
         switch (item) {
-            case 'delivered':
-                return <span className={cls.delivered}>Доставлен</span>;
+            case 'pending':
+                return <span className={cls.pendingOrder}>Новый</span>;
+
+            case 'confirmed':
+                return <span className={cls.confirmed}>Потвержден</span>;
 
             case 'processing':
                 return <span className={cls.processing}>В обработке</span>;
+
+            case 'completed':
+                return <span className={cls.completed}>Завершен</span>;
 
             case 'cancelled':
                 return <span className={cls.cancelled}>Отменен</span>;
 
             case 'shipped':
-                return <span className={cls.shipped}>На доставке</span>;
+                return <span className={cls.shipped}>Отправлен</span>;
+
+            case 'finished':
+                return <span className={cls.finished}>Завершен</span>;
         }
     }
 
@@ -92,7 +101,7 @@ export const OrdersPage = () =>{
                 </FiltersContainer>
                 <div className={cls.ordersList}>
                     {loadingOrders && <Loader/>}
-                    {orders?.length == 0 && (
+                    {orders?.data?.length == 0 && (
                         <div className={cls.orderItem}>
                             <div className={cls.emptyOrders}>
                                 <div className={cls.emptyOrdersTop}>
@@ -114,23 +123,23 @@ export const OrdersPage = () =>{
                             
                         </div>
                     )}
-                    {orders?.length !== 0 && orders?.filter(order=>{if (filter=='all') return true; return order.status==filter}).map((order, index) =>(
-                        <div className={cls.orderItem} key={order.id}>
+                    {orders?.data?.length !== 0 && orders?.data?.filter(order=>{if (filter=='all') return true; return order.status==filter}).map((order) =>(
+                        <div className={cls.orderItem} key={order.number}>
                             <div className={cls.orderItemTop}>
                                 <div className={cls.orderStatus}>
-                                    <p>№{order.orderNumber}
-                                        {isMobile && <span>{formatDate(order.createdAt)}</span>}
+                                    <p>№{order.number}
+                                        {isMobile && <span>{formatDate(order.placed_at)}</span>}
                                     </p>
-                                    {status(order.status)}
+                                    {status(order?.status)}
                                 </div>
                                 <div className={cls.orderInformation}>
                                     <div className={cls.orderInformationItem}>
                                         <p>Создан:</p>
-                                        <p>{formatDate(order.createdAt)}</p>
+                                        <p>{formatDate(order.placed_at)}</p>
                                     </div>
                                     <div className={cls.orderInformationItem}>
                                         <p>Сумма:</p>
-                                        <p>{order.totalPrice} ₸</p>
+                                        <p>{order.total} ₸</p>
                                     </div>
                                     <div className={cls.orderInformationItem}>
                                         <p>Оплата:</p>
@@ -160,7 +169,7 @@ export const OrdersPage = () =>{
                                             <p>Повторить</p>
                                         </button>
                                         {order.status  !== 'delivered' ?    
-                                        <NavLink to={`/account/orders/${order.id}`}>
+                                        <NavLink to={`/account/orders/${order?.number}`}>
                                             {isMobile && 
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                 <path d="M11.6663 9.16666H6.66634M8.33301 12.5H6.66634M13.333 5.83332H6.66634M16.6663 5.66666V14.3333C16.6663 15.7335 16.6663 16.4335 16.3939 16.9683C16.1542 17.4387 15.7717 17.8212 15.3013 18.0608C14.7665 18.3333 14.0665 18.3333 12.6663 18.3333H7.33301C5.93288 18.3333 5.23281 18.3333 4.69803 18.0608C4.22763 17.8212 3.84517 17.4387 3.60549 16.9683C3.33301 16.4335 3.33301 15.7335 3.33301 14.3333V5.66666C3.33301 4.26653 3.33301 3.56646 3.60549 3.03168C3.84517 2.56128 4.22763 2.17882 4.69803 1.93914C5.23281 1.66666 5.93288 1.66666 7.33301 1.66666H12.6663C14.0665 1.66666 14.7665 1.66666 15.3013 1.93914C15.7717 2.17882 16.1542 2.56128 16.3939 3.03168C16.6663 3.56646 16.6663 4.26653 16.6663 5.66666Z" stroke="#152429" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>

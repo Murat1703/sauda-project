@@ -6,6 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import { MobileLogoutModal } from '../../../components/MobileLogoutModal'
 import { useAuth } from '../../../context/AuthContext'
 import { AccountProfileImageIcon } from '../../../../public/assets/icons/AccountProdileImageIcon'
+import { useOrdersStore } from '../../../stores/useOrdersStore'
 
 export const MainAccountMainPage = () =>{
 
@@ -16,7 +17,7 @@ export const MainAccountMainPage = () =>{
 
     const [link, setLink] = useState('')
 
-    const {orders, loadingOrders, loadOrders} = useOrders();
+    const {orders, loadingOrders, loadOrders} = useOrdersStore();
 
     useEffect(()=>{
         loadOrders()
@@ -54,7 +55,7 @@ export const MainAccountMainPage = () =>{
                 </div>
             </div>
             <div className={cls.sideBarWrapper}>
-                <SideBar setLink={setLink} link={link} ordersCount={orders?.length || 0} isMobile={isMobile} onMobileLogout={mobileLogoutHandler}/> 
+                <SideBar setLink={setLink} link={link} ordersCount={orders?.data?.length || 0} isMobile={isMobile} onMobileLogout={mobileLogoutHandler}/> 
             </div>
 
         </div>        }

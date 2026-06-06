@@ -105,7 +105,7 @@ function App() {
 
                 <Route element={<AccountResponsiveLayout />} >
                   <Route path='/account/orders' element={<OrdersPage />}/>
-                  <Route path={`/account/orders/:id`} element={<OrderPage />}/>
+                  <Route path={'/account/orders/:orderId'} element={<OrderPage />}/>
                   <Route path='/account/new-order' element={<NewOrderPage />}/>
                   <Route path='/account/favorites' element={<FavoritesPage />}/>
                   <Route path='/account/reviews' element={<ReviewsPage />}/>

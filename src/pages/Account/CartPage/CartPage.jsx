@@ -278,7 +278,7 @@ export const CartPage = () =>{
                              <p>{cartTotal?.subtotal}₸</p>
                              <span>{cartTotal?.items_quantity} товара</span>
                          </div>
-                         <button onClick={(e)=>e.stopPropagation()}>Оформить заказ</button>
+                         <button onClick={()=>navigate('/account/new-order')}>Оформить заказ</button>
                     </div>
                     }
                 </div>

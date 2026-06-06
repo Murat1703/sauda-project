@@ -104,6 +104,7 @@ export const Header = ({ordersCount}) =>{
     '/account/orders',
     '/login',
     '/account/favorites',
+    '/account/new-order'
     ];
 
     const shouldHideHeader =

@@ -1,27 +1,26 @@
 import { BreadCrumbs } from '../../../components/AccountLayout'
 import { AccountTitle } from '../../../components/AccountLayout'
 import cls from './OrderPage.module.css'
-import { useOrders } from '../../../hooks/useOrders'
 import { Link, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDateFormat } from '../../../hooks/useDateFormat.js';
 import { Loader } from '../../../components/Loader/Loader.jsx';
 import { useMediaQuery } from 'react-responsive';
+import { useOrdersStore } from '../../../stores/useOrdersStore.js';
 
 
 export const OrderPage = () =>{
 
-    const { id } = useParams();
+    const { orderId } = useParams();
 
     const { formatDate } = useDateFormat();
+
+    const {orderItem, loadOrderItem, loadingOrderItem} = useOrdersStore();
     
-    const { order, loadingOrder, loadOrder } = useOrders(); 
-
     useEffect(()=>{
-        loadOrder(id)
-    },[id]);
+        loadOrderItem(orderId);
+    },[orderId])
 
-    console.log(order)
     const isMobile = useMediaQuery({
         maxWidth: 768
     });
@@ -42,6 +41,8 @@ export const OrderPage = () =>{
         }
     }
 
+    console.log('order ITe', orderItem)
+
     const pricePerOne = () =>{
 
     }
@@ -61,7 +62,7 @@ export const OrderPage = () =>{
                                 <path d="M19 12H5M12 5L5 12L12 19" stroke="#152429" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         </Link>}
-                        <AccountTitle>Заказ № {order?.orderNumber}</AccountTitle>
+                        <AccountTitle>Заказ № {orderItem?.order?.number}</AccountTitle>
                         {isMobile && <div></div>}
                     </div>
                 </div>
@@ -70,51 +71,69 @@ export const OrderPage = () =>{
                     {isMobile && 
                     <div className={cls.orderPageInfoItem}>
                         <p>Статус:</p>
-                        {status(order?.status)}
+                        {status(orderItem?.order?.status)}
                     </div>
                     }
                     <div className={cls.orderPageInfoItem}>
                         <p>Создан:</p>
-                        <span>{formatDate(order?.createdAt)}</span>
+                        <span>{formatDate(orderItem?.order?.placed_at)}</span>
                     </div>
                     <div className={cls.orderPageInfoItem}>
                         <p>Сумма:</p>
-                        <span>{order?.totalPrice} ₸</span>
+                        <span>{orderItem?.order?.total} ₸</span>
                     </div>
                     <div className={cls.orderPageInfoItem}>
                         <p>Оплата:</p>
-                        <span>Банковской картой</span>
+                        <span>
+                            {orderItem?.order?.payment_method?.name}
+                        </span>
                     </div>
+                  
                     <div className={cls.orderPageInfoItem}>
+                        {orderItem?.order?.delivery_address &&
+                        <>                        
                         <p>Доставка по адресу:</p>
-                        <span>{order?.deliveryType !== 'pickup' ?`г.Алматы, ул. Достык 32`: `Самовывоз`}</span>
+                        <span>
+                            {`г.${orderItem?.order?.delivery_address.city}, ул.${orderItem?.order?.delivery_address.street} кв.${orderItem?.order?.delivery_address?.apartment}`}
+                        </span>
+                        </>
+
+                        }
+
                     </div>
+                    {orderItem?.order?.status == 'completed' && 
                     <div className={cls.orderPageInfoItem}>
                         <p>Доставлено:</p>
                         <span>12 сентября 2026</span>
                     </div>
+                    }
                 </div>
             </div>
             <div className={cls.orderItemsList}>
                 {isMobile && <p>Состав заказа</p>}
                 <div>
-                    {loadingOrder && <Loader />}
-                    {order?.itemsPreview.map((order)=>{
+                    {loadingOrderItem && <Loader />}
+                    {orderItem?.order?.items.map((order)=>{
                         return(
-                            <div className={cls.orderItem} key={order.id}>
+                            <div 
+                                className={cls.orderItem} 
+                                key={order.sku}
+                            >
                                 <div className={cls.orderInfoLeftBlock}>
                                     <div className={cls.orderImg}>
-                                        <img src={order?.image} alt={order?.title} />
+                                        <img 
+                                            src={order?.primary_image_url} alt={order?.name} 
+                                        />
                                     </div>
                                     <div className={cls.orderInfoTitle}>
                                         {isMobile && <span>Код: {order?.sku} 
                                             <p>x{order?.quantity}</p>    
                                         </span>}
-                                        <p>{order?.title}</p>
+                                        <p>{order?.name}</p>
                                         {!isMobile &&<span>Код: {order?.sku}</span>}
                                         {isMobile && <div className={cls.mobilePriceBlock}>
-                                            <p>{order?.finalPrice} ₸</p>
-                                            <p>{Math.round(order?.finalPrice /order.quantity)}  ₸/шт</p>
+                                            <p>{order?.line_total} ₸</p>
+                                            <p>{order?.unit_price}  ₸/шт</p>
                                         </div>}
                                         {isMobile && <button><p>Оставить отзыв</p></button>}
                                     </div>
@@ -124,8 +143,8 @@ export const OrderPage = () =>{
                                     {order?.quantity} 
                                 </div>
                                 <div className={cls.orderPriceBlock}>
-                                    {order?.hasDiscount && <span className={cls.oldPrice}>{order?.oldPrice} ₸</span>}
-                                    <span className={cls.finalPrice}>{order?.finalPrice} ₸</span>
+                                    {order?.hasDiscount && <span className={cls.oldPrice}>{orderItem?.oldPrice} ₸</span>}
+                                    <span className={cls.finalPrice}>{order?.line_total} ₸</span>
                                 </div>
                             </div>
                         )
@@ -144,19 +163,24 @@ export const OrderPage = () =>{
                 <div className={cls.totalReceiptItems}>
                     <div className={cls.totalReceiptItem}>
                         <p>Всего товаров</p>
-                        <p>{order?.itemsCount}</p>
+                        <p>{orderItem?.order?.items_quantity}</p>
                     </div>
                     <div className={cls.totalReceiptItem}>
                         <p>Всего</p>
-                        <p>{order?.totalPrice} ₸</p>
+                        <p>{orderItem?.order?.subtotal} ₸</p>
                     </div>
                     <div className={cls.totalReceiptItem}>
-                        <p>Скидка</p>
-                        <p>{-200} ₸</p>
+                        <p>
+                        {orderItem?.order?.delivery_method_code=='standard'? 
+                        "Доставка"
+                        : "Скидка"}</p>
+                        <p>{orderItem?.order?.delivery_method_code=='standard'? 
+                        orderItem?.order?.delivery_cost
+                        : 0} ₸</p>
                     </div>
                     <div className={cls.totalReceiptItem}>
                         <p>Итого</p>
-                        <p className={cls.orderTotalPriceModal}>{order?.totalPrice} ₸</p>
+                        <p className={cls.orderTotalPriceModal}>{orderItem?.order?.total} ₸</p>
                     </div>
                 </div>
                 <div className={cls.mobileTotalReceiptButtons}>
