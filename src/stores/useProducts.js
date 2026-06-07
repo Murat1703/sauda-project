@@ -40,8 +40,6 @@ export const useProducts = create((set, get) => ({
         errLoadingProducts:
           error?.response?.data?.message || error.message,
       });
-
-      console.error("Failed to load products:", error);
     } finally {
       set({
         loadingProducts: false,
@@ -58,7 +56,6 @@ export const useProducts = create((set, get) => ({
         set({loadingProduct: false});
         return
     };
-
 
     try {
       set({

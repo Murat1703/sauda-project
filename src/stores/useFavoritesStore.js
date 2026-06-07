@@ -1,8 +1,5 @@
-import { apiClearCart } from "../api/api.cart";
 import { apiAddToFavorites, apiClearFavoritesList, apiDeleteFromFavorites, apiGetFavorites } from "../api/api.favorites";
 import { create } from "zustand";
-
-
 
 export const useFavoritesStore = create((set, get) => ({
   

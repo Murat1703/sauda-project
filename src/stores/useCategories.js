@@ -38,8 +38,6 @@ export const useCategories = create((set, get) => ({
         errLoadingCategories:
           error?.response?.data?.message || error.message,
       });
-
-      console.error("Failed to load categories:", error);
     } finally {
       set({
         loadingCategories: false,

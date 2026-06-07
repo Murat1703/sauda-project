@@ -8,15 +8,15 @@ export const useOrdersStore = create((set, get) => ({
   orders: [],
   orderItem: {},
 
-  loadingOrders: true,
-  loadingOrderItem: true,
+  loadingOrders: false,
+  loadingOrderItem: false,
 
   errLoadingOrders: null,
   errLoadingOrderItem: null,
 
   loadOrders: async () => {
     const { orders, loadingOrders } = get();
-    if (!loadingOrders) return;
+    if (loadingOrders) return;
     if (orders.length > 0) return;
 
     try {

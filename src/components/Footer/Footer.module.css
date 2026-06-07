@@ -27,6 +27,13 @@
     align-items: flex-start;
     gap: 12px;
     flex: 1 0 0;
+    position: relative;
+}
+.newsLetterInfoStatus{
+    position: absolute;
+    bottom: -20px;
+    left: 20px;
+    color: #FC4127;                                      
 }
 .newsLetterInput > input{
     width: 378px;

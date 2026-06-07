@@ -1,4 +1,4 @@
-import { apiBrands } from "../api/api.brands.js";
+import { apiGetBrands } from "../api/api.brands.js";
 import { create } from "zustand";
 
 export const useBrands = create((set, get) => ({
@@ -20,7 +20,7 @@ export const useBrands = create((set, get) => ({
         errLoadingBrands: null,
       });
 
-      const res = await apiBrands();
+      const res = await apiGetBrands();
 
       set({
         brands: res?.data?.brands || [],
@@ -30,8 +30,6 @@ export const useBrands = create((set, get) => ({
         errLoadingBrands:
           error?.response?.data?.message || error.message,
       });
-
-      console.error("Failed to load brands:", error);
     } finally {
       set({
         loadingBrands: false,

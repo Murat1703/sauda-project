@@ -28,10 +28,17 @@ export const Footer = () =>{
 
     const {suscribeStatus, addToSubscribe, subscribeError, loadingSubscribe} = useSubscribe();
 
+    const [inputError, setInputError] = useState(null)
+
     const handleToSubScribe = async(email) =>{
-        await addToSubscribe({
-            email: email
-        })
+        if (email.length !== 0){
+            await addToSubscribe({
+                email: email
+            })
+        } else {
+            setInputError('Введите email');
+            return
+        }
     }
 
     return(
@@ -49,11 +56,28 @@ export const Footer = () =>{
                                 type="email" 
                                 placeholder='Электронная почта'
                                 value={email}
-                                onChange={(e)=>setEmail(e.target.value)}
+                                onChange={(e)=>{
+                                    setInputError(null)
+                                    setEmail(e.target.value);
+                                }}
+                                style={{
+                                    border: inputError ? "1px solid #FC4127": "1px solid rgba(255,255,255, .16)"
+                                }}
                             />
                             <Button onClick={()=>handleToSubScribe(email)}>
                                 <p>Подписаться</p>
                             </Button>
+                            {inputError && <p className={cls.newsLetterInfoStatus}>
+                                {inputError}
+                            </p>}
+                            {subscribeError && 
+                                <p className={cls.newsLetterInfoStatus}>{subscribeError}</p>
+                            }
+                            {suscribeStatus && 
+                            <p className={cls.newsLetterInfoStatus}>
+                                {suscribeStatus}
+                            </p>}
+                            
                         </div>
                     </div>
                 </div>

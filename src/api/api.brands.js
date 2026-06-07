@@ -1,3 +1,3 @@
 import { http } from "./http";
 
-export const apiBrands = () => http.get('/catalog/brands');
+export const apiGetBrands = () => http.get('/catalog/brands');
