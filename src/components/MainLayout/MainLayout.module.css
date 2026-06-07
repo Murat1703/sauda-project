@@ -21,10 +21,10 @@
 }
 
 @media (max-width:768px){
-    .mainLayout,
-    .mainWrapper{
-        /* height: auto; */
+    .mainLayout{
+        height: calc(100dvh - 61px);
     }
+
     .mainWrapper{
         height: 100%;
     }

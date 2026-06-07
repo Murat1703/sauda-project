@@ -110,10 +110,10 @@ export const CartPage = ({isAuth}) =>{
                                                     <button 
                                                         onClick={
                                                             ()=>{
-                                            addToFavoritesList({
-                                                product_slug: item?.product?.slug, 
-                                                product: item.product
-                                            });
+                                                            addToFavoritesList({
+                                                                product_slug: item?.product?.slug, 
+                                                                product: item.product
+                                                            });
                                                             }
                                                         }
                                                     >
