@@ -7,7 +7,6 @@ import { useState } from 'react'
 import cls from './CartPage.module.css'
 import { useMediaQuery } from 'react-responsive'
 import { Badge } from '../../../components/Badge'
-import { useFavorites } from '../../../hooks/useFavorites'
 import { Link, useNavigate } from 'react-router-dom'
 import { CartRemoveIcon } from '../../../../public/assets/icons/CartRemoveIcon'
 import { CartAddIcon } from '../../../../public/assets/icons/CartAddIcon'
@@ -37,9 +36,8 @@ export const CartPage = ({isAuth}) =>{
     })
 
     const [mobileDetails, setMobileDetails] = useState(false)   
-    const {favorites, toggleFavorites} = useFavorites();
 
-    const {favoritesList, loadFavoritesList} = useFavoritesStore();
+    const {favoritesList, loadFavoritesList, addToFavoritesList} = useFavoritesStore();
 
     useEffect(()=>{
         loadFavoritesList();
@@ -110,7 +108,14 @@ export const CartPage = ({isAuth}) =>{
                                                 <p>Код: {item.product.sku}</p>
                                                 <div className={cls.mobileCartItemButtons}>
                                                     <button 
-                                                        onClick={()=>toggleFavorites(item.id)}
+                                                        onClick={
+                                                            ()=>{
+                                            addToFavoritesList({
+                                                product_slug: item?.product?.slug, 
+                                                product: item.product
+                                            });
+                                                            }
+                                                        }
                                                     >
                                                         {!isFavorite(item.id)?
                                                         <HeartIcon/>:
