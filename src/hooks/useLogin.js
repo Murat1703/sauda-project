@@ -58,9 +58,8 @@ export const useLogin = () => {
     //   await fetchUser();
       return res.data
 
-    } catch (err) {
-      setError(err?.response?.data?.message || 'Ошибка входа');
-      console.error(err);
+    } catch (error) {
+      setError(error?.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
@@ -95,7 +94,7 @@ export const useLogin = () => {
       console.log('VERIFY USER:', res.data?.user);
       return res.data
       } catch (err) {
-        setVerifyError(err?.response?.data.message);
+        setVerifyError(err?.response?.data.message || err.message);
       } finally {
         setVerifyLoading(false);
       }
@@ -125,7 +124,7 @@ export const useLogin = () => {
 
     } catch (err) {
       setUser(null);
-      setProfileError(err?.response?.data.message||"Ошибка авторизации");
+      setProfileError(err?.response?.data.message|| err.message);
     } finally {
       setProfileLoading(false);
     }

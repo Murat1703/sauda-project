@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import { Button } from '../../../components/Button'
 import { Title } from '../../../components/Title'
-// import { useCart } from '../../../hooks/useCart'
 
 import { useCart } from '../../../stores/useCart'
-import { useProducts } from '../../../hooks/useProducts'
 import { useState } from 'react'
 import cls from './CartPage.module.css'
 import { useMediaQuery } from 'react-responsive'
@@ -16,16 +14,16 @@ import { CartAddIcon } from '../../../../public/assets/icons/CartAddIcon'
 import { CheckGarrantyIcon } from '../../../../public/assets/icons/CheckGarrantyIcon'
 import { CartRemoveIconMobile } from '../../../../public/assets/icons/CartRemoveIconMobile'
 import { CartAddIconMobile } from '../../../../public/assets/icons/CartAddIconMobile'
-import { useAuth } from '../../../context/AuthContext'
 import { CartShopIcon } from '../../../../public/assets/icons/CartShopIcon'
 import { ArrowBackMobile } from '../../../../public/assets/icons/ArrowBackMobile'
 import { ArrowRightOrderIcon } from '../../../../public/assets/icons/ArrowRightOrderIcon'
+import { HeartIcon } from '../../../../public/assets/icons/HeartIcon'
+import { HeartIconFilled } from '../../../../public/assets/icons/HeartIconFilled'
+import { useFavoritesStore } from '../../../stores/useFavoritesStore'
 
-export const CartPage = () =>{
+export const CartPage = ({isAuth}) =>{
 
     const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart} = useCart();
-
-    const {isAuth} = useAuth();
 
     useEffect(()=>{
         if (isAuth == true) loadCart(); 
@@ -34,16 +32,6 @@ export const CartPage = () =>{
 
     const navigate = useNavigate();
 
-    
-    const {
-        productsArrByIds: cartProducts,
-        loadingProductsByIds,
-        productsArrByIds,
-        loadCartProducts
-    } = useProducts();
-
-
-
     const isMobile = useMediaQuery({
         maxWidth: 768
     })
@@ -51,18 +39,19 @@ export const CartPage = () =>{
     const [mobileDetails, setMobileDetails] = useState(false)   
     const {favorites, toggleFavorites} = useFavorites();
 
-    const isFavorite = (id) =>{
-        return favorites.includes(id)
-    }
+    const {favoritesList, loadFavoritesList} = useFavoritesStore();
 
-    console.log(mobileDetails)
+    useEffect(()=>{
+        loadFavoritesList();
+    },[])
+
+    const isFavorite = (id) =>{
+        return favoritesList.includes(id)
+    }
 
     useEffect(()=>{ 
         !isMobile && setMobileDetails(true)
     }, [isMobile])
-
-    console.log('cartItems/ cart PAge', cartItems)
-    console.log('cartTOtal/ cart PAge', cartTotal)
 
 
     return(
@@ -102,15 +91,20 @@ export const CartPage = () =>{
                     </div>}
                     {cartItems?.length > 0 && 
                         cartItems.map((item)=>{
-                            console.log('item',item)
                             return(
                                 <div className={cls.cartItem} key={item.id}>
                                     <div className={cls.cartItemImgWrapper}>
-                                        <img src={item.product.primary_image_url} alt={`${item.product.name}`}/>
+                                        <img 
+                                            src={item.product.primary_image_url} 
+                                            alt={`${item.product.name}`}
+                                        />
                                     </div>
                                     {isMobile && <>
                                     <div className={cls.cartItemMobileInfo}>
-                                        <Link to={`/products/${item?.product?.slug}`} className={cls.cartItemTitleBlock}>
+                                        <Link 
+                                            to={`/products/${item?.product?.slug}`} 
+                                            className={cls.cartItemTitleBlock}
+                                        >
                                             <p>{item.product?.name}</p>
                                             <>
                                                 <p>Код: {item.product.sku}</p>
@@ -119,12 +113,8 @@ export const CartPage = () =>{
                                                         onClick={()=>toggleFavorites(item.id)}
                                                     >
                                                         {!isFavorite(item.id)?
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M9.99413 4.27985C8.328 2.332 5.54963 1.80804 3.46208 3.59168C1.37454 5.37532 1.08064 8.35748 2.72 10.467C4.08302 12.2209 8.20798 15.9201 9.55992 17.1174C9.71117 17.2513 9.7868 17.3183 9.87501 17.3446C9.95201 17.3676 10.0363 17.3676 10.1132 17.3446C10.2015 17.3183 10.2771 17.2513 10.4283 17.1174C11.7803 15.9201 15.9052 12.2209 17.2683 10.467C18.9076 8.35748 18.6496 5.35656 16.5262 3.59168C14.4028 1.8268 11.6603 2.332 9.99413 4.27985Z" stroke="#8F9596" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                                                        </svg>:
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="15" viewBox="0 0 17 15" fill="none">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M8.32763 1.77985C6.6615 -0.168 3.88312 -0.691965 1.79558 1.09168C-0.291963 2.87532 -0.58586 5.85748 1.0535 7.967C2.41651 9.72092 6.54148 13.4201 7.89342 14.6174C8.04467 14.7513 8.1203 14.8183 8.20851 14.8446C8.2855 14.8676 8.36975 14.8676 8.44674 14.8446C8.53496 14.8183 8.61058 14.7513 8.76184 14.6174C10.1138 13.4201 14.2387 9.72092 15.6018 7.967C17.2411 5.85748 16.9831 2.85656 14.8597 1.09168C12.7362 -0.673202 9.99375 -0.168 8.32763 1.77985Z" fill="#FF4D00"/>
-                                                        </svg>
+                                                        <HeartIcon/>:
+                                                        <HeartIconFilled />
                                                         }
 
                                                     </button>
@@ -267,6 +257,7 @@ export const CartPage = () =>{
                         <button 
                             className={cls.orderBtn}
                             onClick={()=>navigate('/account/new-order')}
+                            disabled={isAuth==false}
                         >
                             <p>Перейти к оформлению</p>
                             <ArrowRightOrderIcon />
@@ -278,7 +269,11 @@ export const CartPage = () =>{
                              <p>{cartTotal?.subtotal}₸</p>
                              <span>{cartTotal?.items_quantity} товара</span>
                          </div>
-                         <button onClick={()=>navigate('/account/new-order')}>Оформить заказ</button>
+                         <button 
+                            onClick={()=>navigate('/account/new-order')}
+                        >
+                            Оформить заказ
+                        </button>
                     </div>
                     }
                 </div>

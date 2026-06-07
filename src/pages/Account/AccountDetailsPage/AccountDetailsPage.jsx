@@ -5,13 +5,14 @@ import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { useEffect, useState } from 'react';
+import { AccountDetailMobileIcon } from '../../../../public/assets/icons/AccountDetailMobileIcon';
 
-export const AccountDetailsPage = () =>{
+export const AccountDetailsPage = ({isAuth}) =>{
 
     const {user} = useAuth();
 
-    const [userName, setUserName] = useState('');
-    const [userPhone, setUserPhone] = useState('');
+    const [userName, setUserName] = useState(null);
+    const [userPhone, setUserPhone] = useState(null);
 
     useEffect(()=>{
        setUserName(user?.user.name);
@@ -32,16 +33,16 @@ export const AccountDetailsPage = () =>{
                     <BreadCrumbs >-</BreadCrumbs>
                     <BreadCrumbs >Мои данные</BreadCrumbs>
                 </div>
-                {isMobile && <Link to={'/account'}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M19 12H5M12 5L5 12L12 19" stroke="#152429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                {isMobile && 
+                <Link to={'/account'}>
+                    <AccountDetailMobileIcon />
                 </Link>}
                 <div className={cls.pageTitleWrapper}>
                     <AccountTitle>Мои данные</AccountTitle>
                 </div>
                 {isMobile && <div></div>}
             </div>
+            {isAuth ?
             <div className={cls.accountDetailsInputs}>
                 <div className={cls.row}>
                     <div className={cls.accountItemInputWrapper}>
@@ -90,6 +91,8 @@ export const AccountDetailsPage = () =>{
                     <p>Сохранить</p>
                 </button>
             </div>
+            :<div className={cls.notAuthorisedInfo}></div>
+            }
         </div>
         </>
     )

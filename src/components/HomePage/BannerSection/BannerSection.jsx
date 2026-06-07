@@ -12,9 +12,6 @@ import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
 export const BannerSection = () =>{
     const swiperRef = useRef(null);
 
-
-
-
     return(
         <section className={cls.banner}>
             <SliderControlBtn 

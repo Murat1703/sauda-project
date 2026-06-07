@@ -1,8 +1,6 @@
 import { apiProducts, apiProduct } from "../api/api.products.js";
 import { create } from "zustand";
 
-
-
 export const useProducts = create((set, get) => ({
   products: [],
   product: {},

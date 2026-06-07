@@ -106,7 +106,7 @@
 .authOtp{
     display: flex;
     flex-direction: column;
-    gap: 36px;
+    gap: 16px;
 }
 .authOtp > a{
     font-size: 16px;

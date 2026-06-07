@@ -24,15 +24,13 @@ export const CategorysSection = () =>{
         loadCategories();
     }, []);
 
-    console.log(categories)
-
-
     const swiperRef = useRef(null);
 
     return(
         <section className={cls.categorySection}>
             <div className={cls.categorySectionContent}>
                 <Title>Категории</Title>
+                {errLoadingCategories ? <p>{errLoadingCategories}</p>:
                 <div className={cls.categorysSlider}>
                     <Swiper
                         modules={[Navigation]}
@@ -75,6 +73,7 @@ export const CategorysSection = () =>{
                         <ArrowNext />
                     </SliderControlBtn>
                 </div>
+                }
             </div>
         </section>
     )

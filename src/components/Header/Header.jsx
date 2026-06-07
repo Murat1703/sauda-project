@@ -7,7 +7,6 @@ import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useAuthModal } from '../../context/AuthModalContext.jsx'
 import { SideBar } from '../AccountLayout/SideBar.jsx';
-import { useOrders } from '../../hooks/useOrders.js';
 import { CounterBadge } from '../CounterBadge';
 import { useCart } from '../../stores/useCart.js';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -24,14 +23,10 @@ import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileCo
 import { Search } from '../Search';
 import { useLanguage } from '../../stores/useLanguage.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
-import { useOrdersStore } from '../../stores/useOrdersStore.js';
-
 
 export const Header = ({ordersCount}) =>{
-
     const[activeLang, setActiveLang] = useState('ru');
-    const{lang, setLang} = useLanguage();
-    
+    const{lang, setLang} = useLanguage();    
     const[isOpen, setIsOpen] = useState(false);
 
     const handleToMenu = () =>{
@@ -53,7 +48,8 @@ export const Header = ({ordersCount}) =>{
         openAuthModal, 
         closeAuthModal, 
         step, 
-        setStep } = useAuthModal();
+        setStep } = 
+    useAuthModal();
 
     const [showProfileMenu, setShowProfileMenu] = useState(false);
 
@@ -62,20 +58,8 @@ export const Header = ({ordersCount}) =>{
     }
 
     const loginHandler = () =>{
-        // setIsAuth(!isAuth);
         {!isAuth ? openAuthModal() : handlerToProfile()}
-        // localStorage.setItem('reactCardLogin', !isAuth)
     }
-
-    // const {orders, loadingOrders, loadOrders} = useOrders();
-
-    const {orders, loadingOrders, loadOrders} = useOrdersStore();
-
-    useEffect(()=>{
-        loadOrders();
-    },[])
-            console.log('__HEADER_ORDERS = ',orders)
-
 
     const {favoritesList, syncLocalFavorites} = useFavoritesStore();
 
@@ -93,8 +77,6 @@ export const Header = ({ordersCount}) =>{
     )
 
     const {pathname} = useLocation();
-
-    const {id} = useParams();
 
     const hiddenMobileHeaderRoutes = [
     '/account',
@@ -114,8 +96,7 @@ export const Header = ({ordersCount}) =>{
     );
 
     const [searchString, setSearchString] = useState('')
-
-    
+        
     return(
         <>
         {!shouldHideHeader &&

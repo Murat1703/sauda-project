@@ -1,4 +1,3 @@
-import { Children } from 'react'
 import cls from './Title.module.css'
 
 export const Title = ({children}) =>{

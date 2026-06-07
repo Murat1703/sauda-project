@@ -3,28 +3,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import logo1 from './images/9aa4f0f3d8ac353de44dd002ec63c471367aa77e.png'
-import logo2 from './images/c0b415724c2af494a425297fef1c4e9ded0e0212.png'
-import logo3 from './images/21d8bc9b51037b9463faa39b60f4e538102dbafd.png'
-import logo4 from './images/181c6ec575498bb2eea094890c78670b0d443647.png'
-import logo5 from './images/40d7ff5690924f53ea6df124a5d30ee3d1c58c2a.png'
-import logo6 from './images/4d90c09036e8c5b35ecc2d9a0de066c7ac14cf0f.png'
 import { Title } from '../../Title';
 import { useBrands } from '../../../stores/useBrands';
 import { useEffect } from 'react';
 
 
-
 export const AboutSection = () =>{
 
-    const {brands, loadBrands, loadingBrands} = useBrands();
+    const {brands, loadBrands, loadingBrands, errLoadingBrands} = useBrands();
 
     useEffect(()=>{
         loadBrands()
     },[])
+
     return(
         <section className={cls.aboutSectionWrapper}>
             <div className={cls.aboutSectionContent}>
+                {errLoadingBrands ? <p className={cls.errText}>{errLoadingBrands}</p> :
                 <div className={cls.aboutSectionLogoSlider}>
                     <Swiper 
                         slidesPerView={7}
@@ -56,7 +51,7 @@ export const AboutSection = () =>{
                             )
                         })}
                     </Swiper>
-                </div>
+                </div>}
                 <div className={cls.aboutSectionInfo}>
                     <Title>Интернет-маркетплейс Sauda</Title>
                     <div className={cls.aboutSectionInfoTextContent}>

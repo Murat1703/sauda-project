@@ -159,6 +159,7 @@ span.finalPrice{
 .orderReceipt:hover{
     background: var(--footer-text);
 }
+
 @media (max-width:768px){
     .orderPageTitleBlock > div:nth-child(1){
         display: none;

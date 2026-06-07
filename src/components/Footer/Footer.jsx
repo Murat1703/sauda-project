@@ -5,18 +5,34 @@ import { useMediaQuery } from 'react-responsive'
 import { YoutubeFooterIcon } from '../../../public/assets/icons/YoutubeFooterIcon'
 import { InstagramFooterIcon } from '../../../public/assets/icons/InstagramFooterIcon'
 import { useCategories } from '../../stores/useCategories.js'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useSubscribe } from '../../hooks/useSubscribe.js'
 
 export const Footer = () =>{
 
-    const{categories, loadCategories, loadingCategories, errLoadingCategories}= useCategories();
+    const{
+        categories, 
+        loadCategories, 
+        loadingCategories, 
+        errLoadingCategories
+    }= useCategories();
 
     useEffect(()=>{
         loadCategories();
     },[])
 
     const isMobile = useMediaQuery({maxWidth: 768})
+
+    const [email, setEmail] = useState('')
+
+    const {suscribeStatus, addToSubscribe, subscribeError, loadingSubscribe} = useSubscribe();
+
+    const handleToSubScribe = async(email) =>{
+        await addToSubscribe({
+            email: email
+        })
+    }
 
     return(
         <>
@@ -29,8 +45,13 @@ export const Footer = () =>{
                     <div className={cls.newsLetterContent}>
                         <p>Сэкономьте на покупке с нашей рассылкой о спецпредложениях, акциях и скидках</p>
                         <div className={cls.newsLetterInput}>
-                            <input type="text" placeholder='Электронная почта'/>
-                            <Button>
+                            <input 
+                                type="email" 
+                                placeholder='Электронная почта'
+                                value={email}
+                                onChange={(e)=>setEmail(e.target.value)}
+                            />
+                            <Button onClick={()=>handleToSubScribe(email)}>
                                 <p>Подписаться</p>
                             </Button>
                         </div>
@@ -40,7 +61,13 @@ export const Footer = () =>{
                     <div className={cls.footerLinksContent}>
                         <ul>
                             <h4>Каталог</h4>
-                            {categories?.slice(0,5).map((item,index)=>{
+                            {errLoadingCategories && 
+                            <li>
+                                <a>
+                                    {errLoadingCategories}
+                                </a>
+                            </li>}
+                            {categories?.slice(0,5).map((item)=>{
                                 return(
                                     <li key={item.id}>
                                         <Link to={`/catalog/categories/${item.slug}`}>{item.name}</Link>

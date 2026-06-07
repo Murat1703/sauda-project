@@ -4,7 +4,6 @@ import { Loader } from '../Loader'
 import { Outlet } from 'react-router-dom';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
-import { useOrders } from '../../hooks/useOrders.js';
 import { ScrollToTop } from '../ScrollToTop';
 import { useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
@@ -15,15 +14,10 @@ import { useProducts } from '../../stores/useProducts.js';
 import { useLanguage } from '../../stores/useLanguage.js';
 import {useCart} from '../../stores/useCart.js'
 import { useOrdersStore } from '../../stores/useOrdersStore.js';
-import { usePaymentMethods } from '../../hooks/usePaymentMethods.js';
-
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
     const {orders, loadingOrders, loadOrders} = useOrdersStore();
-
-    const{cartItems, loadCart, cartTotal} = useCart();
-
 
     const {pathname} = useLocation();
     const isMobile = useMediaQuery({
@@ -79,21 +73,9 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
         return () => el.removeEventListener('scroll', handleScroll);
     }, [isMobile, setIsMobileScrolled]);
 
-    // console.log(isMobileScroll)
-
     const {lang} = useLanguage();
 
-    console.log(lang)
-
-    const {paymentMethods, loadingPaymentMethods, loadPaymentMethods} = usePaymentMethods();
-
-    useEffect(()=>{
-        loadPaymentMethods();
-    }, [])
-
-
-    // console.log('payment-methods', paymentMethods)
-
+    const isHideFooter = (!isMobile ||(pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) && ((pathname!=='/login')) && ((pathname!=='/account/favorites')) && (pathname!=='/account/new-order') )
 
     return(
         <>
@@ -112,13 +94,10 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
                             <Outlet  />
                         </Suspense>
                     </main>
-                   
-                    { (!isMobile ||(pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) && ((pathname!=='/login')) && ((pathname!=='/account/favorites')) && (pathname!=='/account/new-order') )&& <Footer />}
-                    
+                    { isHideFooter && <Footer />}                    
                 </div>
             </div>
             {isAuthModalOpen && <AuthModal onClose={closeAuthModal}/>}
-
         </>
     )
 }

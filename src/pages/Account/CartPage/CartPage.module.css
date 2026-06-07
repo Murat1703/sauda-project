@@ -183,6 +183,9 @@
         line-height: 24px;
     }
 }
+.orderBtn:disabled{
+    opacity: .65;
+}
 .orderBtn:hover{
     background: var(--accent-hover);
 }

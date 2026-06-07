@@ -22,7 +22,7 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
 
     const navigate = useNavigate();
 
-    const {user, logout, fetchUser } = useAuth();
+    const {user, logout, fetchUser, isAuth } = useAuth();
 
     const [link, setLink] = useState('');
 
@@ -76,13 +76,13 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
                 <li 
                     className={link === 'orders' ? cls.active : ''} onClick= {isHeaderProfile ? hideProfileMenu : null}
                 >
-                <NavLink
-                    to="/account/orders"
-                >
-                    <AccountOrdersIcon />
-                    <p>Мои заказы</p>
-                    <span>{ordersCount || 0}</span>
-                </NavLink>
+                    <NavLink
+                        to="/account/orders"
+                    >
+                        <AccountOrdersIcon />
+                        <p>Мои заказы</p>
+                        <span>{ordersCount || 0}</span>
+                    </NavLink>
                 </li>
 
                 <li className={link === 'favorites' ? cls.active : ''} onClick= {isHeaderProfile ? hideProfileMenu : null}>
@@ -107,7 +107,9 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
                 </NavLink>
                 </li>
 
-                <li className={link === 'profile' ? cls.active : ''} onClick= {isHeaderProfile ? hideProfileMenu : null}>
+               {isAuth && 
+               <li className={link === 'profile' ? cls.active : ''} onClick= {isHeaderProfile ? hideProfileMenu : null}>
+                
                 <NavLink
                     to="/account/profile"
                     className={({ isActive }) => isActive ? cls.active : ''}
@@ -116,7 +118,7 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
                     <p>Мои данные</p>
                     <span></span>
                 </NavLink>
-                </li >
+                </li >}
                 {isHeaderProfile && (
                     <li
                         onClick={handleLogOut}

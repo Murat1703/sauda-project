@@ -7,9 +7,7 @@ export const Timer = () =>{
     const [running, setRunning] = useState(true);
 
     useEffect(()=>{
-
         if (!running) return;
-
         const interval = setInterval(() => {
             setTimer((prev) => {
                 if (prev <= 1) {
@@ -33,15 +31,15 @@ export const Timer = () =>{
     }
 
     return(
-        <p>
+        <div>
             Переотправить СМС-код можно через{" "}
                 {timer === 0 ? (
                     <button className={cls.timerBtn} onClick={reLoadTimer}>
-                    Отправить код заново
+                        <p>Отправить код заново</p>
                     </button>
                 ) : (
                     `00:${String(timer).padStart(2, '0')}`
                 )}
-        </p>
+        </div>
     )
 }

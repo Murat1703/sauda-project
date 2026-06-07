@@ -6,7 +6,6 @@ import "swiper/css/navigation";
 import { useCart } from '../../stores/useCart.js';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import { useFavorites } from '../../hooks/useFavorites';
 import { ReviewItemStar } from '../../../public/assets/icons/ReviewIconStar';
 import { HeartIcon } from '../../../public/assets/icons/HeartIcon';
 import { HeartIconFilled } from '../../../public/assets/icons/HeartIconFilled';
@@ -21,10 +20,16 @@ import { useEffect, useState } from 'react';
 export const ProductCard = ({product, isFavorite, isDelete}) =>{
 
     const {addToCart, cartItems} = useCart();
-    const {toggleFavorites} = useFavorites();
-    const {favoritesList, addToFavoritesList, loadFavoritesList, deleteFromFavoritesList, addToLocalFavoritesList, deleteFromLocalFavoritesList} = useFavoritesStore();
-
-    console.log(favoritesList)
+    const 
+        {
+            favoritesList, 
+            addToFavoritesList, 
+            loadFavoritesList, 
+            deleteFromFavoritesList, 
+            addToLocalFavoritesList, 
+            deleteFromLocalFavoritesList        
+        } 
+    = useFavoritesStore();
 
     const navigate = useNavigate();
 
@@ -35,15 +40,7 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
         <>
             <div className={cls.productCard}>
                 <div className={cls.productCardImagesWrapper}>
-                    {/* <Swiper>
-                        <SwiperSlide>
-                            <img src={product?.image} alt={product?.title}/>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src={product?.image} alt={product?.title}/>
-                        </SwiperSlide>
-                    </Swiper> */}
-                    {/* <div className={cls.productCardImages}> */}
+                    <div className={cls.productCardImages}>
                         <img 
                             src={`${product?.primary_image_url 
                                     ? product?.primary_image_url
@@ -55,7 +52,7 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                 opacity: product?.stock_quantity ==0 ? "0.5": "1"
                             }}
                         />
-                    {/* </div> */}
+                    </div>
                     <button 
                         className={cls.favoriteBtn} 
                         onClick={()=>{
@@ -64,14 +61,18 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                             if ((isDelete==true) && (isAuth == true)) {
                                 deleteFromFavoritesList(product?.id)
                                 toast.error(
-                                    <SnackBar text={'Товар удален из избранного'}/>
+                                    <SnackBar 
+                                        text={'Товар удален из избранного'}
+                                    />
                                 );
                                 return;
                             }
                             if ((isDelete==true) && (isAuth == false)){
                                 deleteFromLocalFavoritesList(product?.id)
                                 toast.error(
-                                    <SnackBar text={'Товар удален из избранного'}/>
+                                    <SnackBar 
+                                        text={'Товар удален из избранного'}
+                                    />
                                 );
                                 return;
                             }
@@ -81,12 +82,16 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                         product_slug: product?.slug
                                     });
                                     toast(
-                                        <SnackBar text={'Товар добавлен в избранное'}/>
+                                        <SnackBar 
+                                            text={'Товар добавлен в избранное'}
+                                        />
                                     )
                                 } else{
                                     deleteFromFavoritesList(product?.id)
                                     toast.error(
-                                        <SnackBar text={'Товар удален из избранного'}/>
+                                        <SnackBar 
+                                            text={'Товар удален из избранного'}
+                                        />
                                     )
                                 }
                             }  
@@ -153,6 +158,7 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                     toast(
                                         <SnackBar 
                                             text={'Товар добавлен в корзину'}
+                                            toCart={'/cart'}
                                         />
                                     )
                                 } else{

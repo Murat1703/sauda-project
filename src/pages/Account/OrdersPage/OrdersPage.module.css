@@ -258,6 +258,14 @@
         line-height: 24px;
     }
 }
+.notAutorisedBlock{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.notAutorisedBlock > p > a{
+    color: var(--accent);
+}
 @media (max-width:768px){
     .breadCrumbsWrapper{
         display: none;

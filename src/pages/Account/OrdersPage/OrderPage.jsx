@@ -220,8 +220,11 @@ export const OrderPage = () =>{
 
             </div>}
         </div>
-        {reviewModal && <AddReviewModal orderItem={orderInfo} onClose=
-        {handleToCloseModal}/>}
+        {reviewModal && 
+        <AddReviewModal 
+            orderItem={orderInfo} 
+            onClose={handleToCloseModal}
+        />}
         </>
     )
 }

@@ -10,6 +10,7 @@ import { useFavorites } from '../../../hooks/useFavorites';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
 import { useFavoritesStore } from '../../../stores/useFavoritesStore';
+import { useProducts } from '../../../stores/useProducts';
 
 
 
@@ -18,12 +19,15 @@ export const RecommendedSection = ({products}) =>{
 
     const {favoritesList} = useFavoritesStore();
 
+    const {errLoadingProducts} = useProducts();
+
     return(
         <section className={cls.recommendedSection}>
             <div className={cls.recommendedSectionContent}>
                 <Title>
                     Рекомендуемые товары
                 </Title>
+                {errLoadingProducts ? <p>{errLoadingProducts}</p>: 
                 <div className={cls.recommendedSlider}>
                     <Swiper 
                         slidesPerView={5}
@@ -65,7 +69,8 @@ export const RecommendedSection = ({products}) =>{
                     >
                         <ArrowNext />
                     </SliderControlBtn>
-                 </div>
+                </div>
+                }
             </div>
         </section>
     )

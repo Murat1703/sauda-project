@@ -11,12 +11,14 @@ import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 import { ProductCard } from '../../ProductCard';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
+import { useProducts } from '../../../stores/useProducts';
 
 export const DiscountSection = ({productsWithDiscount}) =>{
 
     const {favoritesList} = useFavoritesStore();
     const swiperRef = useRef();
 
+    const {errLoadingProducts} = useProducts();
 
     return(
         <section className={cls.dicountSection}>
@@ -25,6 +27,7 @@ export const DiscountSection = ({productsWithDiscount}) =>{
                     <Title>Мега🔥скидки</Title>
                     <p>Горящие товары со скидкой до 70%</p>
                 </div>
+                {errLoadingProducts ? <p className={cls.errText}>{errLoadingProducts}</p> :
                 <div className={cls.discountedProducts}>
                     <Swiper 
                         slidesPerView={5}
@@ -70,7 +73,7 @@ favoritesList
                     >
                         <ArrowNext />
                     </SliderControlBtn>
-                </div>
+                </div>}
             </div>
         </section>
     )

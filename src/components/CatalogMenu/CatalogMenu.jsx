@@ -15,14 +15,12 @@ import { Search } from '../Search/Search.jsx';
 
 export const CatalogMenu = ({onClose}) =>{
 
-
-    const {categoriesTree, 
+    const {
+      categoriesTree, 
       loadingCategoriesTree, 
       errLoadingCategoriesTree, 
       loadCategoriesTree
     } = useCategories();
-
-    const {products, loadingProducts, loadProducts} = useProducts();
 
     useEffect(()=>{
       loadCategoriesTree();
@@ -34,7 +32,6 @@ export const CatalogMenu = ({onClose}) =>{
         setActiveID(categoriesTree[0].id);
       }
     }, [categoriesTree, activeID]);
-
 
     const activeCategory = categoriesTree?.find(cat => cat.id === activeID);
 
@@ -61,12 +58,11 @@ export const CatalogMenu = ({onClose}) =>{
 
     const [searchString, setSearchString] = useState("");
 
-
-
     return(
         <>
         <div className={cls.catalogMenuWrapper}>
             <div className={cls.catalogMenuInner}>
+                {!isMobile && errLoadingCategoriesTree && <p>{errLoadingCategoriesTree}</p>}
                 {isMobile && 
                 <div className={cls.catalogMenuMobileTop}>
                   <div>
@@ -89,6 +85,7 @@ export const CatalogMenu = ({onClose}) =>{
                       onChange={(e)=>setSearchString(e.target.value)}
                     />
                   </div>
+                  {errLoadingCategoriesTree && <p className={cls.errorText `errorText`}>{errLoadingCategoriesTree}</p>}
                 </div>
                 }
                 <div className={`${cls.catalogMenuLeft} ${isMobile && openSubMenu ? `${cls.openSubMenu}` : '' }`}>
@@ -147,7 +144,11 @@ export const CatalogMenu = ({onClose}) =>{
             </div>
         </div>
         <div className={cls.bg}></div>
-        {isMobile && searchString && <Search text={searchString} onClose={()=>setSearchString("")}/>}
+        {isMobile && searchString && 
+        <Search 
+          text={searchString} 
+          onClose={()=>setSearchString("")}
+        />}
         </>
     )
 }

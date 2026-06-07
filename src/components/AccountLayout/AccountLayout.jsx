@@ -12,7 +12,6 @@ export const AccountLayout = () =>{
 
     const [link, setLink] = useState('')
 
-    // const {orders, loadingOrders, loadOrders} = useOrders();
     const {orders, loadingOrders, loadOrders} = useOrdersStore();
 
     const {accountReviews, loadAccountReviews, loadingAccountReviews} = useReviewsStore();
@@ -24,7 +23,6 @@ export const AccountLayout = () =>{
 
     const{pathname} = useLocation();
 
-    console.log('accountReviews , ', accountReviews)
     return(
         <>
         <ScrollToTop />

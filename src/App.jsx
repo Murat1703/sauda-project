@@ -4,11 +4,8 @@ import { BrowserRouter, Routes, Route, Outlet, Navigate, useLocation } from 'rea
 import { MainLayout } from './components/MainLayout'
 import { HomePage } from './pages/HomePage'
 import { FavoritesPage } from './pages/Account/FavoritesPage'
-import { AuthProvider } from './auth/AuthProvider'
-// import { useAuth } from './hooks/useAuth.js'
 import { useAuth } from './context/AuthContext.jsx'
 import { CartPage } from './pages/Account/CartPage'
-import { AuthModalProvider } from './auth/AuthModalProvider/AuthModalProvider.jsx'
 import { AccountLayout, AccountResponsiveLayout } from './components/AccountLayout'
 import { OrdersPage } from './pages/Account/OrdersPage'
 import { OrderPage } from './pages/Account/OrdersPage'
@@ -71,12 +68,13 @@ const ProtectedRoutes = () =>{
 
   if (!isAuth) return null;
 
-
-
   return <Outlet />
 }
 
 function App() {
+
+  
+  const {isAuth, isAuthLoading} = useAuth();
 
   const [isMobileScroll, setIsMobileScroll] = useState(false);
 
@@ -93,29 +91,33 @@ function App() {
               }
             >
               <Route path='/' element={<HomePage />}/>
-              <Route element={<AccountLayout />}>
+              {/* <Route element={<AccountLayout />}>
                 <Route path="/account/favorites" element={<FavoritesPage />} />
-              </Route>
+              </Route> */}
 
-              <Route path='/cart' element={<CartPage />}/>
+              <Route path='/cart' element={<CartPage isAuth={isAuth}/>}/>
               <Route path='/login' element={<MobileAccountPage />}/>
 
-              
-              <Route element={<ProtectedRoutes />}>                
+              <Route element={<AccountResponsiveLayout />} >
+                  <Route path='/account/orders' element={<OrdersPage isAuth={isAuth}/>}/>
+                  <Route path='/account/favorites' element={<FavoritesPage isAuth={isAuth}/>}/>
+                  <Route path='/account/reviews' element={<ReviewsPage isAuth={isAuth}/>}/>
 
+              </Route>
+              <Route element={<ProtectedRoutes />}>   
                 <Route element={<AccountResponsiveLayout />} >
-                  <Route path='/account/orders' element={<OrdersPage />}/>
+                  {/* <Route path='/account/orders' element={<OrdersPage />}/> */}
                   <Route path={'/account/orders/:orderId'} element={<OrderPage />}/>
                   <Route path='/account/new-order' element={<NewOrderPage />}/>
-                  <Route path='/account/favorites' element={<FavoritesPage />}/>
+                  {/* <Route path='/account/favorites' element={<FavoritesPage />}/> */}
+                  <Route path='/account/profile' element={<AccountDetailsPage isAuth={isAuth}/>}/>
+
                   <Route path='/account/reviews' element={<ReviewsPage />}/>
-                  <Route path='/account/profile' element={<AccountDetailsPage />}/>
                   <Route path='/account' element={<MainAccountMainPage />} />
                 </Route>
-                <Route path='/cart' element={<CartPage />}/>
+                {/* <Route path='/cart' element={<CartPage />}/> */}
               </Route>
               <Route path={`/products/:slug`} element={<ProductPage isMobileScroll={isMobileScroll}/>}/>     
-              {/* <Route path={`/catalog/categories/:slug`} element={<CategoryItemPage isMobileScroll={isMobileScroll}/>}/> */}
               <Route path={`/catalog/categories/*`} element={<CategoryItemPage isMobileScroll={isMobileScroll}/>}/>  
             </Route> 
           </Routes>

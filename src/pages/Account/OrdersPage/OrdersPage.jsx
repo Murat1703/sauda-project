@@ -8,8 +8,9 @@ import { useDateFormat } from '../../../hooks/useDateFormat.js';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useOrdersStore } from '../../../stores/useOrdersStore.js';
+import { useAuthModal } from '../../../context/AuthModalContext.jsx';
 
-export const OrdersPage = () =>{
+export const OrdersPage = ({isAuth}) =>{
 
     const {orders, loadingOrders, loadOrders} = useOrdersStore();
 
@@ -17,7 +18,6 @@ export const OrdersPage = () =>{
         loadOrders()
     },[]);
 
-    console.log('ordersPage = ',orders)
 
     const [filter, setFilter] = useState('all');
     
@@ -50,7 +50,15 @@ export const OrdersPage = () =>{
 
     const isMobile = useMediaQuery({
         maxWidth: 768
-    })
+    });
+
+    const { 
+        isAuthModalOpen, 
+        openAuthModal, 
+        closeAuthModal, 
+        step, 
+        setStep } = 
+    useAuthModal();
 
 
     return(
@@ -74,6 +82,7 @@ export const OrdersPage = () =>{
                 </div>
                 {isMobile && <div></div>}
             </div>
+            {isAuth ?
             <div className={cls.pageBottom}>
                 <FiltersContainer>
                     <button 
@@ -201,7 +210,11 @@ export const OrdersPage = () =>{
                 </div>
 
             </div>
-
+            :
+            <div className={cls.notAutorisedBlock}>
+                <p>Для доступа к функционалу необходимо <a onClick={()=>openAuthModal()}>войти</a></p>
+            </div>
+            }
         </div>
     )
 }

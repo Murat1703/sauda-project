@@ -202,7 +202,9 @@ body {
 .swiper-slide-thumb-active{
   border: 2px solid var(--accent)!important;
 }
-
+.errorText{
+  color: #cb3f03;
+}
 @media (max-width:768px){
   .swiper-pagination-bullets{
     bottom: 0!important;

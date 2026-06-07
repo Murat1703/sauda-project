@@ -1,4 +1,4 @@
-import { apiGetCart, apiAddToCart, apiChangeCountCart, apiClearCart, apiDeleteFromCart } from "../api/api.cart";
+import { apiGetCart, apiAddToCart, apiChangeCountCart, apiClearCart, apiDeleteFromCart } from "../api/api.cart.js";
 import { create } from "zustand";
 
 
@@ -153,7 +153,6 @@ export const useCart = create((set, get) => ({
 
 
   },
-
 
   clearCart: async()=>{
     const prevCart = get().cartItems;

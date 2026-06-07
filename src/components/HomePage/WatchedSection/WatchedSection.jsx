@@ -9,18 +9,23 @@ import { SliderControlBtn } from '../../SliderControlBtn';
 import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
+import { useProducts } from '../../../stores/useProducts';
 
 
 export const WatchedSection = ({products}) =>{
 
     const swiperRef = useRef();
 
-    const {favoritesList, addToFavoritesList} = useFavoritesStore();
+    const {errLoadingProducts} = useProducts();
+
+    const {favoritesList} = useFavoritesStore();
 
     return(
         <section className={cls.watchedSectionWrapper}>
             <div className={cls.watchedSectionContent}>
                 <Title>Вы ранее смотрели</Title>
+                {errLoadingProducts ? <p>{errLoadingProducts}</p>
+                :
                 <div className={cls.watchedSectionList}>
                     <Swiper
                         slidesPerView={5}
@@ -65,6 +70,7 @@ export const WatchedSection = ({products}) =>{
                         <ArrowNext />
                     </SliderControlBtn>
                 </div>
+                }
             </div>
         </section>
     )

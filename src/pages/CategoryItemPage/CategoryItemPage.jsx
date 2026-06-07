@@ -16,6 +16,7 @@ import { CheckIcon } from '../../../public/assets/icons/CheckIcon.jsx';
 import { ArrowBackMobile } from '../../../public/assets/icons/ArrowBackMobile.jsx';
 import { Loader } from '../../components/Loader';
 import { useCatalogFilters } from '../../hooks/useCatalogFilters.js';
+import { usePickupPoints } from '../../hooks/usePickupPoints.js';
 
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
@@ -61,12 +62,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
             category_slug: currentSlug
         })
     },[currentSlug])
-
-    // console.log('currentSlug', currentSlug)
-
-    // console.log('products CategoryItemPage, ', products)
-
-    // console.log('categoryItemPage', categoryItem)
 
     const {favorites, toggleFavorites} = useFavorites();
 
@@ -126,12 +121,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     
     const[filtersList, setShowFiltersList] = useState(false);
 
-
-
-    // console.log('categoryItemPage products', currentSlug)
-    // console.log('categoryItemPage filters', categoryFiltersList)
-    // console.log(products)
-
     const [sortOptions, setSortOptions] = useState({
         sort_discount: null,
         sort_price: null,
@@ -155,7 +144,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     }, [sortOptions,  currentSlug])
 
 
-    console.log(sortOptions)
 
     const handleReset = () =>{
         setSortOptions({
@@ -167,8 +155,16 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         })
     }
 
+    const {pickupPoints, loadingPickupPoints, loadPoints} = usePickupPoints();
+
+    useEffect(()=>{
+        loadPoints();
+    },[])
+
     return(
         <>
+        {errLoadingCategoryItem && <p>{errLoadingCategoryItem}</p>}
+        {errLoadingProducts && <p>{errLoadingProducts}</p>}
         <div className={cls.catalogItemPageWrapper}>
             <div className={cls.catalogItemPageTop}>
                 <div className={cls.catalogItemPageTitleBlock}>
@@ -411,29 +407,21 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 </div>
                                 {showAvailibility &&
                                 <div className={cls.availibilityList}>
-                                    <div className={cls.availibilityInStore}>
-                                        <div>
-                                            <CheckIcon />
-                                        </div>
-                                        <p>ул. Магазин 1 адрес</p>
-                                        <input type="checkbox" id="store1" name="store1" value="store1" />
+                                    {pickupPoints?.map((point)=>{
+                                        return(
+                                            <div 
+                                                className={cls.availibilityInStore}
+                                                key={point.id}
+                                            >
+                                                <div>
+                                                    <CheckIcon />
+                                                </div>
+                                                <p>ул. Магазин 1 адрес</p>
+                                                <input type="checkbox" id="store1" name="store1" value="store1" />
 
-                                    </div>
-                                    <div className={cls.availibilityInStore}>
-                                        <div>
-                                            <CheckIcon />
-                                        </div>
-                                        <p>ул. Магазин 2 адрес</p>
-                                        <input type="checkbox" id="store2" name="store2" value="store2" />
-                                    </div>
-                                    <div className={cls.availibilityInStore}>
-                                        <div>
-                                            <CheckIcon />
-                                        </div>
-                                        <p>ул. Магазин 3 адрес</p>
-                                        <input type="checkbox" id="store3" name="store3" value="store3" />
-
-                                    </div>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                                 }
                             </div>
@@ -775,7 +763,12 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             <CheckIcon />
                                         </div>
                                         <p>ул. Магазин 1 адрес</p>
-                                        <input type="checkbox" id="store1" name="store1" value="store1" />
+                                        <input 
+                                            type="checkbox" 
+                                            id="store1" 
+                                            name="store1" 
+                                            value="store1" 
+                                        />
 
                                     </div>
                                     <div className={cls.availibilityInStore}>

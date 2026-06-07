@@ -37,6 +37,8 @@ import { CartRemoveIconMobileDark } from '../../../public/assets/icons/CartRemov
 import { CartAddIconMobileDark } from '../../../public/assets/icons/CartAddMobileIconDark.jsx';
 import { toast } from 'react-toastify';
 import { useReviewsStore } from '../../stores/useReviewsStore.js';
+import { ProductPageDecreaseCounterIcon } from '../../../public/assets/icons/ProductPageDecreaseCounterIcon.jsx';
+import { ProductPageIncreaseIcon } from '../../../public/assets/icons/ProductPageIncreaseIcon.jsx';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -86,16 +88,15 @@ export const ProductPage = ({isMobileScroll}) =>{
     const {isAuth} = useAuth();
 
     const {reviewsList, loadReviews, addReview} = useReviewsStore();
-
+    
+    console.log('product page.=  slug', slug)
     console.log('reviews = ',reviewsList)
+
 
     useEffect(()=>{
         if (!slug) return;
         loadReviews(slug)
     },[slug])
-
-    console.log('product page.=  slug', slug)
-
 
     const cartItem = cartItems?.find(
         (item) => item?.product?.id === item.product_id
@@ -155,7 +156,11 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     {product?.product?.images.map((item, index)=>{
                                         return(
                                             <SwiperSlide key={index}>
-                                                <img src={`${item.url}`} alt="product-img"/>
+                                                <img 
+                                                    src={`${item.url}`} 
+                                                    alt={`${item.name}`}
+                                                    lazy={`true`}
+                                                />
                                             </SwiperSlide>
                                         )
                                     })}
@@ -172,7 +177,10 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     {product?.product?.images.map((item, index)=>{
                                         return(
                                             <SwiperSlide key={index}>
-                                                <img src={`${item.url}`} alt="product-img"/>
+                                                <img 
+                                                    src={`${item.url}`} alt={`${item.name}`}
+                                                    lazy={`true`}
+                                                />
                                             </SwiperSlide>
                                         )
                                     })}
@@ -185,7 +193,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                             <div className={cls.line}></div>
                                             <p>{product?.product?.brand.name}</p>
                                 </div>
-                                {product?.product?.attributes.slice(0,5).map((attr, index)=>{
+                                {product?.product?.attributes.slice(0,5).map((attr)=>{
                                     return(
                                         <div className={cls.textItem} key={attr.id}>
                                             <span>{attr.name}</span>
@@ -226,7 +234,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                             <div className={cls.line}></div>
                                             <p>{product?.product?.brand.name}</p>
                                         </div>
-                                        {product?.product?.attributes.map((attr, index)=>{
+                                        {product?.product?.attributes.map((attr)=>{
                                             return(
                                                 <div className={cls.textItem} key={attr.id}>
                                                     <span>{attr.name}</span>
@@ -277,7 +285,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                             <div className={cls.productReviewsInner}>
                                 {reviewsList?.data?.length == 0 ? <p>Отзывов пока нет</p>:
                                 <div className={cls.reviewItem}>
-                                    
+
                                 </div>
                                 }
                             </div>
@@ -381,9 +389,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                             changeCount(cartItem.id, counter)
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M4.16699 10H15.8337" stroke="#152429" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
+                                        <ProductPageDecreaseCounterIcon />
                                     </button>
                                     <p>{counter}</p>
                                     <button
@@ -394,9 +400,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                             changeCount(cartItem.id, (cartItemQuantityCount))
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M10.0003 4.16669V15.8334M4.16699 10H15.8337" stroke="#152429" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
+                                        <ProductPageIncreaseIcon />
                                     </button>
                                 </div>
                                 <button>

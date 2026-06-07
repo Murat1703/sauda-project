@@ -388,14 +388,14 @@ export const useProducts = () =>{
 
     const loadProducts = useCallback(async () => {
         try {
-        setLoadingProducts(true);
-        const res = await getProducts();
-        setProducts(res || []);
+          setLoadingProducts(true);
+          const res = await getProducts();
+          setProducts(res || []);
         } catch (error) {
-        console.error("Failed to load products:", error);
-        throw error;
+          console.error("Failed to load products:", error);
+          throw error;
         } finally {
-        setLoadingProducts(false);
+          setLoadingProducts(false);
         }
     }, []);
 
