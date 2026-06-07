@@ -8,6 +8,19 @@
     flex-direction: column;
     gap: 24px;
 }
+.addReviewBtn{
+    width: fit-content;
+    padding: 12px 14px;
+    background: var(--accent);
+    border-radius: 10px;
+    p{
+        font-weight: 500;
+        color: var(--white);
+    }
+}
+.addReviewBtn:hover{
+    background: var(--accent-hover);
+}
 .orderPageTitleBlock{
     display: flex;
     flex-direction: column;

@@ -36,6 +36,7 @@ import {CartRemoveIconMobile} from '../../../public/assets/icons/CartRemoveIconM
 import { CartRemoveIconMobileDark } from '../../../public/assets/icons/CartRemoveIconMobileDark.jsx';
 import { CartAddIconMobileDark } from '../../../public/assets/icons/CartAddMobileIconDark.jsx';
 import { toast } from 'react-toastify';
+import { useReviewsStore } from '../../stores/useReviewsStore.js';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -83,6 +84,17 @@ export const ProductPage = ({isMobileScroll}) =>{
     const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart, errLoadingCart} = useCart();
 
     const {isAuth} = useAuth();
+
+    const {reviewsList, loadReviews, addReview} = useReviewsStore();
+
+    console.log('reviews = ',reviewsList)
+
+    useEffect(()=>{
+        if (!slug) return;
+        loadReviews(slug)
+    },[slug])
+
+    console.log('product page.=  slug', slug)
 
 
     const cartItem = cartItems?.find(
@@ -239,23 +251,35 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 </div>
                             </div>
                         </div>
-                        <div className={cls.productReviews}>
-                            <div className={cls.productReviewsTitleBlock}>
-                                <div className={cls.productReviewTitle}>
-                                    <Title>Отзывы</Title>
-                                    <p>{[].length} отзывов</p>
-                                </div>
-                            </div>
-                            <div className={cls.productReviewRating}>
-                                <div className={cls.productReviewRatingContent}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M10.0008 15.2167L4.12295 18.5069L5.43573 11.8999L0.490234 7.32652L7.17943 6.5334L10.0008 0.416687L12.8222 6.5334L19.5113 7.32652L14.5659 11.8999L15.8787 18.5069L10.0008 15.2167Z" fill="#EDBA37"/>
-                                    </svg>
-                                    <div className={cls.productRatingValue}>
-                                        <p>5.0</p>
-                                        <p>/5</p>
+                        <div className={cls.reviewsListContent}>
+                            <div className={cls.productReviews}>
+                                <div className={cls.productReviewsTitleBlock}>
+                                    <div className={cls.productReviewTitle}>
+                                        <Title>Отзывы</Title>
+                                        <p>{reviewsList?.data?.length} отзывов</p>
                                     </div>
                                 </div>
+                                <div>
+                                <div className={cls.productReviewRating}>
+                                    <div className={cls.productReviewRatingContent}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M10.0008 15.2167L4.12295 18.5069L5.43573 11.8999L0.490234 7.32652L7.17943 6.5334L10.0008 0.416687L12.8222 6.5334L19.5113 7.32652L14.5659 11.8999L15.8787 18.5069L10.0008 15.2167Z" fill="#EDBA37"/>
+                                        </svg>
+                                        <div className={cls.productRatingValue}>
+                                            <p>5.0</p>
+                                            <p>/5</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                </div>
+                            </div>
+                            <div className={cls.productReviewsInner}>
+                                {reviewsList?.data?.length == 0 ? <p>Отзывов пока нет</p>:
+                                <div className={cls.reviewItem}>
+                                    
+                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -686,7 +710,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                     <div className={cls.mobileReviewsTop}>
                         <div>
                             <Title>Отзывы</Title>
-                            <span>157 отзываов</span>   
+                            <span>{reviewsList?.data?.length} отзывов</span>   
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">

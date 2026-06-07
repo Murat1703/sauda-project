@@ -2,11 +2,12 @@ import { BreadCrumbs } from '../../../components/AccountLayout'
 import { AccountTitle } from '../../../components/AccountLayout'
 import cls from './OrderPage.module.css'
 import { Link, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDateFormat } from '../../../hooks/useDateFormat.js';
 import { Loader } from '../../../components/Loader/Loader.jsx';
 import { useMediaQuery } from 'react-responsive';
 import { useOrdersStore } from '../../../stores/useOrdersStore.js';
+import { AddReviewModal } from '../../../components/AddReviewModal/AddReviewModal.jsx';
 
 
 export const OrderPage = () =>{
@@ -41,13 +42,16 @@ export const OrderPage = () =>{
         }
     }
 
-    console.log('order ITe', orderItem)
 
-    const pricePerOne = () =>{
-
+    const handleToCloseModal = () =>{
+        setReviewModal(false); 
     }
 
+    const [orderInfo, setOrderInfo] = useState(null)
+    const [reviewModal, setReviewModal] = useState(false)
+
     return(
+        <>
         <div className={cls.orderPageWrapper}>
             <div className={cls.orderPageTop}>
                 <div className={cls.orderPageTitleBlock}>
@@ -136,6 +140,16 @@ export const OrderPage = () =>{
                                             <p>{order?.unit_price}  ₸/шт</p>
                                         </div>}
                                         {isMobile && <button><p>Оставить отзыв</p></button>}
+                                        {!isMobile &&
+                                        <button 
+                                        className={cls.addReviewBtn} 
+                                        onClick={()=>{
+                                            setReviewModal(!reviewModal); 
+                                            setOrderInfo(order)
+                                        }}
+                                        >
+                                            <p>Оставить отзыв</p>
+                                        </button>}
                                     </div>
                                 </div>
 
@@ -198,7 +212,7 @@ export const OrderPage = () =>{
                     </button>
                     <button>
                         <p>Оформить возврат</p>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fwidth="15" height="15" viewBox="0 0 15 15" fill="none">
                         <path d="M4.96647 0.800049L0.799805 4.96672L4.96647 9.13338M0.799805 4.96672H6.13314C8.9334 4.96672 10.3335 4.96672 11.4031 5.51168C12.3439 5.99105 13.1088 6.75595 13.5882 7.69676C14.1331 8.76632 14.1331 10.1665 14.1331 12.9667V14.1334" stroke="#152429" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                     </button>
@@ -206,5 +220,8 @@ export const OrderPage = () =>{
 
             </div>}
         </div>
+        {reviewModal && <AddReviewModal orderItem={orderInfo} onClose=
+        {handleToCloseModal}/>}
+        </>
     )
 }

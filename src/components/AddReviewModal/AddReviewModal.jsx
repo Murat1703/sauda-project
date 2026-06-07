@@ -1,0 +1,105 @@
+import { useState } from 'react'
+import { ReviewAddIcon } from '../../../public/assets/icons/ReviewAddIcon'
+import { Title } from '../Title'
+import cls from './AddReviewModal.module.css'
+import { useReviewsStore } from '../../stores/useReviewsStore'
+import { ReviewsSuccessIcon } from '../../../public/assets/icons/ReviewsSuccessIcon'
+
+export const AddReviewModal = ({orderItem, onClose}) =>{
+
+    const [review,setReview] = useState({
+        rating: null,
+        body: null 
+    })
+
+    const [step, setStep] = useState(null);
+
+    console.log('review = ', review);
+    console.log('orderITEm = ', orderItem)
+    const {addReview} = useReviewsStore();
+
+    return(
+        <div className={cls.addReviewModalWrapper} onClick={onClose}>
+            {step !=='success_modal' && 
+            <div className={cls.addReviewModalInner} onClick={(e)=>e.stopPropagation()}>
+                <div className={cls.reviewItemTitleBlock}>
+                    <Title>Добавить новый отзыв</Title>
+                    <div className={cls.orderItemWrapper}>
+                        <div className={cls.orderItemImgWrapper}>
+                            <img src={`${orderItem?.primary_image_url}`} alt={`${orderItem?.name}`}/>
+                        </div>
+                        <p>{orderItem?.name}</p>
+                    </div>
+                </div>
+                <div className={cls.ratingWrapper}>
+                    <div className={cls.ratingText}>
+                        <p>Оцените товар</p>
+                        <p>Установите оценку от 1 до 5</p>
+                    </div>
+                    <div className={cls.reviewRating}>
+                        {[1,2,3,4,5].map((item, index)=>{
+                            return(
+                                <div 
+                                    key={index} 
+                                    onClick={
+                                        ()=>setReview((prev)=>(
+                                            {
+                                                ...prev,
+                                                rating: item
+                                            }
+                                        ))
+                                    }
+                                >
+                                    <ReviewAddIcon 
+                                        fill={item <=review.rating ? "#FF4D00": ""}
+                                    />
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className={cls.top}>
+                    <p>Место для отзыва</p>
+                    <textarea 
+                        className={cls.reviewText}
+                        onChange={(e)=>{
+                            setReview((prev)=>({
+                                ...prev,
+                                body: e.target.value
+                            }))
+                        }}
+                    />
+                    <button 
+                        className={cls.reviewAddBtn} 
+                        onClick={
+                            ()=>{
+                                addReview(orderItem.slug, review);
+                                if ((review.rating !==null) && (review.body!==null)) setStep('success_modal')
+                            }
+                        }   
+                    >
+                        <p>Оставить отзыв</p>
+                    </button>
+                </div>
+            </div>}
+            {step == 'success_modal' && 
+            <div 
+                className={cls.successModal} 
+                onClick={(e)=>e.stopPropagation()}>
+                    <div>
+                        <div>
+                            <ReviewsSuccessIcon />
+                        </div>
+                        <h3>Спасибо за отзыв!</h3>
+                        <p>После прохождения модерации отзыв будет отпубликован на сервисе.</p>
+                    </div>
+                    <button 
+                        className={cls.successBtn}
+                        onClick={onClose}
+                    >
+                        <p>Продолжить</p>
+                    </button>
+            </div>}
+        </div>
+    )
+}

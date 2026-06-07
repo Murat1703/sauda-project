@@ -15,7 +15,7 @@ import { AccountInfoIcon } from '../../../public/assets/icons/AccountInfoIcon.js
 import { AccountLogOutIcon } from '../../../public/assets/icons/AccountLogOutIcon.jsx';
 import {Loader} from '../Loader'
 
-export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMobile, onMobileLogout}) => {
+export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMobile, onMobileLogout, reviews}) => {
     const location = useLocation();
 
     const {favoritesList, loadingFavoritesList, clearFavoritesList} = useFavoritesStore();
@@ -103,7 +103,7 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
                 >
                     <AccountReviewsIcon />
                     <p>Отзывы</p>
-                    <span></span>
+                    <span>{reviews?.data?.length}</span>
                 </NavLink>
                 </li>
 

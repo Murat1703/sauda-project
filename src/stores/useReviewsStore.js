@@ -1,102 +1,131 @@
+import { apiGetMyReviews, apiGetReviews, apiPostReviews } from "../api/api.reviews";
 import { create } from "zustand";
-import { apiGetOrder, apiGetOrders, apiPostOrder } from "../api/api.orders.js";
-import { apiPostReviews } from "../api/api.reviews.js";
 
 
+export const useReviewsStore = create((set, get) => ({
+  reviewsList: [],
+  reviewItem: {},
+  accountReviews: null,
 
-export const useOrdersStore = create((set, get) => ({
-  orders: [],
-  orderItem: {},
+  loadingReviewsList: true,
+  loadingReviewItem: true,
+  loadingAccountReviews: null,
 
-  loadingOrders: true,
-  loadingOrderItem: true,
+  errLoadingReviewsList: null,
+  errLoadingReviewItem: null,
+  errLoadingAccountReviews: null,
 
-  errLoadingOrders: null,
-  errLoadingOrderItem: null,
-
-  loadOrders: async () => {
-    const { orders, loadingOrders } = get();
-    if (!loadingOrders) return;
-    if (orders.length > 0) return;
+  loadReviews: async (slug) => {
+    const { reviewsList, loadingReviews } = get();
+    if (loadingReviews) return;
+    if (reviewsList?.data?.length > 0) return;
 
     try {
       set({
-        loadingOrders: true,
-        errLoadingOrders: null,
+        loadingReviews: true,
+        errLoadingReviewsList: null,
       });
 
-      const res = await apiGetOrders();
+      const res = await apiGetReviews(slug);
 
       set({
-        orders: res?.data || [] ,
+        reviewsList: res?.data || [] ,
       });
     } catch (error) {
       set({
-        errLoadingOrders:
+        errLoadingReviewsList:
           error?.response?.data?.message || error.message,
       });
     } finally {
       set({
-        loadingOrders: false,
+        loadingReviews: false,
       });
     }
   },
 
-  loadOrderItem: async (orderId) => {
-    const { orderItem } = get();
-
-    if (!orderId) return;
-
-    // if (String(orderItem?.order?.number) === String(orderId)) {
-    //   return;
-    // }
+  loadAccountReviews: async()=>{
+    const { accountReviews, loadingAccountReviews } = get();
+    if (loadingAccountReviews) return;
+    if (accountReviews?.data?.length > 0) return;
 
     try {
       set({
-        loadingOrderItem: true,
-        errLoadingOrderItem: null,
-        orderItem: null,
+        loadingAccountReviews: true,
+        errLoadingAccountReviews: null,
       });
 
-      const res = await apiGetOrder(orderId);
+      const res = await apiGetMyReviews();
 
       set({
-        orderItem: res?.data || null,
+        accountReviews: res?.data || [] ,
       });
     } catch (error) {
       set({
-        orderItem: null,
-        errLoadingOrderItem:
+        errLoadingAccountReviews:
           error?.response?.data?.message || error.message,
       });
     } finally {
       set({
-        loadingOrderItem: false,
+        loadingAccountReviews: false,
       });
     }
   },
 
-  addOrder: async (data) => {
+  // loadReviewItem: async (reviewId) => {
+  //   const { reviewItem } = get();
 
-    const prevOrders = get().orders || [];
+  //   if (!reviewId) return;
+
+  //   // if (String(orderItem?.order?.number) === String(orderId)) {
+  //   //   return;
+  //   // }
+
+  //   try {
+  //     set({
+  //       loadingReviewItem: true,
+  //       errLoadingReviewItem: null,
+  //       reviewItem: null,
+  //     });
+
+  //     const res = await apiGetReviewItem(reviewItem);
+
+  //     set({
+  //       orderItem: res?.data || null,
+  //     });
+  //   } catch (error) {
+  //     set({
+  //       orderItem: null,
+  //       errLoadingOrderItem:
+  //         error?.response?.data?.message || error.message,
+  //     });
+  //   } finally {
+  //     set({
+  //       loadingOrderItem: false,
+  //     });
+  //   }
+  // },
+
+  addReview: async (slug,data) => {
+
+    const prevReviews = get().reviewsList || [];
 
     set({
       loadingReviews: true,
-      errLoadingReviews: null,
+      errLoadingReviewsList: null,
     });
 
     try {
-      await apiPostOrder( data);
-      await get().loadOrders(true)
+      await apiPostReviews(slug, data);
+      await get().loadReviews(true)
     } catch (error) {
       set({
-        orders: prevOrders,
-        errLoadingOrders: error?.response?.data?.message 
+        reviewsList: prevReviews,
+        errLoadingReviewsList: error?.response?.data?.message 
         || error.message,
       });
     }
     finally {
-      set({loadingOrders: false})
+      set({loadingReviews: false})
     }
   },
 
