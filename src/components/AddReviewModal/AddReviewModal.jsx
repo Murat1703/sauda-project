@@ -16,7 +16,7 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
 
     console.log('review = ', review);
     console.log('orderITEm = ', orderItem)
-    const {addReview} = useReviewsStore();
+    const {addReview, errLoadingReviewsList} = useReviewsStore();
 
     return(
         <div className={cls.addReviewModalWrapper} onClick={onClose}>
@@ -82,7 +82,7 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
                     </button>
                 </div>
             </div>}
-            {step == 'success_modal' && 
+            {(step == 'success_modal' && !errLoadingReviewsList)&&
             <div 
                 className={cls.successModal} 
                 onClick={(e)=>e.stopPropagation()}>
@@ -92,6 +92,24 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
                         </div>
                         <h3>Спасибо за отзыв!</h3>
                         <p>После прохождения модерации отзыв будет отпубликован на сервисе.</p>
+                    </div>
+                    <button 
+                        className={cls.successBtn}
+                        onClick={onClose}
+                    >
+                        <p>Продолжить</p>
+                    </button>
+            </div>}
+            {(step == 'success_modal' && errLoadingReviewsList)&&
+            <div 
+                className={cls.successModal} 
+                onClick={(e)=>e.stopPropagation()}>
+                    <div>
+                        <div>
+                            <ReviewsSuccessIcon />
+                        </div>
+                        <h3>Вы уже оставляли отзыв!</h3>
+                        <p>Вы уже оставляли отзыв по товару</p>
                     </div>
                     <button 
                         className={cls.successBtn}

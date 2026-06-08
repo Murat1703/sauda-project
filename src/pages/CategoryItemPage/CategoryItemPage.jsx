@@ -17,6 +17,7 @@ import { ArrowBackMobile } from '../../../public/assets/icons/ArrowBackMobile.js
 import { Loader } from '../../components/Loader';
 import { useCatalogFilters } from '../../hooks/useCatalogFilters.js';
 import { usePickupPoints } from '../../hooks/usePickupPoints.js';
+import { Pagination } from '../../components/Pagination';
 
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
@@ -45,6 +46,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         testProductsBySlugs
     } = useProducts();
 
+    console.log(products)
+
     const {
         categoryFiltersList,
         loadingCategoryFiltersList,
@@ -52,16 +55,18 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         loadCategoryFiltersList
     } = useCatalogFilters();
 
+    const [activePage, setActivePage]= useState(1)
 
     useEffect(()=>{
         loadCategoryItem(currentSlug);
         loadProducts({
-            category_slug: currentSlug
+            category_slug: currentSlug,
+            page: activePage
         });
         loadCategoryFiltersList({
             category_slug: currentSlug
         })
-    },[currentSlug])
+    },[currentSlug, activePage])
 
     const {favorites, toggleFavorites} = useFavorites();
 
@@ -506,6 +511,9 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                             )
                         })}
                     </div>
+                    {(products?.links?.length >=3)  && 
+                        <Pagination links={products?.links} setActivePage={setActivePage}/>
+                    }
                 </div>
             </div>
         </div>

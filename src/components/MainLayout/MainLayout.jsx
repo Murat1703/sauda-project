@@ -14,6 +14,7 @@ import { useProducts } from '../../stores/useProducts.js';
 import { useLanguage } from '../../stores/useLanguage.js';
 import {useCart} from '../../stores/useCart.js'
 import { useOrdersStore } from '../../stores/useOrdersStore.js';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
@@ -43,9 +44,11 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
     }, [pathname, isAuthModalOpen, closeAuthModal]);
 
 
+    const {isAuth} = useAuth();
     useEffect(()=>{
-        loadOrders()
-    },[]);
+        if (isAuth == true) loadOrders()
+            else return
+    },[isAuth]);
 
 
     const contentRef = useRef(null);

@@ -1,0 +1,45 @@
+.paginationWrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0;
+    gap: 8px;
+}
+.paginationWrapper > button{
+    display: flex;
+    padding: 10px 16px;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 12px;
+    border: 1px solid var(--Dark-D10, #E1E2E3);
+    background: var(--Dark-D0, #FFF);
+    p{
+        font-size: 16px;
+        line-height: 24px;
+        color: #0B262E;
+    }
+}
+.paginationWrapper > button:nth-child(1){
+    display: none;
+}
+.paginationWrapper > :last-child{
+    display: none;
+}
+.activePage{
+    background: var(--Dark-D10, #E7E9E9);
+    color:#909596
+}
+
+@media (max-width:768px){
+    .paginationWrapper{
+        padding: 20px;
+        gap: 6px;
+    }
+    .paginationWrapper > button {
+        p{
+            font-size: 14px;
+            line-height: 24px;
+        }
+    }
+}

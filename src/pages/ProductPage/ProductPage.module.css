@@ -365,13 +365,14 @@ a.link{
 .productReviewsInner{
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    width: 100%;
     gap: 20px;
 }
 .productReviews{
     display: flex;
+    flex-direction: column;
     padding: 24px;
-    align-items: center;
+    align-items: flex-start;
     gap: 36px;
     border-radius: 18px;
     background: var(--white);
@@ -437,6 +438,12 @@ a.link{
     display: flex;
     flex-direction: column;
     gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E4E5E5;
+}
+.reviewItem:last-child{
+    border-bottom: none;
+    padding-bottom: none;
 }
 .reviewItemTop{
     width: 100%;

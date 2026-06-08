@@ -19,6 +19,7 @@ export const RecommendedSection = ({products}) =>{
 
     const {favoritesList} = useFavoritesStore();
 
+
     const {errLoadingProducts} = useProducts();
 
     return(

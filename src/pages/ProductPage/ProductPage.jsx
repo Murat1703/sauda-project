@@ -270,52 +270,50 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         <Title>Отзывы</Title>
                                         <p>{reviewsList?.data?.length} отзывов</p>
                                     </div>
-                                </div>
-                                <div>
-                                <div className={cls.productReviewRating}>
-                                    <div className={cls.productReviewRatingContent}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M10.0008 15.2167L4.12295 18.5069L5.43573 11.8999L0.490234 7.32652L7.17943 6.5334L10.0008 0.416687L12.8222 6.5334L19.5113 7.32652L14.5659 11.8999L15.8787 18.5069L10.0008 15.2167Z" fill="#EDBA37"/>
-                                        </svg>
-                                        <div className={cls.productRatingValue}>
-                                            <p>{reviewsList?.summary?.average_rating}</p>
-                                            <p>/5</p>
+                                    <div className={cls.productReviewRating}>
+                                        <div className={cls.productReviewRatingContent}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <path d="M10.0008 15.2167L4.12295 18.5069L5.43573 11.8999L0.490234 7.32652L7.17943 6.5334L10.0008 0.416687L12.8222 6.5334L19.5113 7.32652L14.5659 11.8999L15.8787 18.5069L10.0008 15.2167Z" fill="#EDBA37"/>
+                                            </svg>
+                                            <div className={cls.productRatingValue}>
+                                                <p>{reviewsList?.summary?.average_rating || 5}</p>
+                                                <p>/5</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div className={cls.productReviewsInner}>
+                                {reviewsList?.data?.length === 0 ? (
+                                <p>Отзывов пока нет</p>
+                                ) : (
+                                <div className={cls.productPageReviews}>
+                                    {reviewsList?.data?.map((review) => {
+                                    return (
+                                        <div className={cls.reviewItem} key={review.id}>
+                                            <div className={cls.reviewItemTop}>
+                                                <div>
+                                                <p>{review?.author_name}</p>
+                                                <p>{formatDate(review?.published_at)}</p>
+                                                </div>
+                                                <div className={cls.accountReviewRating}>
+                                                    {[1,2,3,4,5].map((ratingCount)=>{
+                                                        return(
+                                                            <AccountRatingStar 
+                                                            key={ratingCount}
+                                                            fill={ratingCount <= Number(review?.rating)? true : false}/>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>
+                                            <p>{review?.body}</p>
+                                        </div>
+                                    );
+                                    })}
+                                </div>
+                                )}
+                                </div>
+                            </div>
 
-                                </div>
-                            </div>
-                            <div className={cls.productReviewsInner}>
-                            {reviewsList?.data?.length === 0 ? (
-                            <p>Отзывов пока нет</p>
-                            ) : (
-                            <div className={cls.productPageReviews}>
-                                {reviewsList?.data?.map((review) => {
-                                return (
-                                    <div className={cls.reviewItem} key={review.id}>
-                                        <div className={cls.reviewItemTop}>
-                                            <div>
-                                            <p>{review?.author_name}</p>
-                                            <p>{formatDate(review?.published_at)}</p>
-                                            </div>
-                                            <div className={cls.accountReviewRating}>
-                                                {[1,2,3,4,5].map((ratingCount)=>{
-                                                    return(
-                                                        <AccountRatingStar 
-                                                        key={ratingCount}
-                                                        fill={ratingCount <= Number(review?.rating)? true : false}/>
-                                                    )
-                                                })}
-                                            </div>
-                                        </div>
-                                        <p>{review?.body}</p>
-                                    </div>
-                                );
-                                })}
-                            </div>
-                            )}
-                            </div>
                         </div>
                     </div>
                     <div className={cls.right}>
@@ -499,7 +497,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                             spaceBetween={10}
                             modules={[FreeMode, Pagination]}
                         >
-                            {product?.product?.images.map((item)=>{
+                            {product?.product?.images?.map((item)=>{
                                 return(
                                 <SwiperSlide key={item.sku}>
                                     <img 
@@ -518,9 +516,9 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <div className={cls.mobileRating}>
                             <div>
                                 <ReviewItemStar />
-                                <p>{reviewsList?.summary?.average_rating}</p>
+                                <p>{reviewsList?.summary?.average_rating || 5}</p>
                             </div>
-                            <span>157 отзывов</span>
+                            <span>{reviewsList?.data?.length} отзывов</span>
                         </div>
                         <div className={cls.mobileTopButtons}>
                             <button 
@@ -600,7 +598,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                             >
                                 <CartIcon />
                                 <p>
-                                    {counter == 0 || cartItem?.product?.slug == product?.product?.slug ? `В корзине`: `В корзину`}
+                                    {cartItem?.product?.slug == product?.product?.slug ? `В корзинe`: `В корзину`}
                                 </p>
                             </Button>
                             {add && 
@@ -745,12 +743,13 @@ export const ProductPage = ({isMobileScroll}) =>{
                         </div>
                         <div>
                             <AccountRatingStar fill={true}/>
-                            <p>{reviewsList?.summary?.average_rating}</p>
+                            <p>{reviewsList?.summary?.average || 5}</p>
                         </div>
                     </div>
+                    {reviewsList?.data?.length!== 0?
                     <div className={cls.mobileReviewsSlider}>
                         <Swiper 
-                            slidesPerView={1.25}
+                            slidesPerView={reviewsList?.data?.length>1? 1.3: 1 }
                             spaceBetween={8}
                         >
                             {reviewsList?.data?.map((review)=>{
@@ -779,10 +778,13 @@ export const ProductPage = ({isMobileScroll}) =>{
                             })}
 
                         </Swiper>
-                    </div>
+                    </div> :
+                    <p>Отзывов пока нет</p>
+                    }
+                    {reviewsList?.data?.length == 0 &&
                     <button className={cls.showReviews}>
                         <p>Смотреть все отзывы</p>
-                    </button>
+                    </button>}
                 </div>
                 {product?.product?.warranty_text && 
                 <div className={cls.mobileGarantyWrapper}>
@@ -831,7 +833,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                     className={cls.bottomFixedBtn} 
                     onClick={()=>setAdd(true)}
                 >
-                    <p>{counter == 0 || cartItem?.product?.slug == product?.product?.slug ? `В корзине`: `В корзину`}</p>
+                    <p>{cartItem?.product?.slug == product?.product?.slug ? `В корзине`: `В корзину`}</p>
                 </button>
                 
                 {add && 
