@@ -15,7 +15,7 @@
     height: 237.025px;
     flex-shrink: 0;
     align-self: stretch;
-    /* aspect-ratio: 121/120; */
+    aspect-ratio: 121/120;
     border-radius: 10px;
     position: relative;
     overflow: hidden;
@@ -28,7 +28,7 @@
 .productCardImagesWrapper > div{
     position: relative;
 }
-.productCardImagesWrapper  > img{
+.productCardImagesWrapper  > div > img{
     width: 100%;
     height: 100%;
     object-fit: cover;

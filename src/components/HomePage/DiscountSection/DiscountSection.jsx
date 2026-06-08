@@ -48,9 +48,6 @@ export const DiscountSection = ({productsWithDiscount}) =>{
                         }}
                     >
                         {productsWithDiscount?.map((discountItem)=>{
-                            console.log(
-favoritesList
-                            )
                             return(
                                 <SwiperSlide key={discountItem.id}>
                                     <ProductCard 

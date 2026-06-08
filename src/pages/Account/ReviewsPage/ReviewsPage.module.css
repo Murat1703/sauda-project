@@ -50,14 +50,15 @@
     border-radius: 18px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: start;
 }
 .emptyReviews{
     display: flex;
     flex-direction: column;
     gap: 24px;
-    align-items: center;        
+    align-items: center;   
+    margin:0 auto;     
 }
 .emptyIcon{
     width: 64px;
@@ -69,11 +70,11 @@
     background: #E4E5E5;
     margin: 0 auto;
 }
-.reviewsList{
+/* .reviewsList{
     background: var(--white);
     padding: 18px;
     height: 343px;
-}
+} */
 .emptyReviews{
     gap: 20px;
 }
@@ -103,6 +104,73 @@
 .emptyText > span > a{
     color: var(--accent);
 }
+.accountReviewsList{
+    display: flex;
+    flex-direction: column;
+}
+/**/
+.accountReviewBody{
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+.accountReviewImg{
+    width: 142px;
+    height: 142px;
+    border-radius: 10px;
+    border: 1px solid #E0E0E0;
+}
+.accountReviewImg > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.accountReviewTextContent{
+    display: flex;
+    width: 449px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+}
+.accountReviewTextContentTop{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.accountReviewTextContentTop > p:nth-child(1){
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+.accountReviewTextContentTop > div:nth-child(2){
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.accountReviewTextContentTop > div:nth-child(2) > span{
+    font-size: 14px;
+    line-height: 140%;
+    color: #A6AAAB;
+}
+.accountReviewTextContent > span{
+    padding: 8px 12px;
+    gap: 8px;
+    border-radius: 320px;
+}
+.pending{
+    background: #F1F2B3;
+    color: #9A8800;
+}
+.approved{
+    background: #F0F6EB;
+    color: #5D991D;
+}
+.rejected{
+    color: #F20;
+    background: #FFECEC;
+}
+/**/
+
 
 @media (max-width: 768px){
     .breadCrumbsWrapper{

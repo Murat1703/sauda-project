@@ -365,6 +365,7 @@ a.link{
 .productReviewsInner{
     display: flex;
     flex-direction: column;
+    padding: 24px;
     gap: 20px;
 }
 .productReviews{
@@ -427,6 +428,39 @@ a.link{
     line-height: 110%; /* 22px */
     color: #8F9596;
 }
+.productPageReviews{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.reviewItem{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.reviewItemTop{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.reviewItemTop > div:nth-child(1) > p:nth-child(1){
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 110%;
+}
+.reviewItemTop > div:nth-child(1) > p:nth-child(2){
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 110%; /* 15.4px */
+    color: #919799;
+}
+.accountReviewRating{
+    display: flex;
+    gap: 2px;
+}
+
+
 @media (max-width: 768px){
     .mobileProductPageContent{
         display: flex;
@@ -835,5 +869,55 @@ a.link{
     }
     .counterWrapper{
         padding: 8px 12px;
+    }
+    .mobileReviewsSlideItem{
+        padding: 16px;
+        flex-direction: column;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        border-radius: 18px;
+        background: var(--white);
+        height: 100%;
+        border: 1px solid var(--Dark-D10, #E4E5E5);
+    }
+    .mobileReviewsItemTop{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+    }
+    .mobileReviewsItemTop> div:nth-child(1){
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .mobileReviewsItemTop> div:nth-child(1) > p:nth-child(1){
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 12px;
+    }
+    .mobileReviewsItemTop > div:nth-child(2){
+        display: flex;
+        gap: 1px;
+    }
+    .mobileReviewsItemTop> div:nth-child(1) > p:nth-child(2){
+        color: #8F9596;
+        font-size: 12px;
+        line-height: 14px;
+    }
+    .mobileReviewsSlider{
+        height: 195px;
+    }
+    .mobileReviewsSlider > div{
+        width: 100%;
+        height: 100%;
+    }
+    .mobileReviewsSlideItem > p{
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

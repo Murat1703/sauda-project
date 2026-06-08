@@ -39,6 +39,8 @@ import { toast } from 'react-toastify';
 import { useReviewsStore } from '../../stores/useReviewsStore.js';
 import { ProductPageDecreaseCounterIcon } from '../../../public/assets/icons/ProductPageDecreaseCounterIcon.jsx';
 import { ProductPageIncreaseIcon } from '../../../public/assets/icons/ProductPageIncreaseIcon.jsx';
+import { useDateFormat } from '../../hooks/useDateFormat.js';
+import { AccountRatingStar } from '../../../public/assets/icons/AccountRagingStar.jsx';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -107,6 +109,8 @@ export const ProductPage = ({isMobileScroll}) =>{
     )
 
     console.log('isAuth', isAuth)
+
+    const {formatDate} = useDateFormat();
 
     return(
     <>
@@ -274,7 +278,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         <path d="M10.0008 15.2167L4.12295 18.5069L5.43573 11.8999L0.490234 7.32652L7.17943 6.5334L10.0008 0.416687L12.8222 6.5334L19.5113 7.32652L14.5659 11.8999L15.8787 18.5069L10.0008 15.2167Z" fill="#EDBA37"/>
                                         </svg>
                                         <div className={cls.productRatingValue}>
-                                            <p>5.0</p>
+                                            <p>{reviewsList?.summary?.average_rating}</p>
                                             <p>/5</p>
                                         </div>
                                     </div>
@@ -283,11 +287,34 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 </div>
                             </div>
                             <div className={cls.productReviewsInner}>
-                                {reviewsList?.data?.length == 0 ? <p>Отзывов пока нет</p>:
-                                <div className={cls.reviewItem}>
-
-                                </div>
-                                }
+                            {reviewsList?.data?.length === 0 ? (
+                            <p>Отзывов пока нет</p>
+                            ) : (
+                            <div className={cls.productPageReviews}>
+                                {reviewsList?.data?.map((review) => {
+                                return (
+                                    <div className={cls.reviewItem} key={review.id}>
+                                        <div className={cls.reviewItemTop}>
+                                            <div>
+                                            <p>{review?.author_name}</p>
+                                            <p>{formatDate(review?.published_at)}</p>
+                                            </div>
+                                            <div className={cls.accountReviewRating}>
+                                                {[1,2,3,4,5].map((ratingCount)=>{
+                                                    return(
+                                                        <AccountRatingStar 
+                                                        key={ratingCount}
+                                                        fill={ratingCount <= Number(review?.rating)? true : false}/>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+                                        <p>{review?.body}</p>
+                                    </div>
+                                );
+                                })}
+                            </div>
+                            )}
                             </div>
                         </div>
                     </div>
@@ -491,7 +518,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <div className={cls.mobileRating}>
                             <div>
                                 <ReviewItemStar />
-                                <p>5.0</p>
+                                <p>{reviewsList?.summary?.average_rating}</p>
                             </div>
                             <span>157 отзывов</span>
                         </div>
@@ -717,13 +744,42 @@ export const ProductPage = ({isMobileScroll}) =>{
                             <span>{reviewsList?.data?.length} отзывов</span>   
                         </div>
                         <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M10.2939 15.3807C10.1118 15.2788 9.88984 15.2788 9.70776 15.3807L5.25802 17.8715C4.81125 18.1216 4.27668 17.7332 4.37646 17.231L5.37027 12.2294C5.41094 12.0247 5.34235 11.8136 5.18915 11.6719L1.44526 8.2097C1.06936 7.86208 1.27355 7.23364 1.78199 7.17336L6.84592 6.57295C7.05313 6.54838 7.2327 6.41791 7.32011 6.22843L9.45599 1.59789C9.67044 1.13296 10.3312 1.13297 10.5457 1.59789L12.6815 6.22843C12.7689 6.41791 12.9485 6.54838 13.1557 6.57295L18.2196 7.17336C18.728 7.23365 18.9322 7.86207 18.5563 8.2097L14.8125 11.6719C14.6593 11.8136 14.5907 12.0247 14.6314 12.2293L15.6252 17.231C15.7249 17.7332 15.1904 18.1216 14.7436 17.8715L10.2939 15.3807Z" fill="#FF4D00"/>
-                            </svg>
-                            <p>5.0</p>
+                            <AccountRatingStar fill={true}/>
+                            <p>{reviewsList?.summary?.average_rating}</p>
                         </div>
                     </div>
-                    <div className={cls.mobileReviewsSlider}></div>
+                    <div className={cls.mobileReviewsSlider}>
+                        <Swiper 
+                            slidesPerView={1.25}
+                            spaceBetween={8}
+                        >
+                            {reviewsList?.data?.map((review)=>{
+                                return(
+                                <SwiperSlide
+                                >
+                                    <div className={cls.mobileReviewsSlideItem}>
+                                        <div className={cls.mobileReviewsItemTop}>
+                                            <div>
+                                                <p>{review?.author_name}</p>
+                                                <p>{formatDate(review?.published_at)}</p>
+                                            </div>
+                                            <div>
+                                                {[1,2,3,4,5].map((ratingCount)=>{
+                                                    return(
+                                                        <AccountRatingStar 
+                                                        key={ratingCount}
+                                                        fill={ratingCount <= Number(review?.rating)? true : false}/>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+                                        <p>{review?.body}</p>
+                                    </div>
+                                </SwiperSlide>)
+                            })}
+
+                        </Swiper>
+                    </div>
                     <button className={cls.showReviews}>
                         <p>Смотреть все отзывы</p>
                     </button>

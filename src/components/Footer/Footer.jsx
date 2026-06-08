@@ -8,6 +8,7 @@ import { useCategories } from '../../stores/useCategories.js'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSubscribe } from '../../hooks/useSubscribe.js'
+import {Loader} from '../Loader'
 
 export const Footer = () =>{
 
@@ -64,8 +65,11 @@ export const Footer = () =>{
                                     border: inputError ? "1px solid #FC4127": "1px solid rgba(255,255,255, .16)"
                                 }}
                             />
-                            <Button onClick={()=>handleToSubScribe(email)}>
-                                <p>Подписаться</p>
+                            <Button 
+                                onClick={()=>handleToSubScribe(email)}
+                            >
+                                {loadingSubscribe && <Loader />}
+                                {!loadingSubscribe &&<p>Подписаться</p>}
                             </Button>
                             {inputError && <p className={cls.newsLetterInfoStatus}>
                                 {inputError}

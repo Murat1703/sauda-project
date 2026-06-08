@@ -538,8 +538,11 @@
 
 @media (max-width: 768px){
     .catalogItemPageWrapper{
-        padding: 16px;
+        padding: 0;
         gap: 0px;
+    }
+    .catalogItemPageTop{
+        padding: 16px 16px 0 16px;
     }
     .catalogItemPageBreadCrumbs{
         width: 100%;
@@ -585,6 +588,7 @@
         display: flex;
         width: 100%;
         justify-content: space-between;
+        padding: 0 16px;
     }
     .mobileCatalogItemPageProductsTop > button{
         display: flex;
