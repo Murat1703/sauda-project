@@ -7,7 +7,6 @@ import { Title } from '../../components/Title';
 import { Link } from 'react-router-dom';
 import { SortIcon } from '../../../public/assets/icons/SortIcon';
 import { ProductCard } from '../../components/ProductCard/ProductCard.jsx';
-import { useFavorites } from '../../hooks/useFavorites.js';
 import { useMediaQuery } from 'react-responsive';
 import { MobileSortIcon } from '../../../public/assets/icons/MobileSortIcon.jsx';
 import { MobileFiltersIcon } from '../../../public/assets/icons/MobileFiltersIcon.jsx';
@@ -18,6 +17,7 @@ import { Loader } from '../../components/Loader';
 import { useCatalogFilters } from '../../hooks/useCatalogFilters.js';
 import { usePickupPoints } from '../../hooks/usePickupPoints.js';
 import { Pagination } from '../../components/Pagination';
+import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
 
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
@@ -68,18 +68,14 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         })
     },[currentSlug, activePage])
 
-    const {favorites, toggleFavorites} = useFavorites();
 
-    const handleMakeFavorite = (slug)=>{
-        toggleFavorites(slug)
-    }
+    const {favoritesList} = useFavoritesStore();
+
 
 
     const isMobile = useMediaQuery({maxWidth: 768})
 
     const [sort, setSort] = useState(null);
-
-    console.log(sort)
 
     const handlePriceSort = () =>{
         setSort(prev => 
@@ -505,8 +501,9 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                             <ProductCard 
                                 product={product} 
                                 key={product?.slug}
-                                isFavorite={favorites.includes(product.slug)} 
-                                addToFavorite={() => handleMakeFavorite(product.slug)} 
+                                isFavorite={
+                                    favoritesList?.find(item=> item?.product?.slug === product?.slug)
+                                }
                             />
                             )
                         })}
