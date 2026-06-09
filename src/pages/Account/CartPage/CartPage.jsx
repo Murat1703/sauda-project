@@ -55,6 +55,7 @@ export const CartPage = ({isAuth}) =>{
         changeCount(item.id, (item.quantity + 1))
     }
 
+    const [quantityError, setQuantityError] = useState(null)
 
     return(
         <>
@@ -179,6 +180,7 @@ export const CartPage = ({isAuth}) =>{
                                         >
                                             <p>{item.product.name}</p>
                                             <p>Код: {item.product.sku}</p>
+                                            {quantityError && <p className={cls.quantityError}>{quantityError}</p>}
                                         </Link>
                                         <div className={cls.cartItemCounter}>
                                             <button 
@@ -186,9 +188,13 @@ export const CartPage = ({isAuth}) =>{
                                                 onClick={()=>{
                                                     if (item.quantity <= 1){
                                                         removeFromCart(item.id);
+                                                        setQuantityError(null);
                                                         return
                                                     }
-                                                    changeCount(item.id, (item.quantity - 1));
+                                                    if (item.quantity > 1){
+                                                        changeCount(item.id, (item.quantity - 1));
+                                                        return
+                                                    }
                                                 }}
                                             >
                                                 <CartRemoveIcon />
@@ -196,7 +202,16 @@ export const CartPage = ({isAuth}) =>{
                                             <p>{item.quantity}</p>
                                             <button 
                                                 className={cls.counterBtn}
-                                                onClick={()=>changeCount(item.id, (item.quantity + 1))}
+                                                onClick={()=>{
+                                                    if ((item?.quantity)<(item?.product?.stock_quantity)){
+                                                        changeCount(item.id, (item.quantity + 1));
+                                                        setQuantityError(null);
+                                                    }
+                                                    if ((item?.quantity)===(item?.product?.stock_quantity)){
+                                                        setQuantityError('Товары закончились');
+                                                        return
+                                                    }
+                                                }}
                                                 >
                                                 <CartAddIcon />
                                             </button>

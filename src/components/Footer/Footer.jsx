@@ -27,9 +27,16 @@ export const Footer = () =>{
 
     const [email, setEmail] = useState('')
 
-    const {suscribeStatus, addToSubscribe, subscribeError, loadingSubscribe} = useSubscribe();
+    const {
+        subscribeStatus, 
+        addToSubscribe, 
+        subscribeError, 
+        loadingSubscribe
+    } = useSubscribe();
 
     const [inputError, setInputError] = useState(null)
+
+    const [status, setStatus] = useState(null)
 
     const handleToSubScribe = async(email) =>{
         if (email.length !== 0){
@@ -40,6 +47,7 @@ export const Footer = () =>{
             setInputError('Введите email');
             return
         }
+        setStatus(subscribeStatus?.status)
     }
 
     return(
@@ -60,6 +68,7 @@ export const Footer = () =>{
                                 onChange={(e)=>{
                                     setInputError(null)
                                     setEmail(e.target.value);
+                                    setStatus(null)
                                 }}
                                 style={{
                                     border: inputError ? "1px solid #FC4127": "1px solid rgba(255,255,255, .16)"
@@ -77,9 +86,9 @@ export const Footer = () =>{
                             {subscribeError && 
                                 <p className={cls.newsLetterInfoStatus}>{subscribeError}</p>
                             }
-                            {suscribeStatus && 
+                            {status && 
                             <p className={cls.newsLetterInfoStatus}>
-                                {suscribeStatus}
+                                {status}
                             </p>}
                             
                         </div>

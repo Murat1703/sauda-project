@@ -443,10 +443,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 <div className={cls.sortList}>
                                     <button 
                                         className={`${
-                                            sortOptions.sort_price === "price_asc" || 
-                                            sortOptions.sort_price === "price_desc"? 
-                                            cls.active: 
-                                            ""}
+                                            cls.active}
                                             ${sortOptions.sort_price=='price_desc'? cls.descBtn: ""}`} 
                                         onClick={()=>setSortOptions((prev)=>({...prev, sort_price: prev.sort_price == "price_asc"? "price_desc": "price_asc"}))}
                                     >

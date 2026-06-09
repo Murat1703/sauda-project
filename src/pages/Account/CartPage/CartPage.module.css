@@ -298,6 +298,14 @@
     top: 11px;
     left: 0;
 }
+.quantityError{
+    padding: 2px 6px;
+    font-size: 12px;
+    border-radius: 12px;
+    background: rgba(190, 18, 60, .65);
+    color: var(--white);
+    width: fit-content;
+}
 
 @media (max-width:768px){
     .cartPageWrapper{
