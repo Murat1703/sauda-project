@@ -1,0 +1,13 @@
+.cmsPageLayoutContent{
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+@media (max-width: 768px){
+    .cmsPageLayoutContent{
+        padding: 16px 16px;
+        gap: 16px;
+    }
+}

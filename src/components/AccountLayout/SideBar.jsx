@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useOrders } from '../../hooks/useOrders.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
 import { AccountOrdersIcon } from '../../../public/assets/icons/AccountOrdersIcon.jsx';
 import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileControlPanelAccount.jsx';
@@ -13,12 +12,18 @@ import { AccountFavoritesIcon } from '../../../public/assets/icons/AccountFavori
 import { AccountReviewsIcon } from '../../../public/assets/icons/AccountReviewsIcon.jsx';
 import { AccountInfoIcon } from '../../../public/assets/icons/AccountInfoIcon.jsx';
 import { AccountLogOutIcon } from '../../../public/assets/icons/AccountLogOutIcon.jsx';
+import { useClickOutside } from '../../hooks/useClickOutside.js';
+import { useRef, useCallback } from 'react';
 import {Loader} from '../Loader'
 
-export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMobile, onMobileLogout, reviews}) => {
+export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMobile, onMobileLogout, reviews, showProfileMenu}) => {
     const location = useLocation();
 
-    const {favoritesList, loadingFavoritesList, clearFavoritesList} = useFavoritesStore();
+    const {
+        favoritesList, 
+        loadingFavoritesList, 
+        clearFavoritesList} 
+    = useFavoritesStore();
 
     const navigate = useNavigate();
 
@@ -47,6 +52,14 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
         setShowProfileMenu(false);
     }
 
+    const menuRef = useRef(null)
+
+    const closeMenu = useCallback(() => {
+        setShowProfileMenu(false)
+    }, [])
+
+    useClickOutside(menuRef, closeMenu, showProfileMenu)
+
     const handleLogOut = () =>{
         navigate('/');
         logout();
@@ -60,9 +73,13 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
     return (
         <>
         {loadingFavoritesList && <Loader />}
-        <aside className={cls.sideBar}>
-            {isHeaderProfile && (
-                <div className={cls.profileShortInfo}>
+        {(isHeaderProfile == true) &&
+        <aside 
+            className={cls.sideBar} 
+            ref={menuRef}
+        >
+            {isHeaderProfile  && (
+                <div className={cls.profileShortInfo} onClick={(e)=>e.stopPropagation()}>
                     <div className={cls.profileImg}>
                         <AccountProfileImageIcon />
                     </div>
@@ -141,6 +158,7 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
                 
             </ul>
         </aside>
+        }
         </>
     );
 };

@@ -12,6 +12,7 @@ import { ProductCard } from '../../ProductCard';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
 import { useProducts } from '../../../stores/useProducts';
+import { useLanguage } from '../../../stores/useLanguage';
 
 export const DiscountSection = ({productsWithDiscount}) =>{
 
@@ -20,12 +21,19 @@ export const DiscountSection = ({productsWithDiscount}) =>{
 
     const {errLoadingProducts} = useProducts();
 
+    const {lang} = useLanguage();
+
     return(
         <section className={cls.dicountSection}>
             <div className={cls.discountSectionContent}>
                 <div className={cls.discountSectionTitleBlock}>
-                    <Title>Мега🔥скидки</Title>
-                    <p>Горящие товары со скидкой до 70%</p>
+                    <Title>
+                        {lang=='ru' && `Мега🔥скидки`}
+                        {lang=='kk' && `Мега🔥жеңілдіктер`}
+                    </Title>
+                    <p>
+                        {lang=='ru' && `Горящие товары со скидкой до 70%`}{lang=='kk' && `70% дейін жеңілдіктер`}
+                    </p>
                 </div>
                 {errLoadingProducts ? <p className={cls.errText}>{errLoadingProducts}</p> :
                 <div className={cls.discountedProducts}>

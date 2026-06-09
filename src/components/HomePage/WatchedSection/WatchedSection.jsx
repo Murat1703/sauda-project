@@ -5,11 +5,11 @@ import {  useRef } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { SliderControlBtn } from '../../SliderControlBtn';
-// import { useFavorites } from '../../../hooks/useFavorites';
 import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
 import { useProducts } from '../../../stores/useProducts';
+import { useLanguage } from '../../../stores/useLanguage';
 
 
 export const WatchedSection = ({products}) =>{
@@ -20,10 +20,15 @@ export const WatchedSection = ({products}) =>{
 
     const {favoritesList} = useFavoritesStore();
 
+    const {lang} = useLanguage();
+
     return(
         <section className={cls.watchedSectionWrapper}>
             <div className={cls.watchedSectionContent}>
-                <Title>Вы ранее смотрели</Title>
+                <Title>
+                    {lang == 'ru' && `Вы ранее смотрели`}
+                    {lang == 'kk' && `Бұрын қаралған`}
+                </Title>
                 {errLoadingProducts ? <p>{errLoadingProducts}</p>
                 :
                 <div className={cls.watchedSectionList}>

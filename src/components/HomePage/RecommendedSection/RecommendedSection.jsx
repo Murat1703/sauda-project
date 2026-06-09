@@ -6,11 +6,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { SliderControlBtn } from '../../SliderControlBtn';
-import { useFavorites } from '../../../hooks/useFavorites';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext';
 import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 import { useProducts } from '../../../stores/useProducts';
+import { useLanguage } from '../../../stores/useLanguage';
 
 
 
@@ -19,6 +19,7 @@ export const RecommendedSection = ({products}) =>{
 
     const {favoritesList} = useFavoritesStore();
 
+    const {lang} = useLanguage();
 
     const {errLoadingProducts} = useProducts();
 
@@ -26,7 +27,8 @@ export const RecommendedSection = ({products}) =>{
         <section className={cls.recommendedSection}>
             <div className={cls.recommendedSectionContent}>
                 <Title>
-                    Рекомендуемые товары
+                    {lang == 'ru' && `Рекомендуемые товары`}
+                    {lang == 'kk' && `Ұсынылатын тауарлар`}
                 </Title>
                 {errLoadingProducts ? <p>{errLoadingProducts}</p>: 
                 <div className={cls.recommendedSlider}>

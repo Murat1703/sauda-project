@@ -19,6 +19,11 @@ import { useMediaQuery } from 'react-responsive'
 import { MainAccountMainPage } from './pages/Account/MobileAccountMainPage'
 import { CategoryItemPage } from './pages/CategoryItemPage/CategoryItemPage.jsx'
 import { NewOrderPage } from './pages/Account/NewOrderPage/'
+import { PrivacyPolice } from './pages/CMSPages/PrivacyPolice'
+import { TermOfUsePage } from './pages/CMSPages/TermOfUsePage'
+import { CMSPageLayout } from './components/CMSPageLayout'
+import { ContactsPage } from './pages/CMSPages/ContactsPage'
+import { AboutPage } from './pages/CMSPages/AboutPage'
 
 
 
@@ -97,6 +102,14 @@ function App() {
 
               <Route path='/cart' element={<CartPage isAuth={isAuth}/>}/>
               <Route path='/login' element={<MobileAccountPage />}/>
+
+              <Route element={<CMSPageLayout/>}>
+                <Route path='/privacy-police' element={<PrivacyPolice />}/>
+                <Route path='/terms-of-use' element={<TermOfUsePage />}/>
+                <Route path='/contacts' element={<ContactsPage />}/>
+                <Route path='/about' element={<AboutPage />}/>
+              </Route>
+
 
               <Route element={<AccountResponsiveLayout />} >
                   <Route path='/account/orders' element={<OrdersPage isAuth={isAuth}/>}/>

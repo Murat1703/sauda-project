@@ -23,10 +23,14 @@ export const AccountLayout = () =>{
 
     const{pathname} = useLocation();
 
+    const [closeAccountShortInfo, setCloseAccountShortInfo] = useState(false)
+
+    console.log(closeAccountShortInfo)
+
     return(
         <>
         <ScrollToTop />
-        <div className={cls.accountLayout}>
+        <div className={cls.accountLayout} onClick={()=>setCloseAccountShortInfo(true)}>
             {pathname !== '/account/new-order' &&
             <SideBar 
                 setLink={setLink} 

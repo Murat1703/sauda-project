@@ -122,7 +122,7 @@ export const Footer = () =>{
                         <ul>
                             <h4>Компания</h4>
                             <li>
-                                <Link>О нас</Link>
+                                <Link to={`/about`}>О нас</Link>
                             </li>
                             <li>
                                 <Link>Адреса магазинов и ПВЗ</Link>
@@ -131,7 +131,7 @@ export const Footer = () =>{
                                 <Link>Новости</Link>
                             </li>
                             <li>
-                                <Link>Контакты</Link>
+                                <Link to={`/contacts`}>Контакты</Link>
                             </li>
                         </ul>
                     </div>
@@ -156,8 +156,8 @@ export const Footer = () =>{
                 <div className={cls.footerLegal}>
                     <p>© 2026 TOO «Sauda.market». Все права защищены.</p>
                     <div>
-                        <a href="/agreement">Пользовательское соглашение</a>
-                        <a href="/policy">Политика конфединциальности</a>
+                        <Link to={`/terms-of-use`} >Пользовательское соглашение</Link>
+                        <Link to={`/privacy-police`}>Политика конфединциальности</Link>
                     </div>
                 </div>
             </div>

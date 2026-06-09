@@ -20,7 +20,13 @@ export const Search = ({text, onClose}) =>{
         })
     },[text])
 
+    console.log(searchData)
 
+    const categoryItems = searchData?.suggestions?.filter((item)=>item.type=='category');
+
+    console.log(categoryItems)
+
+    const onlyProducts = searchData?.suggestions?.filter((item)=>item?.type!=='category')
     return(
         <div className={cls.searchWrapper} onClick={onClose}>
             <div className={cls.searchResults} onClick={(e)=>e.stopPropagation()}>
@@ -42,14 +48,34 @@ export const Search = ({text, onClose}) =>{
                 </div>
                 }
                 {searchData?.suggestions?.length>0 && 
+
                     <div 
                         className={cls.searchResultsItems}
                         style={{
-                            paddingBottom: (isMobile && searchData?.suggestions?.length<7) ? "0px": "90px"
+                            paddingBottom: (!isMobile && searchData?.suggestions?.length>7) ? "24px": "0"
                         }}
-                    >
-                        <p>Товары по поиску</p>
-                        {searchData?.suggestions?.map((item)=>{
+                    >   
+                    {categoryItems.length > 0 &&
+                    <div>
+                        <p className={cls.type}>Категории по поиску</p>
+                        {categoryItems?.map((item)=>{
+                            return(
+                                <Link 
+                                    onClick={onClose} 
+                                    to={`/catalog/categories/${item.slug}`} 
+                                    key={item.slug}
+                                >
+                                    <div className={cls.textContent}>
+                                        <p>{item.name}</p>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                    }
+                    {onlyProducts?.length!==0 && 
+                        <p>Товары по поиску</p>}
+                        {onlyProducts?.map((item)=>{
                             return(
                                 <Link 
                                     onClick={onClose} 
@@ -81,7 +107,9 @@ export const Search = ({text, onClose}) =>{
                                 </Link>
                             )
                         })}
+                    
                     </div>
+                    
                 }
             </div>
         </div>

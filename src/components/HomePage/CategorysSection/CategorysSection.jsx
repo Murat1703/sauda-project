@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { SliderControlBtn } from '../../SliderControlBtn/SliderControlBtn.jsx';
 import { ArrowPrev } from '../../../../public/assets/icons/ArrowPrev.jsx';
 import { ArrowNext } from '../../../../public/assets/icons/ArrowNext.jsx';
+import { useLanguage } from '../../../stores/useLanguage.js';
 
 export const CategorysSection = () =>{
 
@@ -24,12 +25,19 @@ export const CategorysSection = () =>{
         loadCategories();
     }, []);
 
+    const {lang} = useLanguage();
+
+
+
     const swiperRef = useRef(null);
 
     return(
         <section className={cls.categorySection}>
             <div className={cls.categorySectionContent}>
-                <Title>Категории</Title>
+                <Title>
+                    {lang == 'ru' && `Категории`}
+                    {lang == 'kk' && `Санаттар`}
+                </Title>
                 {errLoadingCategories ? <p>{errLoadingCategories}</p>:
                 <div className={cls.categorysSlider}>
                     <Swiper

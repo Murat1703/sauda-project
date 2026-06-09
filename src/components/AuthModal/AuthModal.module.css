@@ -101,6 +101,9 @@
     letter-spacing: .12px;
     max-width: 343px;
     margin: 0 auto;
+    a{
+        color: var(--accent);
+    }
 }
 
 .authOtp{

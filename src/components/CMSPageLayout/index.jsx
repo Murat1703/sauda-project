@@ -1,0 +1,1 @@
+export { CMSPageLayout } from './CMSPageLayout'

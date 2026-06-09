@@ -10,6 +10,7 @@ import { Timer } from '../Timer';
 import { MobileCheckIcon } from '../../../public/assets/icons/MobileCheckIcon.jsx';
 import { MobileOrangePhoneIcon } from '../../../public/assets/icons/MobileOrangePhoneIcon.jsx';
 import { MobileOrangeWhatsAppIcon } from '../../../public/assets/icons/MobileOrangeWhatsAppIcon.jsx';
+import { Link } from 'react-router-dom';
 
 export const AuthModal = () =>{
 
@@ -186,7 +187,7 @@ export const AuthModal = () =>{
                                 </button>
                             </div>
                         </div>
-                        <p>Нажимая на кнопку, я соглашаюсь с правилами пользования и политикой конфиденциальности торговой площадки</p>
+                        <p>Нажимая на кнопку, я соглашаюсь <Link to={`/privacy-police`} onClick={()=>closeAuthModal()}>с правилами пользования и политикой конфиденциальности</Link> торговой площадки</p>
                     </div>
                 }
                 {( step == 'otp') &&
@@ -259,7 +260,7 @@ export const AuthModal = () =>{
                                     <p>Создать профиль</p>
                                 </button>
                             </div>
-                            <p>Нажимая на кнопку, я соглашаюсь с правилами пользования и политикой конфиденциальности торговой площадки</p>
+                            <p>Нажимая на кнопку, я соглашаюсь с <Link to={`/pricacy-police`}>правилами пользования и политикой конфиденциальности</Link> торговой площадки</p>
                         </div>
                     </div>
                 }

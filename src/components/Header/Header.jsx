@@ -9,7 +9,7 @@ import { useAuthModal } from '../../context/AuthModalContext.jsx'
 import { SideBar } from '../AccountLayout/SideBar.jsx';
 import { CounterBadge } from '../CounterBadge';
 import { useCart } from '../../stores/useCart.js';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CatalogBtnIcon } from '../../../public/assets/icons/CatalogBtnIcon.jsx';
 import { SearchIcon } from '../../../public/assets/icons/SearchIcon.jsx';
 import { FavoriteHeaderIcon } from '../../../public/assets/icons/FavoriteHeaderIcon.jsx';
@@ -25,8 +25,7 @@ import { useLanguage } from '../../stores/useLanguage.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
 
 export const Header = ({ordersCount}) =>{
-    const[activeLang, setActiveLang] = useState('ru');
-    const{lang, setLang} = useLanguage();    
+    const {lang, setLang} = useLanguage();
     const[isOpen, setIsOpen] = useState(false);
 
     const handleToMenu = () =>{
@@ -57,7 +56,7 @@ export const Header = ({ordersCount}) =>{
         setShowProfileMenu(!showProfileMenu)
     }
 
-    const loginHandler = () =>{
+    const loginHandler = (e) =>{
         {!isAuth ? openAuthModal() : handlerToProfile()}
     }
 
@@ -126,10 +125,10 @@ export const Header = ({ordersCount}) =>{
                     </div>
                     }
                     <div className={cls.langWrapper}>
-                        <button className={activeLang=='ru'?`${cls.active}`: ''} onClick={()=>{setActiveLang('ru'); setLang('ru')}}>
+                        <button className={lang=='ru'?`${cls.active}`: ''} onClick={()=>{setLang('ru')}}>
                             <p>Рус</p>
                         </button>
-                        <button onClick={()=>{setActiveLang('kk'); setLang('kk')}} className={activeLang=='kk'?`${cls.active}`: ''}>
+                        <button onClick={()=>{setLang('kk')}} className={lang=='kk'?`${cls.active}`: ''}>
                             <p>қаз</p>
                         </button>
                     </div>
@@ -155,6 +154,7 @@ export const Header = ({ordersCount}) =>{
                         isHeaderProfile={true} 
                         setShowProfileMenu={setShowProfileMenu} 
                         ordersCount={ordersCount}
+                        showProfileMenu={showProfileMenu}
                     />
                     }
                 </div>

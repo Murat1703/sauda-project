@@ -1,0 +1,1 @@
+export {TermOfUsePage} from './TermOfUsePage'
