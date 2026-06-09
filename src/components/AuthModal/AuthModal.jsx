@@ -11,6 +11,7 @@ import { MobileCheckIcon } from '../../../public/assets/icons/MobileCheckIcon.js
 import { MobileOrangePhoneIcon } from '../../../public/assets/icons/MobileOrangePhoneIcon.jsx';
 import { MobileOrangeWhatsAppIcon } from '../../../public/assets/icons/MobileOrangeWhatsAppIcon.jsx';
 import { Link } from 'react-router-dom';
+import { CloseIconDesktop } from '../../../public/assets/icons/CloseIconDesktop.jsx';
 
 export const AuthModal = () =>{
 
@@ -105,27 +106,56 @@ export const AuthModal = () =>{
         // console.log('ACTUAL STATE',step)
     },[step])
 
-    const[errPhone, setErrPhone] = useState(false)
+    useEffect(()=>{
+
+    },[phone])
+
+    const[errPhone, setErrPhone] = useState(null)
 
     useEffect(()=>{
         // console.log(status)
     },[status])
 
+
     const nextStep = (phone) =>{
-        if (phone.length!==18) 
-            {
-                setErrPhone(true); 
-                return null 
-            } 
-        else{
-            setStep('otp');
-            handleLogin();
-        }
+        validate(phone);
+        // if (!errPhone) {
+        //     setStep('otp');
+        //     handleLogin();
+
+        // } else return
     }    
 
-    const handleLogin = async () => {
-        await login(phone);
-    };
+    const kzCodes = [
+        "700", "701", "702",
+        "705", "706", "707", "708",
+        "747",
+        "771",
+        "775", "776", "777", "778",
+    ];
+
+
+    const validate = async(phone) =>{
+        let digits = phone.replace(/\D/g, "");
+        const code = digits.slice(1,4)
+        if (!kzCodes.includes(code))
+            {
+                setErrPhone('Номер не принадлежит сотовому оператору')
+                return
+            }
+        if (digits.length < 11) {            
+            setErrPhone('Проверьте длину введенного номера');
+            return
+        }
+        if ((digits.length==11) && !errPhone) {
+            const validNum = `+`+digits;
+            console.log(validNum);
+            setStep('otp');
+            await login(validNum)
+        }
+
+    }
+
 
     const [profileName, setProfileName] = useState('');
 
@@ -156,9 +186,7 @@ export const AuthModal = () =>{
                     className={cls.closeModalBtn} 
                     onClick={closeAuthModal}
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-                        <path d="M27 9L9 27M9 9L27 27" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                   <CloseIconDesktop />
                 </button>
                 {(step == 'login') && 
                     <div className={cls.authLogin}>
@@ -174,12 +202,15 @@ export const AuthModal = () =>{
                                     ref={phoneMask}
                                     value={phone}
                                     onChange={(e)=>{
-                                        setPhone(e.target.value); setErrPhone(false)
+                                        const value = e.target.value;
+                                        setPhone(value); 
+                                        setErrPhone(false)
                                     }}
                                 />
+                                {errPhone && <p className={cls.phoneError}>{errPhone}</p>}
                                 <button onClick={()=>
                                     {
-                                        nextStep(phone)
+                                        validate(phone);
                                     }
                                 }
                                 >
@@ -260,7 +291,10 @@ export const AuthModal = () =>{
                                     <p>Создать профиль</p>
                                 </button>
                             </div>
-                            <p>Нажимая на кнопку, я соглашаюсь с <Link to={`/pricacy-police`}>правилами пользования и политикой конфиденциальности</Link> торговой площадки</p>
+                            <p>Нажимая на кнопку, я соглашаюсь с <Link 
+                                to={`/privacy-police` }
+                                onClick={()=>closeAuthModal()}
+                            >правилами пользования и политикой конфиденциальности</Link> торговой площадки</p>
                         </div>
                     </div>
                 }

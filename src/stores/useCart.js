@@ -100,7 +100,7 @@ export const useCart = create((set, get) => ({
         ? {
             ...item,
             quantity: data,
-            }
+          }
         : item
     );
 

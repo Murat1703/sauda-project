@@ -48,6 +48,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
 
     console.log(products)
 
+    console.log(categoryItem)
+
     const {
         categoryFiltersList,
         loadingCategoryFiltersList,
@@ -95,7 +97,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     useEffect(()=>{
         categoryItem.children_count > 8 ? ()=>setSubCategoryCounter(8) : ()=>setSubCategoryCounter(categoryItem.children_count)
     },[])
-    // console.log('categoryItemPageProducts,', products)
 
     const[showMobileSort, setShowMobileSort] = useState(false);
 
@@ -225,6 +226,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                     <div className={cls.catalogItemPageFiltersTop}>
                         <h4>{categoryItem.category?.name}</h4>
                         <ul>
+                            {console.log(categoryItem.category)}
+
                             {categoryItem.category?.has_children && 
                                 categoryItem.children?.slice(0, subCategoryCounter).map((item, index)=>{
                                     return(
@@ -235,7 +238,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             >
                                                 <div>
                                                     <p>{item.name}</p>
-                                                    <span>{products?.total}</span>
+                                                    <span>{categoryItem?.category?.children?.length}</span>
                                                 </div>
                                             </Link>
                                         </li>
@@ -508,7 +511,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                             )
                         })}
                     </div>
-                    {(products?.links?.length >=3)  && 
+                    {(products?.links?.length >3)  && 
                         <Pagination links={products?.links} setActivePage={setActivePage}/>
                     }
                 </div>

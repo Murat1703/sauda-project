@@ -41,6 +41,7 @@ import { ProductPageDecreaseCounterIcon } from '../../../public/assets/icons/Pro
 import { ProductPageIncreaseIcon } from '../../../public/assets/icons/ProductPageIncreaseIcon.jsx';
 import { useDateFormat } from '../../hooks/useDateFormat.js';
 import { AccountRatingStar } from '../../../public/assets/icons/AccountRagingStar.jsx';
+import { ProductPageIconToCart } from '../../../public/assets/icons/ProductPageIconToCart.jsx';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -58,7 +59,7 @@ export const ProductPage = ({isMobileScroll}) =>{
 
     const [counter, setCounter] = useState(0);
     useEffect(()=>{
-    },[counter])
+    },[counter, add])
 
     const today = new Date().toLocaleDateString('ru-RU', {
         day: 'numeric',
@@ -85,14 +86,21 @@ export const ProductPage = ({isMobileScroll}) =>{
         setMobileCount(product?.product?.attributes.length)
     }
 
-    const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart, errLoadingCart} = useCart();
+    const {
+        cartItems, 
+        loadCart, 
+        addToCart, 
+        cartTotal, 
+        changeCount,
+        removeFromCart, 
+        clearCart, 
+        errLoadingCart
+    } = useCart();
 
     const {isAuth} = useAuth();
 
     const {reviewsList, loadReviews, addReview} = useReviewsStore();
     
-    console.log('product page.=  slug', slug)
-    console.log('reviews = ',reviewsList)
 
 
     useEffect(()=>{
@@ -108,9 +116,13 @@ export const ProductPage = ({isMobileScroll}) =>{
         item?.product?.slug === product?.product?.slug
     )
 
-    console.log('isAuth', isAuth)
+    // console.log('isAuth', isAuth)
 
     const {formatDate} = useDateFormat();
+
+    console.log(cartItem)
+
+    const [errorText, setErrorText] = useState(null);
 
     return(
     <>
@@ -125,7 +137,6 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 Каталог
                             </BreadCrumbs>
                             {product?.product?.breadcrumbs?.map((breadcrumbItem, index)=>{
-                                console.log(breadcrumbItem)
                                 return (
                                     <div key={breadcrumbItem.slug}>
                                         <span>-</span>
@@ -327,6 +338,9 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 <Badge type={'new'}>
                                     Хит
                                 </Badge>}
+                                {errorText && 
+                                <p className={cls.countError}>{errorText}</p>
+                                }
                             </div>
                             <button 
                                 onClick={()=>{
@@ -407,11 +421,17 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 <div className={cls.counterWrapper}>
                                     <button
                                         onClick={()=>{
-                                            counter !== 0 &&
-                                            (setCounter(counter - 1) )
-                                            counter == 0? 
-                                            removeFromCart(cartItem.id):
-                                            changeCount(cartItem.id, counter)
+                                            if (cartItem?.quantity > 1){
+                                                setCounter(cartItem.quantity - 1);
+                                                changeCount(cartItem.id, (cartItem.quantity - 1));
+                                                setErrorText(null)
+                                                return;
+                                            }
+                                            if (counter == 1){
+                                                removeFromCart(cartItem.id);
+                                                setAdd(false);
+                                                return
+                                            }
                                         }}
                                     >
                                         <ProductPageDecreaseCounterIcon />
@@ -419,19 +439,22 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     <p>{counter}</p>
                                     <button
                                         onClick={()=>{
-                                            setCounter(counter + 1);
-                                            const cartItemQuantityCount = counter + 1;
-                                            setCounter(cartItemQuantityCount)
-                                            changeCount(cartItem.id, (cartItemQuantityCount))
+                                            if (cartItem?.quantity < cartItem?.product?.stock_quantity){
+                                                changeCount(cartItem?.id, (cartItem.quantity +1));
+                                                setErrorText(null);
+                                                setCounter(cartItem.quantity + 1);
+                                            }
+                                            else if (cartItem?.quantity == cartItem?.product?.stock_quantity){
+                                                setErrorText('Товар закончился')
+                                                return
+                                            }
                                         }}
                                     >
                                         <ProductPageIncreaseIcon />
                                     </button>
                                 </div>
                                 <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M3.33301 10H16.6663M11.6663 15L16.6663 10L11.6663 5" stroke="#EEEFF0" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
+                                    <ProductPageIconToCart />
                                 </button>
                             </div>
                             }
@@ -521,6 +544,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                             <span>{reviewsList?.data?.length} отзывов</span>
                         </div>
                         <div className={cls.mobileTopButtons}>
+                            {errorText && <p className={cls.countError}>{errorText}</p>}
                             <button 
                                 onClick={()=>{
                                     const flagIsAdd = !addToFavorite;
@@ -606,12 +630,17 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 <div className={cls.counterWrapper}>
                                     <button
                                         onClick={()=>{
-                                            const checkCounter = counter;
-                                            checkCounter !== 0 &&
-                                            (setCounter(checkCounter - 1) )
-                                            counter == 0? removeFromCart(product.id):
-                                            changeCount(product.id, (counter));
-                                            counter == 0 && setAdd(false)
+                                            if (cartItem?.quantity > 1){
+                                                setCounter(cartItem.quantity - 1);
+                                                changeCount(cartItem.id, (cartItem.quantity - 1));
+                                                setErrorText(null)
+                                                return;
+                                            }
+                                            if (counter == 1){
+                                                removeFromCart(cartItem.id);
+                                                setAdd(false);
+                                                return
+                                            }
                                         }}
                                     >
                                         <CartRemoveIconMobileDark />
@@ -619,9 +648,15 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     <p>{counter}</p>
                                     <button
                                         onClick={()=>{
-                                            if (!errLoadingCart){
-                                            setCounter(counter + 1);
-                                            changeCount(cartItem.id, counter);} else return null
+                                            if (cartItem?.quantity < cartItem?.product?.stock_quantity){
+                                                changeCount(cartItem?.id, (cartItem.quantity +1));
+                                                setErrorText(null);
+                                                setCounter(cartItem.quantity + 1);
+                                            }
+                                            else if (cartItem?.quantity == cartItem?.product?.stock_quantity){
+                                                setErrorText('Товар закончился')
+                                                return
+                                            }
                                         }}
                                     >
                                         <CartAddIconMobileDark />
@@ -853,10 +888,17 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <p>{counter}</p>
                         <button
                                         onClick={()=>{
-                                            setCounter(counter + 1);
-                                            changeCount(cartItem.id, (counter))
+                                            if (cartItem?.quantity < cartItem?.product?.stock_quantity){
+                                                changeCount(cartItem?.id, (cartItem.quantity +1));
+                                                setErrorText(null);
+                                                setCounter(cartItem.quantity + 1);
+                                            }
+                                            else if (cartItem?.quantity == cartItem?.product?.stock_quantity){
+                                                setErrorText('Товар закончился')
+                                                return
+                                            }
                                         }}
-                                    >
+                        >
                                         <CartRemoveIconMobileDark />
                         </button>
                     </div>

@@ -22,12 +22,7 @@ import { useFavoritesStore } from '../../../stores/useFavoritesStore'
 
 export const CartPage = ({isAuth}) =>{
 
-    const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart} = useCart();
-
-    useEffect(()=>{
-        if (isAuth == true) loadCart(); 
-        else return;
-    },[isAuth])
+    const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart, errLoadingCart} = useCart();
 
     const navigate = useNavigate();
 
@@ -40,8 +35,13 @@ export const CartPage = ({isAuth}) =>{
     const {favoritesList, loadFavoritesList, addToFavoritesList} = useFavoritesStore();
 
     useEffect(()=>{
-        loadFavoritesList();
-    },[])
+        if (isAuth == true) 
+            {
+                loadCart();
+                loadFavoritesList();
+            } 
+        else return;
+    },[isAuth])
 
     const isFavorite = (id) =>{
         return favoritesList.includes(id)
@@ -50,6 +50,10 @@ export const CartPage = ({isAuth}) =>{
     useEffect(()=>{ 
         !isMobile && setMobileDetails(true)
     }, [isMobile])
+
+    const handleDecrase = (item) => {
+        changeCount(item.id, (item.quantity + 1))
+    }
 
 
     return(
@@ -185,7 +189,6 @@ export const CartPage = ({isAuth}) =>{
                                                         return
                                                     }
                                                     changeCount(item.id, (item.quantity - 1));
-
                                                 }}
                                             >
                                                 <CartRemoveIcon />
@@ -193,7 +196,8 @@ export const CartPage = ({isAuth}) =>{
                                             <p>{item.quantity}</p>
                                             <button 
                                                 className={cls.counterBtn}
-                                            onClick={()=>changeCount(item.id, (item.quantity + 1))}>
+                                                onClick={()=>changeCount(item.id, (item.quantity + 1))}
+                                                >
                                                 <CartAddIcon />
                                             </button>
                                         </div>

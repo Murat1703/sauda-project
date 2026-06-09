@@ -46,7 +46,7 @@ export const MainAccountMainPage = () =>{
             <div className={cls.mobileAccountInfoBlock}>
                 <div className={cls.mobileAccountNameBlock}>
                     <div className={cls.icon}>
-                            <AccountProfileImageIcon />
+                        <AccountProfileImageIcon />
                     </div>
                     <div>
                         <p>{user?.user.name}</p>
@@ -55,7 +55,13 @@ export const MainAccountMainPage = () =>{
                 </div>
             </div>
             <div className={cls.sideBarWrapper}>
-                <SideBar setLink={setLink} link={link} ordersCount={orders?.data?.length || 0} isMobile={isMobile} onMobileLogout={mobileLogoutHandler}/> 
+                <SideBar 
+                    setLink={setLink} 
+                    link={link} 
+                    ordersCount={orders?.data?.length || 0} 
+                    isMobile={isMobile} 
+                    onMobileLogout={mobileLogoutHandler}
+                /> 
             </div>
 
         </div>        }
