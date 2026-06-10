@@ -18,6 +18,8 @@ import { useCatalogFilters } from '../../hooks/useCatalogFilters.js';
 import { usePickupPoints } from '../../hooks/usePickupPoints.js';
 import { Pagination } from '../../components/Pagination';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
+import { EmptyResults } from '../../components/EmptyResults';
+import { EmtpyWhiteHeartIcon } from '../../../public/assets/icons/EmtpyWhiteHeartIcon.jsx';
 
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
@@ -493,9 +495,16 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                         </button>
                     </div>
                     }
+                    {loadingProducts && <Loader />}
+                    {products?.data?.length == 0 && 
+                        <EmptyResults 
+                            icon={<EmtpyWhiteHeartIcon/>} 
+                            text={`Товары не найдены`}
+                            description={`Соответствия не обнаружены`}
+                        />
+                    }
+                    {products?.data?.length !== 0 &&
                     <div className={cls.catalogItemPageProductsList}>
-                        {loadingProducts && <Loader />}
-                        {products?.data?.length == 0 && <p>Товаров не найдено</p>}
                         {products?.data?.map((product, index)=>{
                             return(
                             <ProductCard 
@@ -507,7 +516,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                             />
                             )
                         })}
-                    </div>
+                    </div>}
                     {(products?.links?.length >3)  && 
                         <Pagination links={products?.links} setActivePage={setActivePage}/>
                     }

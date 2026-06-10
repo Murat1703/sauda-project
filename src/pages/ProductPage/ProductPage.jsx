@@ -94,7 +94,8 @@ export const ProductPage = ({isMobileScroll}) =>{
         changeCount,
         removeFromCart, 
         clearCart, 
-        errLoadingCart
+        errLoadingCart,
+        addToLocalCart
     } = useCart();
 
     const {isAuth} = useAuth();
@@ -405,11 +406,16 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 disabled={cartItem?.product?.slug == product?.product?.slug? true: false}
                                 onClick={()=>{
                                     setAdd(true); 
-                                    addToCart(
-                                        {
+                                    if (isAuth == true){
+                                    addToCart({    
+                                        product_slug: product?.product.slug,
+                                        quantity: 1
+                                    })} else{
+                                        addToLocalCart({
                                             product_slug: product?.product.slug,
                                             quantity: 1
-                                    })
+                                        })
+                                    }
                                     setCounter(counter + 1);
                                 }}
                             >

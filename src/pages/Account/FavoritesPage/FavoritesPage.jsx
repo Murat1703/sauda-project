@@ -12,6 +12,8 @@ import { useState } from 'react'
 import { useProducts } from '../../../stores/useProducts'
 import { useFavoritesStore } from '../../../stores/useFavoritesStore'
 import { useAuth } from '../../../context/AuthContext'
+import { EmptyResults } from '../../../components/EmptyResults'
+import { EmtpyWhiteHeartIcon } from '../../../../public/assets/icons/EmtpyWhiteHeartIcon'
 
 export const FavoritesPage = () =>{
     const {favorites, toggleFavorites} = useFavorites();
@@ -62,26 +64,11 @@ export const FavoritesPage = () =>{
             </div>
             <div className={cls.pageBottom}>
                 {favoritesList.length == 0 && 
-                    <div className={cls.favoritesPageEmpty}>
-                        <div className={cls.favoritesInfoBlock}>
-                            <div className={cls.titleBlock}>
-                                <div className={cls.icon}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M17.9897 7.70372C14.9907 4.1976 9.98962 3.25446 6.23204 6.46502C2.47447 9.67558 1.94545 15.0435 4.8963 18.8406C7.34973 21.9977 14.7747 28.6561 17.2082 30.8112C17.4804 31.0524 17.6165 31.1729 17.7753 31.2203C17.9139 31.2616 18.0655 31.2616 18.2041 31.2203C18.3629 31.1729 18.499 31.0524 18.7713 30.8112C21.2048 28.6561 28.6297 21.9977 31.0832 18.8406C34.034 15.0435 33.5696 9.6418 29.7474 6.46502C25.9252 3.28824 20.9888 4.1976 17.9897 7.70372Z" fill="white"/>
-                                    </svg>
-                                </div>
-                                <div className={cls.text}>
-                                    <p>У вас пока нет избранных товаров</p>
-                                    <p>Добавляйте товары из каталога, нажав по сердечку в углу</p>
-                                </div>
-                            </div>
-                            <Link to='/'>
-                                <button className={cls.backBtn}>
-                                    <p>Перейти в каталог</p>
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
+                    <EmptyResults
+                        icon={<EmtpyWhiteHeartIcon />}
+                        text={`У вас пока нет избранных товаров`}
+                        description={`Добавляйте товары из каталога, нажав по сердечку в углу`}
+                    />
                 }
                 {loadingFavoritesList && <Loader />}
                 {favoritesList.length > 0 && 

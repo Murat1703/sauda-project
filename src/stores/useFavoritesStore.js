@@ -12,7 +12,7 @@ export const useFavoritesStore = create((set, get) => ({
   errLoadingFavoritesList: null,
 
   loadFavoritesList: async (force = false) => {
-    const { favoritesList, loadingFavoritesList, errLoadingFavoritesList } = get();
+    const { favoritesList, loadingFavoritesList } = get();
 
     if (loadingFavoritesList) return;
     if (!force && (favoritesList.length > 0)) return;
@@ -263,11 +263,5 @@ export const useFavoritesStore = create((set, get) => ({
       localStorage.removeItem('favorites')
     }
   },
-
-
-
-
-
-
   
 }));

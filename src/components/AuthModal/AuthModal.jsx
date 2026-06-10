@@ -12,8 +12,11 @@ import { MobileOrangePhoneIcon } from '../../../public/assets/icons/MobileOrange
 import { MobileOrangeWhatsAppIcon } from '../../../public/assets/icons/MobileOrangeWhatsAppIcon.jsx';
 import { Link } from 'react-router-dom';
 import { CloseIconDesktop } from '../../../public/assets/icons/CloseIconDesktop.jsx';
+import { useLocation } from 'react-router-dom';
 
 export const AuthModal = () =>{
+
+    const {pathname} = useLocation();
 
     const phoneMask = useMask({
         mask: '+7 (___) ___-__-__',
@@ -119,11 +122,6 @@ export const AuthModal = () =>{
 
     const nextStep = (phone) =>{
         validate(phone);
-        // if (!errPhone) {
-        //     setStep('otp');
-        //     handleLogin();
-
-        // } else return
     }    
 
     const kzCodes = [
@@ -168,11 +166,14 @@ export const AuthModal = () =>{
 
 
     return(
-        <div className={cls.authModalWrapper} onClick={(e)=>{
+    (isMobile && (pathname == '/account') && isAuthModalOpen) &&
+        <div 
+            className={cls.authModalWrapper} 
+            onClick={(e)=>{
             if (e.target === e.currentTarget ){
                 closeAuthModal();
-            }
-        }}>
+            }}}
+        >
             {isMobile && 
             <div className={cls.mobileTitle}>
                 <p>Войти в профиль</p>       

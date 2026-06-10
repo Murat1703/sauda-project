@@ -98,8 +98,8 @@ export const CartPage = ({isAuth}) =>{
                                 <div className={cls.cartItem} key={item.id}>
                                     <div className={cls.cartItemImgWrapper}>
                                         <img 
-                                            src={item.product.primary_image_url} 
-                                            alt={`${item.product.name}`}
+                                            src={item?.product?.primary_image_url} 
+                                            alt={`${item?.product?.name}`}
                                         />
                                     </div>
                                     {isMobile && <>
@@ -108,16 +108,16 @@ export const CartPage = ({isAuth}) =>{
                                             to={`/products/${item?.product?.slug}`} 
                                             className={cls.cartItemTitleBlock}
                                         >
-                                            <p>{item.product?.name}</p>
+                                            <p>{item?.product?.name}</p>
                                             <>
-                                                <p>Код: {item.product.sku}</p>
+                                                <p>Код: {item?.product?.sku}</p>
                                                 <div className={cls.mobileCartItemButtons}>
                                                     <button 
                                                         onClick={
                                                             ()=>{
                                                             addToFavoritesList({
                                                                 product_slug: item?.product?.slug, 
-                                                                product: item.product
+                                                                product: item?.product
                                                             });
                                                             }
                                                         }
@@ -178,8 +178,8 @@ export const CartPage = ({isAuth}) =>{
                                             to={`/products/${item?.product?.slug}`} 
                                             className={cls.cartItemTitleBlock}
                                         >
-                                            <p>{item.product.name}</p>
-                                            <p>Код: {item.product.sku}</p>
+                                            <p>{item?.product?.name}</p>
+                                            <p>Код: {item?.product?.sku}</p>
                                             {quantityError && <p className={cls.quantityError}>{quantityError}</p>}
                                         </Link>
                                         <div className={cls.cartItemCounter}>
@@ -218,10 +218,10 @@ export const CartPage = ({isAuth}) =>{
                                         </div>
                                         <div className={cls.cartItemPriceBlock}>
                                             <div className={cls.oldPriceWrapper}>
-                                                {item.product.old_price && <p className={cls.oldPrice}>{item.product.old_price} ₸</p>}
+                                                {item?.product?.old_price && <p className={cls.oldPrice}>{item.product?.old_price} ₸</p>}
                                                 <p className={cls.finalPrice}>
                                                 { 
-                                                    item.line_total
+                                                    item?.line_total
                                                 } ₸</p>
                                             </div>
                                             <div className={cls.pricePerProduct}></div>

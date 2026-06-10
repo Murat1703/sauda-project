@@ -60,7 +60,6 @@ export const useCart = create((set, get) => ({
         set({ cartItems: updated });
     },
 
-
     removeFromCart: (productId) => {
         const current = get().cartItems;
 

@@ -216,10 +216,14 @@
         }
     }
     .favoritesPageWrapper{
-        height: 100dvh;
+        height: calc(100dvh - 61px) ;
     }
     .pageBottom{
         height: 100%;
+    }
+    .pageBottom > div{
+        height: 100%;
+        overflow-y: auto;
     }
     .favoritesPageEmpty{
         height: 100%;
