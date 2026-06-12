@@ -2,13 +2,14 @@ import cls from './MobileLogoutModal.module.css'
 import { useAuth } from '../../context/AuthContext.jsx';
 import { BlackCloseIcon } from '../../../public/assets/icons/BlackCloseIcon';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../stores/useAuthStore.js';
 // import { useAuth } from '../../context/AuthContext';
 
 export const MobileLogoutModal = ({onClose}) =>{
 
     const navigate = useNavigate();
 
-    const {logout} = useAuth();
+    const {logout} = useAuthStore();
 
     const handleLogout = () =>{
         logout();

@@ -10,6 +10,7 @@ import { CloseIconMobile } from '../../../public/assets/icons/CloseIconMobile.js
 import { SearchIcon } from '../../../public/assets/icons/SearchIcon.jsx';
 import { SearchMobileIcon } from '../../../public/assets/icons/SearchMobileIcon.jsx';
 import { Search } from '../Search/Search.jsx';
+import { useLanguage } from '../../stores/useLanguage.js';
 
 
 
@@ -22,8 +23,12 @@ export const CatalogMenu = ({onClose}) =>{
       loadCategoriesTree
     } = useCategories();
 
+    const {lang} = useLanguage();
+
     useEffect(()=>{
-      loadCategoriesTree();
+      loadCategoriesTree({
+        locale: lang
+      });
     },[])
 
     const [activeID, setActiveID] = useState(null);
@@ -35,19 +40,6 @@ export const CatalogMenu = ({onClose}) =>{
 
     const activeCategory = categoriesTree?.find(cat => cat.id === activeID);
 
-    const chunkByPattern = (arr, pattern) => {
-        let result = [];
-        let index = 0;
-
-        pattern.forEach(size => {
-            result.push(arr.slice(index, index + size));
-            index += size;
-        });
-
-        return result;
-    };
-
-    const columns = chunkByPattern(activeCategory?.children || [], [2, 3, 2]);
 
 
     const isMobile = useMediaQuery({
@@ -90,10 +82,10 @@ export const CatalogMenu = ({onClose}) =>{
                 }
                 <div className={`${cls.catalogMenuLeft} ${isMobile && openSubMenu ? `${cls.openSubMenu}` : '' }`}>
                     <ul>
-                        {categoriesTree?.map((item, index)=>(
+                        {categoriesTree?.map((item)=>(
                             <li 
                               key={item.id} 
-                              onMouseEnter={()=>setActiveID(item.id)} 
+                              onClick={()=>setActiveID(item.id)} 
                               className={item.id == activeID ? `${cls.activeItem}`: ""}
                               onClick={(e)=>{
                                 e.stopPropagation();
@@ -124,12 +116,16 @@ export const CatalogMenu = ({onClose}) =>{
                     </a>
                     }
                     <ul>
-                      {activeCategory?.children.map((child,index)=>{
+                      {activeCategory?.children.map((child)=>{
                         return(
                           <li key={child.slug}>
-                            <a href={`/catalog/categories/${activeCategory.slug}/${child.slug}`}>
+                            <Link 
+                            to={`/catalog/categories/${activeCategory.slug}/${child.slug}`}
+                            onClick={onClose}
+                            >
                               {child.name}
-                            </a>
+                            </Link>
+                            <span>{child?.products_count}</span>
                             {isMobile && <ShowSubCategoryIcon />}
                             
                             {/* <span>{products?.data?.length}</span> */}
@@ -138,8 +134,6 @@ export const CatalogMenu = ({onClose}) =>{
                         )
                       })}
                     </ul>
-
-
                 </nav>
             </div>
         </div>

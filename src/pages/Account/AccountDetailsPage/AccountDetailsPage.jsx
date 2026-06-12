@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { useEffect, useState } from 'react';
 import { AccountDetailMobileIcon } from '../../../../public/assets/icons/AccountDetailMobileIcon';
+import { useAuthStore } from '../../../stores/useAuthStore';
 
 export const AccountDetailsPage = ({isAuth}) =>{
 
@@ -15,8 +16,8 @@ export const AccountDetailsPage = ({isAuth}) =>{
     const [userPhone, setUserPhone] = useState(null);
 
     useEffect(()=>{
-       setUserName(user?.user.name);
-       setUserPhone(user?.user.phone)
+       setUserName(user?.name);
+       setUserPhone(user?.phone)
     }, [])
 
     

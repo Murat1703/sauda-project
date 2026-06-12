@@ -1,38 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { apiLogin, apiProfile, apiVerify } from "../api/auth.api.js";
+import { useAuthStore } from "../stores/useAuthStore.js";
 import { useAuth } from "../context/AuthContext.jsx";
-
-// export const useLogin = () => {
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-
-//   const { fetchUser, setUser } = useAuth();
-
-//   const login = async (form) => {
-//     try {
-//       setLoading(true);
-//       setError("");
-
-//       await apiLogin(form);
-//       await fetchUser();
-
-//     } catch (err) {
-//       setUser(null);
-//     //   setError("Неверный логин или пароль");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return {
-//     login,
-//     loading,
-//     error,
-//     setError,
-//   };
-// };
-
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -40,7 +10,7 @@ export const useLogin = () => {
 
   const [status, setStatus] = useState(null);
 
-  const { fetchUser, setUser } = useAuth();
+  const { fetchUser, setUser, user } = useAuth();
 
   const login = async (phone) => {
     try {
@@ -83,8 +53,10 @@ export const useLogin = () => {
       await fetchUser();
 
       setVerifyStatus(res.data)
-      if (res.data?.user.is_completed){
-          setUser(res.data.user)
+      if (user) {
+        setUser(user);
+      } else {
+        await fetchUser();
       }
       if (res?.data.message)
       {

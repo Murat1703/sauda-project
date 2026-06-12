@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '../Badge/Badge.jsx';
 import { useMediaQuery } from 'react-responsive';
+import { useLanguage } from '../../stores/useLanguage.js';
 
 export const Search = ({text, onClose}) =>{
     const{searchProducts, loading, err, loadSearchProducts}= useSearch();
@@ -20,24 +21,22 @@ export const Search = ({text, onClose}) =>{
         })
     },[text])
 
-    console.log(searchData)
 
     const categoryItems = searchData?.suggestions?.filter((item)=>item.type=='category');
 
-    console.log(categoryItems)
-
+    const {lang} = useLanguage();
     const onlyProducts = searchData?.suggestions?.filter((item)=>item?.type!=='category')
     return(
         <div className={cls.searchWrapper} onClick={onClose}>
             <div className={cls.searchResults} onClick={(e)=>e.stopPropagation()}>
                 {searchData?.query_suggestions?.length ==0 && searchData?.suggestions?.length==0 && 
                     <div>
-                        По запросу {text} не обнаружено ничего
+                        {lang=='ru'?`По запросу ${text} не обнаружено ничего`:`${text} сұранысы бойынша ештеңе табылмады`}                        
                     </div>
                 }
                 {searchData?.query_suggestions?.length!==0 && 
                 <div>
-                    <p>Возможно вы имели в виду: </p>
+                    <p>{lang=='ru'?`Возможно вы имели в виду: `:`Мүмкін, сіз мынаны іздеген шығарсыз:`}</p>
                     {searchData?.query_suggestions?.map((item,index)=>{
                         return(
                         <div key={index}>
@@ -57,7 +56,9 @@ export const Search = ({text, onClose}) =>{
                     >   
                     {categoryItems.length > 0 &&
                     <div>
-                        <p className={cls.type}>Категории по поиску</p>
+                        <p className={cls.type}>
+                            {lang=='ru'? `Категории по поиску`: `Іздеуге сәйкес санаттар`}                            
+                        </p>
                         {categoryItems?.map((item)=>{
                             return(
                                 <Link 
@@ -74,7 +75,7 @@ export const Search = ({text, onClose}) =>{
                     </div>
                     }
                     {onlyProducts?.length!==0 && 
-                        <p>Товары по поиску</p>}
+                        <p>{lang=='ru'?`Товары по поиску`:`Іздеуге сәйкес таурлар`}</p>}
                         {onlyProducts?.map((item)=>{
                             return(
                                 <Link 

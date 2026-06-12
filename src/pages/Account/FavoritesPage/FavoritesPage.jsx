@@ -43,7 +43,6 @@ export const FavoritesPage = () =>{
     const handleReset = () =>
     {
         setFilter('Все варианты');
-        console.log(filter)
     }
     
     
@@ -152,7 +151,7 @@ export const FavoritesPage = () =>{
                                     key={favoriteItem.product.slug} 
                                     product={favoriteItem.product} 
                                     isFavorite={
-                                        favoritesList.find((item) => item.product.slug == favoriteItem.product.slug)
+                                        favoritesList.find((item) => item?.product?.slug == favoriteItem.product?.slug)
                                     }
                                     isDelete={true}
                                 />

@@ -20,6 +20,8 @@ import { Pagination } from '../../components/Pagination';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
 import { EmptyResults } from '../../components/EmptyResults';
 import { EmtpyWhiteHeartIcon } from '../../../public/assets/icons/EmtpyWhiteHeartIcon.jsx';
+import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop.jsx';
+import { useLanguage } from '../../stores/useLanguage.js';
 
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
@@ -48,9 +50,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         testProductsBySlugs
     } = useProducts();
 
-    console.log(products)
-
-    console.log(categoryItem)
 
     const {
         categoryFiltersList,
@@ -61,9 +60,12 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
 
     const [activePage, setActivePage]= useState(1)
 
+    const {lang} = useLanguage();
+
     useEffect(()=>{
-        loadCategoryItem(currentSlug);
+        loadCategoryItem(currentSlug, {locale: lang});
         loadProducts({
+            locale: lang,
             category_slug: currentSlug,
             page: activePage
         });
@@ -74,8 +76,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
 
 
     const {favoritesList} = useFavoritesStore();
-
-
 
     const isMobile = useMediaQuery({maxWidth: 768})
 
@@ -88,9 +88,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                 : 'price_desc'
         );
     }
-
-
-
 
     const[priceFilter,setPriceFilter] = useState(null);
 
@@ -133,8 +130,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         sort_reviews: null
     });
     useEffect(()=>{
-
         loadProducts({
+            locale: lang,
             category_slug:currentSlug,
             sort: sortOptions.sort_discount || sortOptions.sort_price,
             ...(sortOptions.sort_popular && {
@@ -228,8 +225,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                     <div className={cls.catalogItemPageFiltersTop}>
                         <h4>{categoryItem.category?.name}</h4>
                         <ul>
-                            {console.log(categoryItem.category)}
-
                             {categoryItem.category?.has_children && 
                                 categoryItem.children?.slice(0, subCategoryCounter).map((item, index)=>{
                                     return(
@@ -240,7 +235,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             >
                                                 <div>
                                                     <p>{item.name}</p>
-                                                    <span>{categoryItem?.category?.children?.length}</span>
+                                                    <span>{item?.products_count}</span>
                                                 </div>
                                             </Link>
                                         </li>
@@ -400,9 +395,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             onChange={(e)=>setMaxPrice(Math.max(Number(e.target.value), minPrice)) }
                                         />
                                     </div>
-
-                                    {console.log('minPrice', minPrice)}
-                                    {console.log('maxPrice', maxPrice)}
                                 </div>
                                 }
                             </div>
@@ -486,7 +478,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 {sortOptions.sort_price == 'price_desc' && "Цена по убыванию"}
                                 {sortOptions.sort_popular == 1 && "По популярности"}
                                 {sortOptions.sort_popular == 1 || sortOptions.sort_price ==null && "По популярности"}
-                                {console.log('sortOptions', sortOptions)}
                             </p>
                         </button>
                         <button onClick={()=>setShowFiltersList(true)}>
@@ -518,7 +509,11 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                         })}
                     </div>}
                     {(products?.links?.length >3)  && 
-                        <Pagination links={products?.links} setActivePage={setActivePage}/>
+                        
+                        <Pagination 
+                            links={products?.links} 
+                            setActivePage={setActivePage}
+                        />
                     }
                 </div>
             </div>
@@ -760,8 +755,6 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                         />
                                     </div>
 
-                                    {console.log('minPrice', minPrice)}
-                                    {console.log('maxPrice', maxPrice)}
                                 </div>
                                 }
                             </div>

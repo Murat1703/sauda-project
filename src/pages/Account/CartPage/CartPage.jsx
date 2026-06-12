@@ -19,10 +19,14 @@ import { ArrowRightOrderIcon } from '../../../../public/assets/icons/ArrowRightO
 import { HeartIcon } from '../../../../public/assets/icons/HeartIcon'
 import { HeartIconFilled } from '../../../../public/assets/icons/HeartIconFilled'
 import { useFavoritesStore } from '../../../stores/useFavoritesStore'
+import { RecommendedSection } from '../../../components/HomePage/RecommendedSection'
+import { useProducts } from '../../../stores/useProducts'
 
 export const CartPage = ({isAuth}) =>{
 
     const {cartItems, loadCart, addToCart, cartTotal, changeCount, removeFromCart, clearCart, errLoadingCart} = useCart();
+
+    console.log('cartItems in the cart Page',cartItems)
 
     const navigate = useNavigate();
 
@@ -51,11 +55,27 @@ export const CartPage = ({isAuth}) =>{
         !isMobile && setMobileDetails(true)
     }, [isMobile])
 
-    const handleDecrase = (item) => {
-        changeCount(item.id, (item.quantity + 1))
+    const handleDecrase = (item) => {   
+        if (item?.product?.stock_quantity !== item.quantity){
+            changeCount(item.id, (item.quantity + 1),item)
+        }else{
+            setQuantityError({
+                slug: item?.product?.slug,
+                error: 'Товар закончился'
+            })
+        }
     }
 
-    const [quantityError, setQuantityError] = useState(null)
+    const [quantityError, setQuantityError] = useState({
+        slug: null,
+        error: null,
+    });
+
+    const {products, loadingProducts, loadProducts} = useProducts();
+
+    useEffect(()=>{
+        loadProducts();
+    },[])
 
     return(
         <>
@@ -95,10 +115,10 @@ export const CartPage = ({isAuth}) =>{
                     {cartItems?.length > 0 && 
                         cartItems.map((item)=>{
                             return(
-                                <div className={cls.cartItem} key={item.id}>
+                                <div className={cls.cartItem} key={item?.product?.sku}>
                                     <div className={cls.cartItemImgWrapper}>
                                         <img 
-                                            src={item?.product?.primary_image_url} 
+                                            src={item?.product?.primary_image_url || item?.product?.images[0]?.url } 
                                             alt={`${item?.product?.name}`}
                                         />
                                     </div>
@@ -156,7 +176,11 @@ export const CartPage = ({isAuth}) =>{
                                                 onClick={()=>{
                                                     item.quantity <=1 
                                                     ?removeFromCart(item.id)
-                                                    :changeCount(item.id, (item.quantity - 1))
+                                                    :changeCount(item.id, (item.quantity - 1));
+                                                    setQuantityError({
+                                                        slug:null,
+                                                        error: null
+                                                    })
                                                 }}
                                             >
                                                 <CartRemoveIconMobile />
@@ -164,10 +188,11 @@ export const CartPage = ({isAuth}) =>{
                                             <p>{item.quantity}</p>
                                             <button 
                                                 className={cls.counterBtn}
-                                                onClick={()=>changeCount(item.id, (item.quantity + 1))}
+                                                onClick={()=>handleDecrase(item)}
                                             >
                                                 <CartAddIconMobile />
                                             </button>
+                                            {(quantityError && quantityError.slug === item?.product?.slug) && <p className={cls.quantityError}>{quantityError.error}</p>}
                                         </div>
                                     </div>
                                     </>
@@ -180,7 +205,7 @@ export const CartPage = ({isAuth}) =>{
                                         >
                                             <p>{item?.product?.name}</p>
                                             <p>Код: {item?.product?.sku}</p>
-                                            {quantityError && <p className={cls.quantityError}>{quantityError}</p>}
+                                            {(quantityError && quantityError.slug === item?.product?.slug) && <p className={cls.quantityError}>{quantityError.error}</p>}
                                         </Link>
                                         <div className={cls.cartItemCounter}>
                                             <button 
@@ -188,7 +213,10 @@ export const CartPage = ({isAuth}) =>{
                                                 onClick={()=>{
                                                     if (item.quantity <= 1){
                                                         removeFromCart(item.id);
-                                                        setQuantityError(null);
+                                                        setQuantityError({
+                                                            slug: null, 
+                                                            error: null
+                                                        });
                                                         return
                                                     }
                                                     if (item.quantity > 1){
@@ -203,14 +231,7 @@ export const CartPage = ({isAuth}) =>{
                                             <button 
                                                 className={cls.counterBtn}
                                                 onClick={()=>{
-                                                    if ((item?.quantity)<(item?.product?.stock_quantity)){
-                                                        changeCount(item.id, (item.quantity + 1));
-                                                        setQuantityError(null);
-                                                    }
-                                                    if ((item?.quantity)===(item?.product?.stock_quantity)){
-                                                        setQuantityError('Товары закончились');
-                                                        return
-                                                    }
+                                                    handleDecrase(item)
                                                 }}
                                                 >
                                                 <CartAddIcon />
@@ -219,10 +240,16 @@ export const CartPage = ({isAuth}) =>{
                                         <div className={cls.cartItemPriceBlock}>
                                             <div className={cls.oldPriceWrapper}>
                                                 {item?.product?.old_price && <p className={cls.oldPrice}>{item.product?.old_price} ₸</p>}
+                                                {isAuth == true ?
                                                 <p className={cls.finalPrice}>
                                                 { 
                                                     item?.line_total
+                                                } ₸</p>:
+                                                <p className={cls.finalPrice}>
+                                                { 
+                                                    item?.quantity * item?.product?.price
                                                 } ₸</p>
+                                                }
                                             </div>
                                             <div className={cls.pricePerProduct}></div>
                                         </div>
@@ -281,7 +308,7 @@ export const CartPage = ({isAuth}) =>{
                         <button 
                             className={cls.orderBtn}
                             onClick={()=>navigate('/account/new-order')}
-                            disabled={isAuth==false}
+                            disabled={cartItems?.length==0}
                         >
                             <p>Перейти к оформлению</p>
                             <ArrowRightOrderIcon />
@@ -294,6 +321,8 @@ export const CartPage = ({isAuth}) =>{
                              <span>{cartTotal?.items_quantity} товара</span>
                          </div>
                          <button 
+                            className={cls.mobileNewOrderBtn}
+                            disabled={cartItems?.length ==0}
                             onClick={()=>navigate('/account/new-order')}
                         >
                             Оформить заказ
@@ -303,6 +332,8 @@ export const CartPage = ({isAuth}) =>{
                 </div>
             </div>
         </div>
+
+        <RecommendedSection products={products?.data}/>
         </>
     )
 }

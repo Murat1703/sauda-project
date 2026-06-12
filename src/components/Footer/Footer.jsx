@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSubscribe } from '../../hooks/useSubscribe.js'
 import {Loader} from '../Loader'
+import { useLanguage } from '../../stores/useLanguage.js'
 
 export const Footer = () =>{
 
@@ -50,6 +51,8 @@ export const Footer = () =>{
         setStatus(subscribeStatus?.status)
     }
 
+    const {lang} = useLanguage();
+
     return(
         <>
         <footer>
@@ -59,11 +62,14 @@ export const Footer = () =>{
                         <img src={logo} alt='footer-logo'/>
                     </div>
                     <div className={cls.newsLetterContent}>
+                        {lang=='ru' ?
                         <p>Сэкономьте на покупке с нашей рассылкой о спецпредложениях, акциях и скидках</p>
+                        :<p>Арнайы ұсыныстар, акциялар мен жеңілдіктер туралы хабарламаларға жазылып, тиімді сатып алыңыз.</p>
+                        }
                         <div className={cls.newsLetterInput}>
                             <input 
                                 type="email" 
-                                placeholder='Электронная почта'
+                                placeholder={`${lang == 'ru'?`Электронная почта`: `Электрондық пошта`}`}
                                 value={email}
                                 onChange={(e)=>{
                                     setInputError(null)
@@ -78,7 +84,10 @@ export const Footer = () =>{
                                 onClick={()=>handleToSubScribe(email)}
                             >
                                 {loadingSubscribe && <Loader />}
-                                {!loadingSubscribe &&<p>Подписаться</p>}
+                                {!loadingSubscribe &&
+                                    <p>
+                                        {lang=='ru'? `Подписаться`: `Жазылу`}
+                                    </p>}
                             </Button>
                             {inputError && <p className={cls.newsLetterInfoStatus}>
                                 {inputError}
@@ -111,47 +120,65 @@ export const Footer = () =>{
                                     </li>
                                 )
                             })}
-                            <li><a>Полный каталог</a></li>
+                            <li><a>{lang=='ru'? `Полный каталог`: `Толық каталог`}</a></li>
                         </ul>
                         <ul>
-                            <h4>Покупателям</h4>
+                            <h4>
+                                {lang=='ru'? `Покупателям`:`Сатып алушыларға`}
+                            </h4>
                             <li>
-                                <Link>Акции</Link>
+                                <Link>
+                                    {lang=='ru'? `Акции`:`Акциялар`}
+                                </Link>
                             </li>
                             <li>
-                                <Link>Доставка и оплата</Link>
+                                <Link>
+                                    {lang=='ru'? `Доставка и оплата`:`Жеткізу және төлем`}
+                                </Link>
                             </li>
                             <li>
-                                <Link>Отследить заказ</Link>
+                                <Link>
+                                    {lang=='ru'? `Отследить заказ`:`Тапсырысты қадағалау`}
+                                </Link>
                             </li>
                             <li>
-                                <Link>Помощь 24/7</Link>
+                                <Link>
+                                    {lang=='ru'? `Помощь 24/7`:`Тәулік бойы көмек.`}
+                                </Link>
                             </li>
                         </ul>
                         <ul>
                             <h4>Компания</h4>
                             <li>
-                                <Link to={`/about`}>О нас</Link>
+                                <Link to={`/about`}>
+                                    {lang=='ru'? `о нас`:`Біз туралы.`}
+                                </Link>
                             </li>
                             <li>
-                                <Link>Адреса магазинов и ПВЗ</Link>
+                                <Link>
+                                    {lang=='ru'? `Адреса магазинов и ПВЗ`:`Дүкендер мен тапсырысты алу пункттері`}
+                                </Link>
                             </li>
                             <li>
-                                <Link>Новости</Link>
+                                <Link>
+                                    {lang=='ru'? `Новости`:`Жаңалықтар`}
+                                </Link>
                             </li>
                             <li>
-                                <Link to={`/contacts`}>Контакты</Link>
+                                <Link to={`/contacts`}>
+                                    {lang=='ru'? `Контакты`:`Байланыс`}
+                                </Link>
                             </li>
                         </ul>
                     </div>
                     <div className={cls.footerContacts}>
                         <div>
                             <a href="tel:+77013993558" target='_blank'>+7 701 399 35 38</a>
-                            <p>9:00 – 21:00, без выходных</p>
+                            <p>9:00 – 21:00, {lang=='ru' ? `без выходных`:`демалыссыз`}</p>
                         </div>
                         <div>
                             <Button>
-                                <p>Перезвонить мне</p>
+                                <p>{lang=='ru' ? `Перезвонить мне`:`Маған қайта қоңырау шалу`}</p>
                             </Button>
                             <Button>
                                 <YoutubeFooterIcon />
@@ -163,10 +190,13 @@ export const Footer = () =>{
                     </div>
                 </div>
                 <div className={cls.footerLegal}>
-                    <p>© 2026 TOO «Sauda.market». Все права защищены.</p>
+                    <p>{lang == 'ru'?`© 2026 TOO «Sauda.market». Все права защищены.`:`© 2026 «Sauda.market» ЖШС. Барлық құқықтар қорғалған.`}</p>
                     <div>
-                        <Link to={`/terms-of-use`} >Пользовательское соглашение</Link>
-                        <Link to={`/privacy-police`}>Политика конфединциальности</Link>
+                        <Link to={`/terms-of-use`} >
+                        {lang == 'ru'?`Пользовательское соглашение`:` Пайдаланушы келісімі`}</Link>
+                        <Link to={`/privacy-police`}>
+                        {lang == 'ru'?`Политика конфединциальности`:` Құпиялылық саясаты`}
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { apiGetOrder, apiGetOrders, apiPostOrder } from "../api/api.orders.js";
-import { apiPostReviews } from "../api/api.reviews.js";
-
-
+import { useCart } from "./useCart.js";
 
 export const useOrdersStore = create((set, get) => ({
   orders: [],
@@ -81,13 +79,20 @@ export const useOrdersStore = create((set, get) => ({
     const prevOrders = get().orders || [];
 
     set({
-      loadingReviews: true,
-      errLoadingReviews: null,
+      loadingOrders: true,
+      errLoadingOrders: null,
     });
 
     try {
       await apiPostOrder( data);
-      await get().loadOrders(true)
+      await useCart.getState().clearCart();
+
+      set({
+        loadingOrders: false
+      })
+      await get().loadOrders(true);
+
+
     } catch (error) {
       set({
         orders: prevOrders,

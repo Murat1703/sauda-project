@@ -24,13 +24,14 @@ import { TermOfUsePage } from './pages/CMSPages/TermOfUsePage'
 import { CMSPageLayout } from './components/CMSPageLayout'
 import { ContactsPage } from './pages/CMSPages/ContactsPage'
 import { AboutPage } from './pages/CMSPages/AboutPage'
+// import { useAuthStore } from './stores/useAuthStore.js'
 
 
 
 const ProtectedRoutes = () =>{
   const { openAuthModal, closeAuthModal } = useAuthModal();
   const {pathname} = useLocation();
-  const {isAuth, isAuthLoading} = useAuth();
+  const {isAuth, loading} = useAuth();
   const isMobile = useMediaQuery({
     maxWidth: 768
   })
@@ -57,19 +58,19 @@ const ProtectedRoutes = () =>{
   // }, [isAuthLoading, isAuth, isMobile, pathname, closeAuthModal, openAuthModal]);
 
   useEffect(() => {
-    if (isAuthLoading) return;
+    if (loading) return;
 
     if (!isAuth) {
       openAuthModal()
     }
   }, [
-    isAuthLoading,
+    loading,
     isAuth,
     openAuthModal
   ]);
 
 
-  if (isAuthLoading) return null;
+  if (loading) return null;
 
   if (!isAuth) return null;
 
@@ -79,7 +80,8 @@ const ProtectedRoutes = () =>{
 function App() {
 
   
-  const {isAuth, isAuthLoading} = useAuth();
+  // const {isAuth, isAuthLoading} = useAuth();
+  const {isAuth, loading, fetchUser} = useAuth();
 
   const [isMobileScroll, setIsMobileScroll] = useState(false);
 
@@ -115,13 +117,14 @@ function App() {
                   <Route path='/account/orders' element={<OrdersPage isAuth={isAuth}/>}/>
                   <Route path='/account/favorites' element={<FavoritesPage isAuth={isAuth}/>}/>
                   <Route path='/account/reviews' element={<ReviewsPage isAuth={isAuth}/>}/>
+                  <Route path='/account/new-order' element={<NewOrderPage />}/>
+
 
               </Route>
               <Route element={<ProtectedRoutes />}>   
                 <Route element={<AccountResponsiveLayout />} >
                   {/* <Route path='/account/orders' element={<OrdersPage />}/> */}
                   <Route path={'/account/orders/:orderId'} element={<OrderPage />}/>
-                  <Route path='/account/new-order' element={<NewOrderPage />}/>
                   {/* <Route path='/account/favorites' element={<FavoritesPage />}/> */}
                   <Route path='/account/profile' element={<AccountDetailsPage isAuth={isAuth}/>}/>
 

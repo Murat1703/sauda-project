@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Title } from '../../../components/Title'
 import { ArrowOrderPageIcon } from '../../../../public/assets/icons/ArrowOrderPageIcon'
 import { useCart } from '../../../stores/useCart'
-import { useAuth } from '../../../context/AuthContext'
+// import { useAuth } from '../../../context/AuthContext'
 import { NewOrderCheckIcon } from '../../../../public/assets/icons/NewOrderCheckIcon'
 import { useEffect, useState } from 'react'
 import { LocationIcon } from '../../../../public/assets/icons/LocationIcon'
@@ -17,10 +17,18 @@ import { PaymentCashIcon } from '../../../../public/assets/icons/PaymentCashIcon
 import { useOrdersStore } from '../../../stores/useOrdersStore'
 import { PickupIconDelivery } from '../../../../public/assets/icons/PickupIconDelivery'
 import { useMediaQuery } from 'react-responsive'
+import { useAuthStore } from '../../../stores/useAuthStore'
+import { useMask } from '@react-input/mask'
+import { useLogin } from '../../../hooks/useLogin'
+import { useAuthModal } from '../../../context/AuthModalContext'
+import { AuthModal } from '../../../components/AuthModal'
+import { useAuth } from '../../../context/AuthContext'
 
 export const NewOrderPage = () =>{
 
     const {cartTotal} = useCart();
+
+    console.log(cartTotal)
 
     const {user, isAuth} = useAuth();
 
@@ -32,16 +40,11 @@ export const NewOrderPage = () =>{
     const citiesList = ["Астана", "Алматы", "Караганды", "Усть-Каменогорск", "Уральск", "Атырау", "Талдыкорган", "Семей"]
 
 
-// delivery_method_code*	[...]
-// pickup_point_id	[...]
-// payment_method_id*	[...]
-// contact_phone*	[...]
-// contact_name*	[...]
-// contact_email	[...]
-// delivery_address	{...}
-// customer_note	[...]
-
     useEffect(()=>{},[delivery])
+
+
+    console.log(user)
+
 
     const [data, setData] = useState({
         delivery_method_code: delivery,
@@ -49,6 +52,17 @@ export const NewOrderPage = () =>{
         contact_phone: user?.user?.phone,
         contact_name: user?.user?.name
     })
+
+    useEffect(()=>{
+        if (!user?.user) return;
+        setData((prev)=>({
+            ...prev,
+            contact_phone: user?.user?.phone,
+            contact_name: user?.user?.name,
+        }))
+
+    },[user])
+
 
     const [activeCity, setActiveCity] = useState(citiesList[0]);
     const [showList, setShowList] = useState(false);
@@ -67,9 +81,75 @@ export const NewOrderPage = () =>{
         maxWidth: 768
     })
 
+    const phoneMask = useMask({
+        mask: '+7 (___) ___-__-__',
+        replacement: { _: /\d/ },
+    });
+
     console.log('sendData. = ', data)
 
+    const {
+        login, 
+        loading, 
+        status, 
+        verify, 
+        verifyLoading, 
+        verifyError,
+        clearError,
+        verifyStatus, 
+        profile, 
+        profileLoading, 
+        profileError, 
+        profileStatus
+    } = useLogin();
+
+    const kzCodes = [
+        "700", "701", "702",
+        "705", "706", "707", "708",
+        "747",
+        "771",
+        "775", "776", "777", "778",
+    ]; 
+
+    // useEffect(()=>{
+    //         setData((prev)=>({
+    //             ...prev,
+    //             contact_name: user?.user?.name,
+    //             contact_phone: user?.user?.phone
+    //         }))
+    // },[user])
+
+    const { isAuthModalOpen, closeAuthModal, step, setStep, openAuthModal, openAuthModalOtp, setNewOrderPhone, newOrderPhone } = useAuthModal();
+
+    const validate = async(phone) =>{
+        let digits = phone.replace(/\D/g, "");
+        const code = digits.slice(1,4)
+        if (!kzCodes.includes(code))
+            {
+                setErrPhone('Номер не принадлежит сотовому оператору')
+                return
+            }
+        if (digits.length < 11) {            
+            setErrPhone('Проверьте длину введенного номера');
+            return
+        }
+        if ((digits.length==11) && !errPhone) {
+            const validNum = `+`+digits;
+            console.log(validNum);
+            setStep('otp');
+            await login(validNum);
+
+            openAuthModalOtp();
+
+        }
+
+    }
+
+    const [errPhone, setErrPhone] = useState(null)
+
+    const [phone, setPhone] = useState(null)
     return(
+        <>
         <div className={cls.newOrderPage}>
             <div className={cls.newOrderPageTop}>
                 <Link to={`/cart`}>
@@ -111,6 +191,34 @@ export const NewOrderPage = () =>{
                                 </div>
                                 </>
                             }
+                            {!isAuth && 
+                            <>
+                                <div className={cls.contactsInputsBlock}>
+                                    <div className={cls.contactPhoneInput}>
+                                        <p>Номер телефона</p>
+                                        {errPhone && <span className={cls.errPhone}>{errPhone}</span>}
+                                        <input 
+                                            type="tel" 
+                                            placeholder='+7 '
+                                            ref={phoneMask}
+                                            onChange={(e)=>{
+                                                const value = e.target.value;
+                                                setPhone(value);
+                                                setNewOrderPhone(value)
+                                                setErrPhone(null)
+                                            }}
+                                        />
+                                    </div>
+                                    <button 
+                                        className={cls.sendPhoneBtn}
+                                        onClick={()=>{
+                                            validate(phone)
+                                        }}
+                                    >
+                                        <p>Отправить</p>
+                                    </button>
+                                </div>
+                            </>}
                         </div>
                         }
                     </div>
@@ -456,5 +564,7 @@ export const NewOrderPage = () =>{
                 </div>
             </div>
         </div>
+        {/* {step == 'otp' && <AuthModal next={step}/>} */}
+        </>
     )
 }

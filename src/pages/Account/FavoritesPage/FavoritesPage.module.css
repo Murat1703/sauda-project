@@ -157,6 +157,7 @@
     .mobileFilters{
         padding: 6px 16px 10px 16px;
         background: var(--white);
+        height: fit-content!important;
         display: flex;
         width: 100%;
         justify-content: space-between;

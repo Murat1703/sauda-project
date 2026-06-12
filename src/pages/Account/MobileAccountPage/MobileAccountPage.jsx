@@ -153,7 +153,6 @@ export const MobileAccountPage = () =>{
     },[verifyError])
 
     useEffect(() => {
-        console.log(profileStatus)
         if (profileStatus.next_step == 'done'){
             setStep('finish_registration')
         }
@@ -161,7 +160,7 @@ export const MobileAccountPage = () =>{
 
 
     useEffect(()=>{
-        console.log('ACTUAL STATE',step);
+        // console.log('ACTUAL STATE',step);
     },[step]);
 
     const {pathname} = useLocation();
@@ -171,7 +170,6 @@ export const MobileAccountPage = () =>{
 
     },[isAuth])
 
-    console.log('isAuthMobilePage', isAuth)
 
     useEffect(() => {
         if (code.length === 4) {
@@ -182,7 +180,7 @@ export const MobileAccountPage = () =>{
     const[errPhone, setErrPhone] = useState(false)
 
     useEffect(()=>{
-        console.log(status)
+        // console.log(status)
     },[status])
 
     const nextStep = (phone) =>{

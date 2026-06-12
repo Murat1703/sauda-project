@@ -20,12 +20,15 @@ export const CategorysSection = () =>{
         loadingCategories,
         errLoadingCategories
     } = useCategories();
+    const {lang} = useLanguage();
 
     useEffect(() => {
-        loadCategories();
-    }, []);
+        if (!lang) return
+        loadCategories({
+            locale: lang
+        });
+    }, [lang]);
 
-    const {lang} = useLanguage();
 
 
 

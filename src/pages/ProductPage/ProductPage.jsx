@@ -31,7 +31,7 @@ import { HeartIconFilled } from '../../../public/assets/icons/HeartIconFilled.js
 import { RepostIcon } from '../../../public/assets/icons/RepostIcon.jsx';
 import { useCart } from '../../stores/useCart.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
-import { useAuth } from '../../context/AuthContext.jsx';
+// import { useAuth } from '../../context/AuthContext.jsx';
 import {CartRemoveIconMobile} from '../../../public/assets/icons/CartRemoveIconMobile.jsx'
 import { CartRemoveIconMobileDark } from '../../../public/assets/icons/CartRemoveIconMobileDark.jsx';
 import { CartAddIconMobileDark } from '../../../public/assets/icons/CartAddMobileIconDark.jsx';
@@ -42,6 +42,8 @@ import { ProductPageIncreaseIcon } from '../../../public/assets/icons/ProductPag
 import { useDateFormat } from '../../hooks/useDateFormat.js';
 import { AccountRatingStar } from '../../../public/assets/icons/AccountRagingStar.jsx';
 import { ProductPageIconToCart } from '../../../public/assets/icons/ProductPageIconToCart.jsx';
+import { useAuthStore } from '../../stores/useAuthStore.js';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -110,7 +112,7 @@ export const ProductPage = ({isMobileScroll}) =>{
     },[slug])
 
     const cartItem = cartItems?.find(
-        (item) => item?.product?.id === item.product_id
+        (item) => item?.product?.id === item.product_id || item?.id
     );
 
     const favoriteItem = favoritesList?.find((item)=>
@@ -120,6 +122,12 @@ export const ProductPage = ({isMobileScroll}) =>{
     // console.log('isAuth', isAuth)
 
     const {formatDate} = useDateFormat();
+
+    const formatPrice = (price) => {
+        return Number(price).toLocaleString('ru-RU', {
+            maximumFractionDigits: 0,
+        });
+    };
 
     console.log(cartItem)
 
@@ -345,8 +353,8 @@ export const ProductPage = ({isMobileScroll}) =>{
                             </div>
                             <button 
                                 onClick={()=>{
-                                    const flagIsAdd = !addToFavorite;
-                                    setAddToFavorite(flagIsAdd);
+                                    // const flagIsAdd = !addToFavorite;
+                                    // setAddToFavorite(flagIsAdd);
                                     if (isAuth == false) {
                                         if (favoriteItem?.product?.slug === product?.product?.slug){
                                             deleteFromLocalFavoritesList(product?.product?.id);
@@ -395,7 +403,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 }
                             </div>
                             <div className={cls.finalPrice}>
-                                <p>{product?.product?.price} ₸</p>
+                                <p>{formatPrice(product?.product?.price)} ₸</p>
                             </div>
                         </div>
                         {product?.product?.stock_quantity ==0 ? 
@@ -411,7 +419,8 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         product_slug: product?.product.slug,
                                         quantity: 1
                                     })} else{
-                                        addToLocalCart({
+                                        addToCart({
+                                            product: product?.product,
                                             product_slug: product?.product.slug,
                                             quantity: 1
                                         })
@@ -602,11 +611,11 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <div className={cls.mobileProductPriceValue}>
                             {product?.product?.old_price && 
                             <div className={cls.oldPrice}>
-                                <p>{product?.product?.old_price} ₸</p>
+                                <p>{formatDate(product?.product?.old_price)} ₸</p>
                                 <Badge type="discount">-{product?.product?.discount_percent}%</Badge>
                             </div>}
                             <p className={cls.mobileFinalPrice}>
-                                {product?.product?.price} ₸
+                                {formatPrice(product?.product?.price)} ₸
                             </p>
                         </div>
                         {product?.product?.stock_quantity == 0? <p>Нет в наличии</p>:
@@ -619,10 +628,17 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 disabled={cartItem?.product?.slug == product?.product?.slug? true: false}
                                 onClick={()=>{
                                     setAdd(true);
-                                    addToCart({
+                                    if (isAuth == true)
+                                    {addToCart({
                                         product_slug: product?.product?.slug,
                                         quantity: 1,
-                                    })
+                                    })} else {
+                                        addToCart({
+                                            product: product?.product,
+                                            product_slug: product?.product?.slug,
+                                            quantity: 1
+                                        })
+                                    }
                                     setCounter(counter + 1)
                                 }}
                             >

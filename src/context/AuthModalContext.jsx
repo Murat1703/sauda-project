@@ -4,12 +4,28 @@ const AuthModalContext = createContext(null);
 
 export const AuthModalProvider = ({ children }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [step, setStep] = useState('login'); // login | otp | profile | user
+  const [step, setStep] = useState('login'); 
+  const [newOrderPhone, setNewOrderPhone] = useState(null);
+  // login | otp | profile | user
 
   const openAuthModal = useCallback(() => {
     setIsAuthModalOpen(prev => {
     if (!prev) {
       setStep('login');
+      setNewOrderPhone(null)
+      return true;
+    }
+
+    return prev;
+
+    });
+    // setStep('login');
+  }, []);
+
+  const openAuthModalOtp = useCallback(() => {
+    setIsAuthModalOpen(prev => {
+    if (!prev) {
+      setStep('otp');
       return true;
     }
 
@@ -37,6 +53,9 @@ export const AuthModalProvider = ({ children }) => {
         setStep,
         openAuthModal,
         closeAuthModal,
+        openAuthModalOtp,
+        newOrderPhone,
+        setNewOrderPhone
       }}
     >
       {children}

@@ -13,8 +13,11 @@ import { MobileOrangeWhatsAppIcon } from '../../../public/assets/icons/MobileOra
 import { Link } from 'react-router-dom';
 import { CloseIconDesktop } from '../../../public/assets/icons/CloseIconDesktop.jsx';
 import { useLocation } from 'react-router-dom';
+import { useAuthStore } from '../../stores/useAuthStore.js';
 
-export const AuthModal = () =>{
+export const AuthModal = ({next}) =>{
+
+    console.log(next);
 
     const {pathname} = useLocation();
 
@@ -23,9 +26,9 @@ export const AuthModal = () =>{
         replacement: { _: /\d/ },
     });
 
-    const {fetchUser} = useAuth();
+    const {fetchUser} = useAuthStore();
 
-    const { isAuthModalOpen, closeAuthModal, step, setStep } = useAuthModal();
+    const { isAuthModalOpen, closeAuthModal, step, setStep, newOrderPhone } = useAuthModal();
 
     const [phone, setPhone] = useState('');
     const [otp, setOtp] = useState(['', '', '', '']);
@@ -45,7 +48,12 @@ export const AuthModal = () =>{
         }
         const fullCode = newOtp.join('');
         if (fullCode.length === 4 && !verifyLoading) {
-            await verify(phone, fullCode);
+            if (newOrderPhone!==null){
+                await verify(newOrderPhone, fullCode);
+            } else{
+                await verify(phone, fullCode);
+            }
+            
         }
 
         // clearError()
@@ -75,7 +83,6 @@ export const AuthModal = () =>{
         profileError, 
         profileStatus
     } = useLogin();
-
 
    
     useEffect(() => {
@@ -166,7 +173,7 @@ export const AuthModal = () =>{
 
 
     return(
-    (isMobile && (pathname == '/account') && isAuthModalOpen) &&
+    (isAuthModalOpen) &&
         <div 
             className={cls.authModalWrapper} 
             onClick={(e)=>{
@@ -228,7 +235,7 @@ export const AuthModal = () =>{
                             <div className={cls.authOtpContent}>
                                 <div className={cls.authOtpTitleBlock}>
                                     <h4>Потвердите номер</h4>
-                                    <p>На указанный номер телефона<span>{phone}</span> выслан СМС-код для проверки номера<br/>Укажите его ниже</p>
+                                    <p>На указанный номер телефона<span>{newOrderPhone ? newOrderPhone : phone}</span> выслан СМС-код для проверки номера<br/>Укажите его ниже</p>
                                     {isMobile &&
                                     <a onClick={()=>setStep('login')}>
                                         Изменить номер

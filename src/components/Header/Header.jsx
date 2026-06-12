@@ -23,6 +23,8 @@ import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileCo
 import { Search } from '../Search';
 import { useLanguage } from '../../stores/useLanguage.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
+// import { useAuthStore } from '../../stores/useAuthStore.js';
+import { AccountProfileImageIcon } from '../../../public/assets/icons/AccountProdileImageIcon.jsx';
 
 export const Header = ({ordersCount}) =>{
     const {lang, setLang} = useLanguage();
@@ -40,6 +42,8 @@ export const Header = ({ordersCount}) =>{
 
     const { isAuth, setIsAuth, user, loading } = useAuth();
 
+    // const {isAuth , setIsAuth, loadingAuth, user} = useAuthStore();
+
     const [showModal, setShowModal] = useState(false);
 
     const { 
@@ -49,6 +53,11 @@ export const Header = ({ordersCount}) =>{
         step, 
         setStep } = 
     useAuthModal();
+
+    const hasToken = localStorage.getItem('token');
+
+
+
 
     const [showProfileMenu, setShowProfileMenu] = useState(false);
 
@@ -62,30 +71,29 @@ export const Header = ({ordersCount}) =>{
 
     const {favoritesList, syncLocalFavorites} = useFavoritesStore();
 
-    const {cartItems, loadCart} = useCart();
+    const {cartItems, loadCart, syncLocalCartWithAccount} = useCart();
+    const [showLogin, setShowLogin] = useState(false)
 
-    useEffect(
-        ()=>{
-            if (isAuth == true){
-                loadCart();
-                syncLocalFavorites();
-            } else {
-                    return 
-            }
-        },[isAuth]
-    )
+    useEffect(()=>{            
+    if (!isAuth) {setShowLogin(false); return};
+    
+    syncLocalCartWithAccount();
+    setShowLogin(true);
+    syncLocalFavorites();
+
+    },[isAuth])
 
     const {pathname} = useLocation();
 
     const hiddenMobileHeaderRoutes = [
-    '/account',
-    '/cart',
-    '/account/profile',
-    '/account/reviews',
-    '/account/orders',
-    '/login',
-    '/account/favorites',
-    '/account/new-order'
+        '/account',
+        '/cart',
+        '/account/profile',
+        '/account/reviews',
+        '/account/orders',
+        '/login',
+        '/account/favorites',
+        '/account/new-order'
     ];
 
     const shouldHideHeader =
@@ -95,6 +103,7 @@ export const Header = ({ordersCount}) =>{
     );
 
     const [searchString, setSearchString] = useState('')
+
         
     return(
         <>
@@ -115,7 +124,7 @@ export const Header = ({ordersCount}) =>{
                     <div className={cls.searchWrapper}>
                         <input 
                             type="text" 
-                            placeholder='Ищите все для стройки и ремонта'
+                            placeholder={lang=='ru'?'Ищите все для стройки и ремонта':'Құрылыс пен жөндеуге қажеттінің бәрін іздеңіз'}
                             value={searchString}
                             onChange={(e)=>setSearchString(e.target.value)}
                         />
@@ -137,17 +146,26 @@ export const Header = ({ordersCount}) =>{
                 <div className={cls.headerRight}>
                     <ControlBtn nav='/account/favorites'>
                         <FavoriteHeaderIcon />
-                        <p>Избранное</p>
+                        <p>{lang=='ru'?`Избранное`:`Таңдаулылар`}</p>
                         {favoritesList.length!== 0 && <CounterBadge count={favoritesList.length}/>}                        
                     </ControlBtn>
                     <ControlBtn nav='/cart'>
                         <CartBtnIcon />
-                        <p>Корзина</p>
+                        <p>{lang=='ru'?`Корзина`:`Себет`}</p>
                         {cartItems.length!== 0 && <CounterBadge count={cartItems.length}/>}
                     </ControlBtn>
-                    <ControlBtn onClick={loginHandler}>
-                        <LoginBtnIcon isActive={isAuth} />
-                        <p>{!isAuth  ? `Войти` : `Профиль` }</p>
+                    <ControlBtn 
+                        onClick={loginHandler}
+                    >   
+
+                        <LoginBtnIcon isActive={isAuth || (hasToken && loading)} />
+                            {/* {isAuth || (loadingAuth && hasToken)  && <p>Профиль </p>}
+                            {!isAuth && <p>Войти</p>} */}
+                            {showLogin || loading ? (
+                            <p>Профиль</p>
+                            ) : (
+                            <p>{lang=='ru'?`Войти`:`Кіру`}</p>
+                            )}
                     </ControlBtn>
                     {showProfileMenu && 
                     <SideBar 

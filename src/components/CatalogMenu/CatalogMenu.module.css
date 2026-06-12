@@ -91,6 +91,19 @@
         color: var(--accent);
     }
 }
+.catalogMenuRight > ul li{
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    align-self: stretch;
+}
+.catalogMenuRight > ul li span{
+    color: var(--Dark-D50, #8F9596);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 171.429% */
+}
 .activeCategoryTitle{
     font-size: 32px;
     font-style: normal;
@@ -258,5 +271,8 @@
         font-size: 16px;
         font-weight: 400;
         line-height: 24px;
+    }
+    .catalogMenuRight > ul li span{
+        display: none;
     }
 }

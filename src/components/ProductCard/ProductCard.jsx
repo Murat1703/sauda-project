@@ -1,8 +1,8 @@
 import { Badge } from '../Badge'
 import cls from './ProductCard.module.css'
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import "swiper/css";
+// import "swiper/css/navigation";
 import { useCart } from '../../stores/useCart.js';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -11,30 +11,79 @@ import { HeartIcon } from '../../../public/assets/icons/HeartIcon';
 import { HeartIconFilled } from '../../../public/assets/icons/HeartIconFilled';
 import { CartIcon } from '../../../public/assets/icons/CartIcon';
 import { SnackBar } from '../SnackBar';
-import { useAuth } from '../../context/AuthContext.jsx';
+// import { useAuth } from '../../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
 import { useEffect, useState } from 'react';
+import { useAuthStore } from '../../stores/useAuthStore.js';
+import { useReviewsStore } from '../../stores/useReviewsStore.js';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 
 export const ProductCard = ({product, isFavorite, isDelete}) =>{
 
     const {addToCart, cartItems} = useCart();
-    const 
-        {
-            favoritesList, 
-            addToFavoritesList, 
-            loadFavoritesList, 
-            deleteFromFavoritesList, 
-            addToLocalFavoritesList, 
-            deleteFromLocalFavoritesList        
-        } 
-    = useFavoritesStore();
+    const{favoritesList, addToFavoritesList, deleteFromFavoritesList, addToLocalFavoritesList, deleteFromLocalFavoritesList} = useFavoritesStore();
 
     const navigate = useNavigate();
 
     const {isAuth} = useAuth();
+
+    // console.log(isAuth)
     const [addFavorite, setAddFavorite] = useState(false);
+
+    const {loadReviews, reviewsList} = useReviewsStore();
+
+    useEffect(()=>{
+        loadReviews(product?.slug)
+    },[]);
+
+    const formatPrice = (price) => {
+        return Number(price).toLocaleString('ru-RU', {
+            maximumFractionDigits: 0,
+        });
+    };
+
+    console.log('favoritesList', favoritesList)
+    console.log('product', product)
+
+
+    const favoriteItem = favoritesList?.find((item)=>
+        {return item?.product?.slug === product?.slug}
+    )
+
+    const isProductFavorite = Boolean(favoriteItem)
+    // console.log(product);
+
+    // console.log('favoriteItem, ',favoriteItem)
+    const handleToggleFavorite = () =>{
+        console.log(favoriteItem)
+        console.log(product)
+        if (isAuth == false) {
+            if (favoriteItem?.product?.slug === product?.slug){
+                deleteFromLocalFavoritesList(favoriteItem?.product?.id);
+                toast(<SnackBar text={`Товар удален из избранного `} />)
+            }else {
+                addToLocalFavoritesList({
+                    product_slug: product?.slug, 
+                    product: product
+                });
+                toast(<SnackBar text={`Товар добавлен в избранное`} />)
+            }
+        }else{
+            if (favoriteItem?.product?.slug === product?.slug){
+                deleteFromFavoritesList(favoriteItem?.product?.id);
+                toast.error(<SnackBar text={`Товар удален из избранного`} />)
+            }else {
+                addToFavoritesList({
+                    product_slug: product?.slug, 
+                    product: product
+                });
+                toast.error(<SnackBar text={`Товар добавлен в избранное`}/>)
+            }
+        }
+    }
+
 
     return(
         <>
@@ -55,65 +104,13 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                     </div>
                     <button 
                         className={cls.favoriteBtn} 
-                        onClick={()=>{
-                            const shouldAdd = !addFavorite
-                            setAddFavorite(shouldAdd);
-                            if ((isDelete==true) && (isAuth == true)) {
-                                deleteFromFavoritesList(product?.id)
-                                toast.error(
-                                    <SnackBar 
-                                        text={'Товар удален из избранного'}
-                                    />
-                                );
-                                return;
-                            }
-                            if ((isDelete==true) && (isAuth == false)){
-                                deleteFromLocalFavoritesList(product?.id)
-                                toast.error(
-                                    <SnackBar 
-                                        text={'Товар удален из избранного'}
-                                    />
-                                );
-                                return;
-                            }
-                            if (isAuth == true && !isDelete){
-                                if (shouldAdd == true){
-                                    addToFavoritesList({
-                                        product_slug: product?.slug
-                                    });
-                                    toast(
-                                        <SnackBar 
-                                            text={'Товар добавлен в избранное'}
-                                        />
-                                    )
-                                } else{
-                                    deleteFromFavoritesList(product?.id)
-                                    toast.error(
-                                        <SnackBar 
-                                            text={'Товар удален из избранного'}
-                                        />
-                                    )
-                                }
-                            }  
-                            if (isAuth == false && !isDelete){
-                                if (shouldAdd == true){
-                                    addToLocalFavoritesList({
-                                        product_slug: product?.slug,
-                                        product: product
-                                    });
-                                    toast(
-                                        <SnackBar text={'Товар добавлен в избранное'}/>
-                                    )
-                                } else{
-                                    deleteFromLocalFavoritesList(product?.id)
-                                    toast.error(
-                                        <SnackBar text={'Товар удален из избранного'}/>
-                                    )
-                                }
-                            }                          
-                        }}
+                        onClick={handleToggleFavorite}
                     >
-                        {!isFavorite?<HeartIcon />:<HeartIconFilled />}
+                        {
+                            favoriteItem?.product?.slug == product?.slug?
+                            <HeartIconFilled />
+                            :<HeartIcon />
+                        }
                     </button>
                     {product?.is_hit && <Badge type={`hit`}>Хит</Badge>}
                     {product?.is_new && <Badge type={`new`}>Новинка</Badge>}
@@ -122,8 +119,8 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                     <div className={cls.productCardInfoTop}>
                         <div className={cls.productCardInfoReviews}>
                             <ReviewItemStar />
-                            <span>5.0</span>
-                            <span>· 157 отзвывов</span>
+                            <span>{reviewsList?.summary?.average_rating}</span>
+                            <span>· {reviewsList?.summary?.reviews_count} отзвывов</span>
                         </div>
                         <h4>{product?.name}</h4>
                     </div>
@@ -133,7 +130,7 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                 {
                                 product?.old_price && 
                                 <>
-                                <span>{product?.old_price} ₸</span>
+                                <span>{formatPrice(product?.old_price)} ₸</span>
                                 <Badge 
                                     type={'discount'}
                                 >
@@ -143,28 +140,21 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                 }
                             </div>
                             <div className={cls.finalPrice}>
-                                <span>{product?.price} ₸</span>
+                                <span>{formatPrice(product?.price)} ₸</span>
                             </div>
                         </div>
                         {product?.stock_quantity == 0 ? <p>Нет в наличии</p> :
                         <button 
                             className={cls.productCardBtn} 
                             onClick={()=>{
-                                if (isAuth == true) {
-                                    addToCart({
-                                        product_slug: product?.slug,
-                                        quantity: 1
-                                    });
-                                    toast(
-                                        <SnackBar 
-                                            text={'Товар добавлен в корзину'}
-                                            toCart={'/cart'}
-                                        />
-                                    )
-                                } else{
-                                    navigate('/cart')
-                                }
-                        }}>
+                                addToCart({
+                                    product: product,
+                                    product_slug: product?.slug,
+                                    quantity: 1
+                                })
+                                toast(<SnackBar toCart={'/cart'} text={'Товар добавлен в корзину'}/>)
+                            }}
+                        >
                             <CartIcon />
                             <p>В корзину</p>
                         </button>}

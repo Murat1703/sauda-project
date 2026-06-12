@@ -15,6 +15,7 @@ import { AccountLogOutIcon } from '../../../public/assets/icons/AccountLogOutIco
 import { useClickOutside } from '../../hooks/useClickOutside.js';
 import { useRef, useCallback } from 'react';
 import {Loader} from '../Loader'
+// import { useAuthStore } from '../../stores/useAuthStore.js';
 
 export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMobile, onMobileLogout, reviews, showProfileMenu}) => {
     const location = useLocation();
@@ -48,15 +49,27 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
         getLinkActiveLink()
     }, [location.pathname])
 
-    const hideProfileMenu = () =>{
-        setShowProfileMenu(false);
-    }
+    // const hideProfileMenu = () =>{
+    //     setShowProfileMenu(false);
+    // }
 
     const menuRef = useRef(null)
 
+    // const closeMenu = useCallback(() => {
+    //     if (!isMobile ){setShowProfileMenu(false)}
+    // }, [])
+
+    const hideProfileMenu = () => {
+        if (isHeaderProfile) {
+            setShowProfileMenu?.(false);
+        }
+    };
+
     const closeMenu = useCallback(() => {
-        if (!isMobile ){setShowProfileMenu(false)}
-    }, [])
+        if (isHeaderProfile && !isMobile) {
+            setShowProfileMenu?.(false);
+        }
+    }, [isHeaderProfile, isMobile, setShowProfileMenu]);
 
     useClickOutside(menuRef, closeMenu, showProfileMenu)
 
@@ -87,10 +100,10 @@ export const SideBar = ({isHeaderProfile, setShowProfileMenu, ordersCount, isMob
                         </div>
                         <div className={cls.profileText}>
                             <p className={cls.profileName}>
-                                {user?.user.name}
+                                {user?.user?.name}
                             </p>
                             <span className={cls.profileType}>
-                                {user?.user.profile_type}
+                                {user?.user?.profile_type}
                             </span>
                         </div>
                     </div>

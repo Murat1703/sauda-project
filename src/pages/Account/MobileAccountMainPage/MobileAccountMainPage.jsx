@@ -7,13 +7,12 @@ import { MobileLogoutModal } from '../../../components/MobileLogoutModal'
 import { useAuth } from '../../../context/AuthContext'
 import { AccountProfileImageIcon } from '../../../../public/assets/icons/AccountProdileImageIcon'
 import { useOrdersStore } from '../../../stores/useOrdersStore'
+import { useAuthStore } from '../../../stores/useAuthStore'
 
 export const MainAccountMainPage = () =>{
 
 
     const {user, isAuth} = useAuth();
-
-    console.log(user)
 
     const [link, setLink] = useState('')
 
@@ -49,8 +48,9 @@ export const MainAccountMainPage = () =>{
                         <AccountProfileImageIcon />
                     </div>
                     <div>
-                        <p>{user?.user.name}</p>
-                        <span>{user?.user.profile_type} </span>
+                        <p>{user?.user?.name}</p>
+                        {/* <p>{user?.user?.name}</p> */}
+                        <span>{user?.user?.profile_type} </span>
                     </div>
                 </div>
             </div>

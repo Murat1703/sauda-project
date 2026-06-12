@@ -430,6 +430,8 @@
     display: flex;
     flex-direction:  column;
     gap: 18px;
+    align-self: stretch;
+    width: 100%;
 }
 .newOrderDetailsContent > h4{
     font-size: 24px;
@@ -618,7 +620,70 @@
 .deliveryInfo > div > p:last-child{
     font-weight: 700;
 }
-
+.contactsInputsBlock{
+    width: fit-content!important;
+    height: auto!important;
+    background: transparent!important;
+    display: flex!important;
+    flex-direction: column!important;
+    gap: 8px!important;
+}
+.contactPhoneInput{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    position: relative;
+}
+.contactPhoneInput > input{
+    display: flex;
+    width: 400px;
+    height: 53px;
+    padding: 12px 103px 13px 18px;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    background: var(--Dark-D5, #EEEFF0);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 28px;
+    font-weight: 500;
+}
+.contactPhoneInput > p:nth-child(1){
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px; /* 175% */
+}
+.sendPhoneBtn{
+    display: flex;
+    height: 60px;
+    padding: 14px 20px 14px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 16px;
+    background: var(--accent);
+    p{
+        font-weight: 500;
+        color: var(--white);
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: .16px;
+    }
+}
+.sendPhoneBtn:hover{
+    background: var(--accent-hover);
+}
+.errPhone{
+    position: absolute;
+    top: 20px;
+    right: 0;
+    color: #f20;
+    font-size: 12px;
+}
 @media (max-width:768px){
     .newOrderPageTop{
         padding: 10px 16px;
