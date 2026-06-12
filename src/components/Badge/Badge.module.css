@@ -24,3 +24,7 @@
     background: #4BF4FF;
     color: var(--text);
 }
+.errorBadge{
+    background: firebrick;
+    color: var(--white);
+}

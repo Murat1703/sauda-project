@@ -1,31 +1,3 @@
-
-// import { useEffect, useState } from 'react';
-// import cls from './Pagination.module.css';
-
-// export const Pagination = ({ links = [], setActivePage }) => {
-//   const [page, setPage] = useState(1);
-
-//   console.log(links)
-
-
-
-//   return (
-//     <div className={cls.paginationWrapper}>
-//       {links.map((item)=>{
-//         return(
-//             <button 
-//                 className={item.active==true ? cls.activePage: ""}
-//                 onClick={()=>setActivePage(Number(item.label))}
-//             >
-//                 {item.label}
-//             </button>
-//         )
-//       })}
-//     </div>
-//   );
-// };
-
-
 import cls from './Pagination.module.css';
 
 export const Pagination = ({ links = [], setActivePage }) => {

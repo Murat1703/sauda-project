@@ -1,7 +1,7 @@
 import cls from './EmptyResults.module.css'
 import { Link } from 'react-router-dom'
 
-export const EmptyResults = ({icon, text, description}) =>{
+export const EmptyResults = ({icon, text, description, orders}) =>{
     return(
         <div className={cls.emptyResults}>
             <div className={cls.emptyResultsInfo}>
@@ -14,7 +14,7 @@ export const EmptyResults = ({icon, text, description}) =>{
                         <p>{description}</p>
                     </div>
                 </div>
-                <Link to='/'>
+                <Link to={orders?`/account/orders`:`/`}>
                     <button className={cls.backBtn}>
                         <p>На главную</p>
                     </button>

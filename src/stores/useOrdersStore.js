@@ -12,7 +12,7 @@ export const useOrdersStore = create((set, get) => ({
   errLoadingOrders: null,
   errLoadingOrderItem: null,
 
-  loadOrders: async () => {
+  loadOrders: async (params = {}) => {
     const { orders, loadingOrders } = get();
     if (loadingOrders) return;
     if (orders.length > 0) return;
@@ -23,7 +23,7 @@ export const useOrdersStore = create((set, get) => ({
         errLoadingOrders: null,
       });
 
-      const res = await apiGetOrders();
+      const res = await apiGetOrders(params);
 
       set({
         orders: res?.data || [] ,

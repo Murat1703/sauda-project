@@ -25,7 +25,7 @@ export const AccountLayout = () =>{
 
     const [closeAccountShortInfo, setCloseAccountShortInfo] = useState(false)
 
-    console.log(closeAccountShortInfo)
+    
 
     return(
         <>
@@ -35,7 +35,7 @@ export const AccountLayout = () =>{
             <SideBar 
                 setLink={setLink} 
                 link={link} 
-                ordersCount={orders?.data?.length || 0}
+                ordersCount={orders?.total || 0}
                 reviews={accountReviews}
             /> 
             }

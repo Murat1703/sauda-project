@@ -1,6 +1,6 @@
 import { http } from "./http";
 
-export const apiGetOrders = () => http.get('/orders')
+export const apiGetOrders = (params = {}) => http.get('/orders' , {params})
 
 export const apiGetOrder = (orderId) => http.get(`/orders/${orderId}`)
 

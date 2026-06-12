@@ -563,6 +563,9 @@
 }
 .deliveryAdressInputs > div:nth-child(1) > input{
     width: 400px;
+    font-size: 16px;
+    line-height: 28px;
+    font-weight: 400;
 }
 .deliveryAdressInputs > div:nth-child(1) > span:last-child{
     font-size: 12px;
@@ -573,6 +576,9 @@
 }
 .deliveryAdressInputs > div:nth-child(2) > input{
     width: 120px;
+    font-size: 16px;
+    line-height: 28px;
+    font-weight: 400;
 }
 /* .notes > input{
     width: 658px!important;

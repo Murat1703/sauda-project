@@ -151,7 +151,7 @@ export const Footer = () =>{
                             <h4>Компания</h4>
                             <li>
                                 <Link to={`/about`}>
-                                    {lang=='ru'? `о нас`:`Біз туралы.`}
+                                    {lang=='ru'? `О нас`:`Біз туралы.`}
                                 </Link>
                             </li>
                             <li>

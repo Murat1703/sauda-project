@@ -1,7 +1,7 @@
 import cls from './OrdersPage.module.css';
 import { AccountTitle, FiltersContainer } from '../../../components/AccountLayout';
 import { BreadCrumbs } from '../../../components/AccountLayout';
-import { useEffect, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 import { Loader } from '../../../components/Loader';
 import { NavLink } from 'react-router-dom';
 import { useDateFormat } from '../../../hooks/useDateFormat.js';
@@ -9,14 +9,15 @@ import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useOrdersStore } from '../../../stores/useOrdersStore.js';
 import { useAuthModal } from '../../../context/AuthModalContext.jsx';
+import { Pagination } from '../../../components/Pagination/Pagination.jsx';
 
 export const OrdersPage = ({isAuth}) =>{
 
     const {orders, loadingOrders, loadOrders} = useOrdersStore();
 
-    useEffect(()=>{
-        loadOrders()
-    },[]);
+
+
+    console.log(orders)
 
 
     const [filter, setFilter] = useState('all');
@@ -60,7 +61,18 @@ export const OrdersPage = ({isAuth}) =>{
         setStep } = 
     useAuthModal();
 
+    const [activePage, setActivePage] = useState(1)
 
+    console.log(activePage)
+
+    useEffect(()=>{
+        loadOrders({
+            per_page: 10,
+            page: activePage,
+        })
+    },[activePage]);
+
+    
     return(
         <div className={cls.ordersPageWrapper}>
             <div className={cls.pageTop}>
@@ -83,6 +95,7 @@ export const OrdersPage = ({isAuth}) =>{
                 {isMobile && <div></div>}
             </div>
             {isAuth ?
+            <>
             <div className={cls.pageBottom}>
                 <FiltersContainer>
                     <button 
@@ -210,6 +223,9 @@ export const OrdersPage = ({isAuth}) =>{
                 </div>
 
             </div>
+            {orders?.last_page !==2 &&
+            <Pagination links={orders?.links} setActivePage={setActivePage}/>}
+            </>
             :
             <div className={cls.notAutorisedBlock}>
                 <p>Для доступа к функционалу необходимо <a onClick={()=>openAuthModal()}>войти</a></p>

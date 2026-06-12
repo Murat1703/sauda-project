@@ -1,8 +1,5 @@
 import { Badge } from '../Badge'
 import cls from './ProductCard.module.css'
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import "swiper/css";
-// import "swiper/css/navigation";
 import { useCart } from '../../stores/useCart.js';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -18,6 +15,9 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../stores/useAuthStore.js';
 import { useReviewsStore } from '../../stores/useReviewsStore.js';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { CounterIncreaseIcon } from '../../../public/assets/icons/CounterIncreaseIcon.jsx';
+import { CounterDecreaseIcon } from '../../../public/assets/icons/CounterDecreaseIcon.jsx';
+import { CounterToCartIcon } from '../../../public/assets/icons/CounterToCartIcon.jsx';
 
 
 export const ProductCard = ({product, isFavorite, isDelete}) =>{
@@ -44,21 +44,11 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
         });
     };
 
-    console.log('favoritesList', favoritesList)
-    console.log('product', product)
-
-
     const favoriteItem = favoritesList?.find((item)=>
         {return item?.product?.slug === product?.slug}
     )
 
-    const isProductFavorite = Boolean(favoriteItem)
-    // console.log(product);
-
-    // console.log('favoriteItem, ',favoriteItem)
     const handleToggleFavorite = () =>{
-        console.log(favoriteItem)
-        console.log(product)
         if (isAuth == false) {
             if (favoriteItem?.product?.slug === product?.slug){
                 deleteFromLocalFavoritesList(favoriteItem?.product?.id);
@@ -79,11 +69,39 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                     product_slug: product?.slug, 
                     product: product
                 });
-                toast.error(<SnackBar text={`Товар добавлен в избранное`}/>)
+                toast(<SnackBar text={`Товар добавлен в избранное`}/>)
             }
         }
     }
 
+    const [counter, setCounter] = useState(1);
+    const [showCounter, setShowCounter] = useState(null)
+
+    // useEffect(()=>{
+    //     console.log(counter)
+    // },[counter.count])
+
+    const handleShowCounter = (product_slug) =>{
+        setShowCounter(product_slug);
+    }
+    const [stockError, setStockError] = useState(null);
+
+    const handleIncreaseCounter = () =>{
+        if (counter<=product?.stock_quantity){
+            setCounter((prev)=>prev + 1)
+        } else{
+            setStockError('Товар закончился')
+        }
+    }
+
+    const handleDecreaseCounter = () =>{
+        if (counter!=1){
+            setCounter((prev)=>prev - 1)
+            setStockError(null)
+        } else{
+          setShowCounter(null)
+        }
+    }
 
     return(
         <>
@@ -112,18 +130,22 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                             :<HeartIcon />
                         }
                     </button>
-                    {product?.is_hit && <Badge type={`hit`}>Хит</Badge>}
-                    {product?.is_new && <Badge type={`new`}>Новинка</Badge>}
+                    <div className={cls.badgesList}>
+                        {product?.is_hit && <Badge type={`hit`}>Хит</Badge>}
+                        {product?.is_new && <Badge type={`new`}>Новинка</Badge>}
+                        {stockError && <Badge type={`error`}>{stockError}</Badge>}
+
+                    </div>
                 </div>
                 <div className={cls.productCardInfo}>
-                    <div className={cls.productCardInfoTop}>
+                    <Link to={`/products/${product?.slug}`} className={cls.productCardInfoTop}>
                         <div className={cls.productCardInfoReviews}>
                             <ReviewItemStar />
                             <span>{reviewsList?.summary?.average_rating}</span>
                             <span>· {reviewsList?.summary?.reviews_count} отзвывов</span>
                         </div>
                         <h4>{product?.name}</h4>
-                    </div>
+                    </Link>
                     <div className={cls.productCardInfoPrice}>
                         <div className={cls.productCardPriceWrapper}>
                             <div className={cls.discountPrice}>
@@ -143,26 +165,57 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                 <span>{formatPrice(product?.price)} ₸</span>
                             </div>
                         </div>
-                        {product?.stock_quantity == 0 ? <p>Нет в наличии</p> :
+                        {product?.stock_quantity == 0 && <p>Нет в наличии</p>} 
+                        {product?.stock_quantity !== 0 &&
+                        <>
+                        {showCounter !== product?.slug &&
                         <button 
                             className={cls.productCardBtn} 
-                            onClick={()=>{
-                                addToCart({
-                                    product: product,
-                                    product_slug: product?.slug,
-                                    quantity: 1
-                                })
-                                toast(<SnackBar toCart={'/cart'} text={'Товар добавлен в корзину'}/>)
-                            }}
+                            // onClick={()=>{
+                            //     addToCart({
+                            //         product: product,
+                            //         product_slug: product?.slug,
+                            //         quantity: 1
+                            //     })
+                            //     toast(<SnackBar toCart={'/cart'} text={'Товар добавлен в корзину'}/>)
+                            // }}
+                            onClick={()=>handleShowCounter(product?.slug)}
                         >
                             <CartIcon />
                             <p>В корзину</p>
                         </button>}
+                        {showCounter == product?.slug &&
+                        <div className={cls.counterBlock}>
+                            <div className={cls.counterWrapper}>
+                                <button
+                                    onClick={handleDecreaseCounter}
+                                >
+                                    <CounterIncreaseIcon />
+                                </button>
+                                <p>{counter}</p>
+                                <button
+                                    onClick={handleIncreaseCounter}
+                                >
+                                    <CounterDecreaseIcon />
+                                </button>
+                            </div>
+                            <button 
+                                onClick={()=>{
+                                    addToCart({
+                                        product: product,
+                                        product_slug: product?.slug,
+                                        quantity: counter
+                                    })
+                                    toast(<SnackBar toCart={'/cart'} text={'Товар добавлен в корзину'}/>)
+                                }}
+                            >
+                                <CounterToCartIcon />
+                            </button>
+                        </div>}
+                        </>
+                        }
                     </div>
-                    <Link 
-                        className={cls.productCardLink} 
-                        to={`/products/${product.slug}`} 
-                    />
+
                 </div>
             </div>
         </>

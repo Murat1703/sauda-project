@@ -10,6 +10,7 @@ import { LocationIcon } from '../../../../public/assets/icons/LocationIcon'
 import { OrderListArrow } from '../../../../public/assets/icons/OrderListArrow'
 import { usePickupPoints } from '../../../hooks/usePickupPoints'
 import { MobileCheckIcon } from '../../../../public/assets/icons/MobileCheckIcon'
+import { EmtpyWhiteHeartIcon } from '../../../../public/assets/icons/EmtpyWhiteHeartIcon'
 import { PaymentCardIcon } from '../../../../public/assets/icons/PaymentCardIcon'
 import { PaymentKaspiIcon } from '../../../../public/assets/icons/PaymentKaspiIcon'
 import kaspiIcon from '../../../../public/assets/icons/kaspi.svg'
@@ -23,12 +24,11 @@ import { useLogin } from '../../../hooks/useLogin'
 import { useAuthModal } from '../../../context/AuthModalContext'
 import { AuthModal } from '../../../components/AuthModal'
 import { useAuth } from '../../../context/AuthContext'
+import { EmptyResults } from '../../../components/EmptyResults'
 
 export const NewOrderPage = () =>{
 
     const {cartTotal} = useCart();
-
-    console.log(cartTotal)
 
     const {user, isAuth} = useAuth();
 
@@ -39,15 +39,10 @@ export const NewOrderPage = () =>{
 
     const citiesList = ["Астана", "Алматы", "Караганды", "Усть-Каменогорск", "Уральск", "Атырау", "Талдыкорган", "Семей"]
 
-
     useEffect(()=>{},[delivery])
 
-
-    console.log(user)
-
-
     const [data, setData] = useState({
-        delivery_method_code: delivery,
+        delivery_method_code: null,
         payment_method_id: null,
         contact_phone: user?.user?.phone,
         contact_name: user?.user?.name
@@ -60,8 +55,9 @@ export const NewOrderPage = () =>{
             contact_phone: user?.user?.phone,
             contact_name: user?.user?.name,
         }))
+        setShow(1)
 
-    },[user])
+    },[user]);
 
 
     const [activeCity, setActiveCity] = useState(citiesList[0]);
@@ -86,8 +82,6 @@ export const NewOrderPage = () =>{
         replacement: { _: /\d/ },
     });
 
-    console.log('sendData. = ', data)
-
     const {
         login, 
         loading, 
@@ -111,15 +105,7 @@ export const NewOrderPage = () =>{
         "775", "776", "777", "778",
     ]; 
 
-    // useEffect(()=>{
-    //         setData((prev)=>({
-    //             ...prev,
-    //             contact_name: user?.user?.name,
-    //             contact_phone: user?.user?.phone
-    //         }))
-    // },[user])
-
-    const { isAuthModalOpen, closeAuthModal, step, setStep, openAuthModal, openAuthModalOtp, setNewOrderPhone, newOrderPhone } = useAuthModal();
+    const { setStep, openAuthModalOtp, setNewOrderPhone } = useAuthModal();
 
     const validate = async(phone) =>{
         let digits = phone.replace(/\D/g, "");
@@ -138,9 +124,7 @@ export const NewOrderPage = () =>{
             console.log(validNum);
             setStep('otp');
             await login(validNum);
-
             openAuthModalOtp();
-
         }
 
     }
@@ -148,6 +132,16 @@ export const NewOrderPage = () =>{
     const [errPhone, setErrPhone] = useState(null)
 
     const [phone, setPhone] = useState(null)
+
+    const [orderStatus, setOrderStatus]= useState(null)
+
+    const handleAddOrder = () =>{
+        if (data.contact_name && data.contact_phone && data.delivery_method_code && data.payment_method_id) { 
+            addOrder(data);
+            setOrderStatus('send')
+        } else window.alert('Проверьте все ли поля заполнены ')
+    }
+
     return(
         <>
         <div className={cls.newOrderPage}>
@@ -166,11 +160,18 @@ export const NewOrderPage = () =>{
                 <span>{cartTotal?.subtotal}₸</span>
             </div>
             }
+            {orderStatus == 'send' && <EmptyResults 
+                icon={<EmtpyWhiteHeartIcon />}
+                text={`Спасибо! Ваш заказ создан!`}
+                description={`Проверяйте заказы в персональном разделе.Ознакомьтесь с нашим каталогом поближе`}    
+                orders={`/account/orders`}        
+            />}
+            {!orderStatus &&
             <div className={cls.newOrderBody}>
                 <div className={cls.newOrderContacts}>
                     <div 
                         className={cls.newOrderField} 
-                        onClick={()=>setShow(0)}
+                        // onClick={()=>setShow(0)}
                     >
                         <div className={cls.newOrderFieldTitle}>
                             <div>
@@ -178,7 +179,6 @@ export const NewOrderPage = () =>{
                             </div>
                             <p>Контактные данные</p>
                         </div>
-                        {show==0 && 
                         <div className={cls.newOrderFieldContactInfo}>
                             {isAuth && 
                                 <>
@@ -220,11 +220,9 @@ export const NewOrderPage = () =>{
                                 </div>
                             </>}
                         </div>
-                        }
                     </div>
                     <div 
                         className={cls.newOrderField} 
-                        onClick={()=>setShow(1)}
                     >
                         <div className={cls.newOrderFieldTitle}>
                             <div>
@@ -232,7 +230,7 @@ export const NewOrderPage = () =>{
                             </div>
                             <p>Способ доставки</p>
                         </div>
-                        {show==1 && 
+                        {data.contact_name && data.contact_phone &&
                         <div className={cls.newOrderDeliveryMethod}>
                             <div className={cls.newOrderDeliveryMethodTop}>
                                 <div 
@@ -400,11 +398,14 @@ export const NewOrderPage = () =>{
                                     <div className={cls.deliveryAdressInputs}>
                                         <div className={cls.notes}>
                                             <p>Комментарий для курьера</p>
-                                            <input type="text" placeholder='Уточнения для курьера' />
+                                            <input 
+                                                type="text" 
+                                                placeholder='Уточнения для курьера' 
+                                            />
                                         </div>
                                     </div>
                                     <div className={cls.deliveryBtnWrapper}>
-                                        <button>
+                                        <button onClick={()=>setShow(2)}>
                                             <p>Продолжить</p>
                                         </button>
                                         <div className={cls.deliveryInfo}>
@@ -423,7 +424,6 @@ export const NewOrderPage = () =>{
                     </div>
                     <div 
                         className={cls.newOrderField} 
-                        onClick={()=>setShow(2)}
                     >
                         <div className={cls.newOrderFieldTitle}>
                             <div>
@@ -431,7 +431,7 @@ export const NewOrderPage = () =>{
                             </div>
                             <p>Способ оплаты</p>
                         </div>
-                        {show==2 && 
+                        {data.delivery_method_code && 
                         <>
                         <div className={cls.newOrderPayment}>
                             <div className={cls.newOrderPaymentItem}>
@@ -500,7 +500,7 @@ export const NewOrderPage = () =>{
                         </div>
                         <button 
                             className={cls.newOrderBtn}
-                            onClick={()=>addOrder(data)}
+                            onClick={handleAddOrder}
                         >
                             <p>Перейти к оплате</p>
                         </button>
@@ -562,7 +562,7 @@ export const NewOrderPage = () =>{
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
         {/* {step == 'otp' && <AuthModal next={step}/>} */}
         </>

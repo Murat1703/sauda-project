@@ -89,7 +89,7 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
             <ScrollToTop />
             <div className={cls.mainLayout}>
                 <Header 
-                    ordersCount={orders?.data?.length} 
+                    ordersCount={orders?.total} 
                 />
                 <div 
                     className={cls.mainWrapper} 

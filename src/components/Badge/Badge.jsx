@@ -15,7 +15,11 @@ export const Badge = ({ type, children }) => {
       ${type === 'discount'
           ? cls.discountBadge
           : ""
-      }          
+      } 
+      ${type === 'error'
+          ? cls.errorBadge
+          : ""
+      }            
       `
       
       }
