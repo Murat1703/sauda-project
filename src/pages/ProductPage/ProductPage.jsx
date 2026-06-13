@@ -102,10 +102,8 @@ export const ProductPage = ({isMobileScroll}) =>{
 
     const {isAuth} = useAuth();
 
-    const {reviewsList, loadReviews, addReview} = useReviewsStore();
+    const {reviewsList, loadReviews} = useReviewsStore();
     
-
-
     useEffect(()=>{
         if (!slug) return;
         loadReviews(slug)
@@ -119,8 +117,6 @@ export const ProductPage = ({isMobileScroll}) =>{
         item?.product?.slug === product?.product?.slug
     )
 
-    // console.log('isAuth', isAuth)
-
     const {formatDate} = useDateFormat();
 
     const formatPrice = (price) => {
@@ -129,9 +125,19 @@ export const ProductPage = ({isMobileScroll}) =>{
         });
     };
 
-    console.log(cartItem)
-
     const [errorText, setErrorText] = useState(null);
+
+    console.log(product)
+
+    useEffect(()=>{
+        if (active!==2 && !isMobile )return;
+        loadProducts({
+            category_slug: product?.product?.category?.slug
+        })
+    },[active, product?.product?.category?.slug, isMobile])
+
+    // console.log('products from product page ',products )
+
 
     return(
     <>
@@ -272,14 +278,30 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 <div className={cls.bottom}>
                                     {active == 0 &&
                                     <>
-                                    <TextInfo html={product?.product?.description}/>
+                                        <TextInfo html={product?.product?.description}/>
                                     </>
                                     }
                                     {active == 1 &&
                                     <>
-                                    <TextInfo html={product?.product?.warranty_text}/>
+                                        <TextInfo html={product?.product?.warranty_text}/>
                                     </>
                                     }
+                                    {active ==2 &&
+                                    <div className={cls.alternative}>
+                                        <Swiper
+                                            slidesPerView={3.5}
+                                        >
+                                            {products?.data?.filter(item=> item.slug!==product?.slug).map((alt)=>{
+                                                return(
+                                                    <SwiperSlide key={alt.slug}>
+                                                        <ProductCard 
+                                                            product={alt}
+                                                        />
+                                                    </SwiperSlide>
+                                                )
+                                            })}
+                                        </Swiper>
+                                    </div>}
                                 </div>
                             </div>
                         </div>
@@ -777,20 +799,20 @@ export const ProductPage = ({isMobileScroll}) =>{
                 </div>
                 <div className={cls.mobileAlternativeWrapper}>
                     <Title>Альтернатива</Title>
-                    {/* <Swiper 
+                    <Swiper
                         slidesPerView={2.2}
                         spaceBetween={8}
                     >
-                    {products.map((item, index)=>{
-                        if (item.id !==id)
-                        return(
-                            <SwiperSlide>
-                                <ProductCard product={item} isFavorite={favorites.includes(item.id)}/>
-                            </SwiperSlide>
-                        )
-                    })}
-                    </Swiper> */}
-
+                        {products?.data?.
+                        filter(item=> item.slug!==product?.slug)
+                        .map((alt)=>{
+                            return(
+                                <SwiperSlide key={alt.slug}>
+                                    <ProductCard product={alt}/>
+                                </SwiperSlide>
+                            )
+                        })}
+                    </Swiper>
                 </div>
                 <div className={cls.mobileReviewsWrapper}>
                     <div className={cls.mobileReviewsTop}>
@@ -897,15 +919,15 @@ export const ProductPage = ({isMobileScroll}) =>{
                 <div className={cls.counter}>
                     <div className={cls.counterWrapper}>
                         <button
-                                        onClick={()=>{
-                                            counter !== 0 &&
-                                            (setCounter(counter - 1) )
-                                            counter == 0? removeFromCart(product.id):
-                                            decreaseQuantity(product.id);
-                                            counter == 0 && setAdd(false)
-                                        }}
-                                    >
-                                        <CartRemoveIconMobileDark />
+                            onClick={()=>{
+                                counter !== 0 &&
+                                (setCounter(counter - 1) )
+                                counter == 0? removeFromCart(product.id):
+                                decreaseQuantity(product.id);
+                                counter == 0 && setAdd(false)
+                            }}
+                        >
+                                <CartRemoveIconMobileDark />
                         </button>
                         <p>{counter}</p>
                         <button

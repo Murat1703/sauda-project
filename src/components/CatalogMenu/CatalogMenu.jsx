@@ -29,7 +29,7 @@ export const CatalogMenu = ({onClose}) =>{
       loadCategoriesTree({
         locale: lang
       });
-    },[])
+    },[lang])
 
     const [activeID, setActiveID] = useState(null);
     useEffect(() => {

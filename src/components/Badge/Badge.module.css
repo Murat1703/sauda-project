@@ -17,11 +17,11 @@
     color: var(--text);
 }
 .discountBadge{
-    background: var(--accent);
+    background: #FC4127;
     color: var(--white);
 }
 .hitBadge{
-    background: #4BF4FF;
+    background: #FFE261;
     color: var(--text);
 }
 .errorBadge{

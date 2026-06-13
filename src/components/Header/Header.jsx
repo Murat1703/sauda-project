@@ -23,8 +23,8 @@ import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileCo
 import { Search } from '../Search';
 import { useLanguage } from '../../stores/useLanguage.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
-// import { useAuthStore } from '../../stores/useAuthStore.js';
-import { AccountProfileImageIcon } from '../../../public/assets/icons/AccountProdileImageIcon.jsx';
+import { MobileSearchIcon } from '../../../public/assets/icons/MobileSearchIcon.jsx';
+import { MobileSearchPanel } from './MobileSearchPanel/MobileSearchPanel.jsx';
 
 export const Header = ({ordersCount}) =>{
     const {lang, setLang} = useLanguage();
@@ -41,23 +41,15 @@ export const Header = ({ordersCount}) =>{
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
     const { isAuth, setIsAuth, user, loading } = useAuth();
-
-    // const {isAuth , setIsAuth, loadingAuth, user} = useAuthStore();
-
-    const [showModal, setShowModal] = useState(false);
-
     const { 
         isAuthModalOpen, 
         openAuthModal, 
         closeAuthModal, 
         step, 
-        setStep } = 
-    useAuthModal();
+        setStep 
+    } = useAuthModal();
 
     const hasToken = localStorage.getItem('token');
-
-
-
 
     const [showProfileMenu, setShowProfileMenu] = useState(false);
 
@@ -75,12 +67,12 @@ export const Header = ({ordersCount}) =>{
     const [showLogin, setShowLogin] = useState(false)
 
     useEffect(()=>{            
-    if (!isAuth) {setShowLogin(false); return};
-    
-    syncLocalCartWithAccount();
-    setShowLogin(true);
-    syncLocalFavorites();
-
+        if (!isAuth) {
+            setShowLogin(false); return
+        };    
+        syncLocalCartWithAccount();
+        setShowLogin(true);
+        syncLocalFavorites();
     },[isAuth])
 
     const {pathname} = useLocation();
@@ -104,87 +96,88 @@ export const Header = ({ordersCount}) =>{
 
     const [searchString, setSearchString] = useState('')
 
-        
     return(
         <>
         {!shouldHideHeader &&
-        <header>
-            <div className={cls.headerContent}>
-                <div className={cls.headerLeft}>
-                    <Link to='/'>
-                        <img src={logoHeader} alt='header_logo'/>
-                    </Link>
+            <header>
+                <div className={cls.headerContent}>
+                    <div className={cls.headerLeft}>
+                        <Link to='/'>
+                            <img src={logoHeader} alt='header_logo'/>
+                        </Link>
+                        {!isMobile &&
+                        <button className={cls.catalogBtn} onClick={handleToMenu}>
+                            <CatalogBtnIcon isActive={isOpen}/>
+                            <p>Каталог</p>
+                        </button>
+                        }
+                        {!isMobile &&
+                        <div className={cls.searchWrapper}>
+                            <input 
+                                type="text" 
+                                placeholder={lang=='ru'?'Ищите все для стройки и ремонта':'Құрылыс пен жөндеуге қажеттінің бәрін іздеңіз'}
+                                value={searchString}
+                                onChange={(e)=>setSearchString(e.target.value)}
+                            />
+                            <button>
+                                <SearchIcon />
+                            </button>
+                        </div>
+                        }
+                        <div className={cls.langWrapper}>
+                            <button className={lang=='ru'?`${cls.active}`: ''} onClick={()=>{setLang('ru')}}>
+                                <p>Рус</p>
+                            </button>
+                            <button onClick={()=>{setLang('kk')}} className={lang=='kk'?`${cls.active}`: ''}>
+                                <p>қаз</p>
+                            </button>
+                        </div>
+                    </div> 
                     {!isMobile &&
-                    <button className={cls.catalogBtn} onClick={handleToMenu}>
-                        <CatalogBtnIcon isActive={isOpen}/>
-                        <p>Каталог</p>
-                    </button>
-                    }
-                    {!isMobile &&
-                    <div className={cls.searchWrapper}>
-                        <input 
-                            type="text" 
-                            placeholder={lang=='ru'?'Ищите все для стройки и ремонта':'Құрылыс пен жөндеуге қажеттінің бәрін іздеңіз'}
-                            value={searchString}
-                            onChange={(e)=>setSearchString(e.target.value)}
-                        />
-                        <button>
-                            <SearchIcon />
-                        </button>
-                    </div>
-                    }
-                    <div className={cls.langWrapper}>
-                        <button className={lang=='ru'?`${cls.active}`: ''} onClick={()=>{setLang('ru')}}>
-                            <p>Рус</p>
-                        </button>
-                        <button onClick={()=>{setLang('kk')}} className={lang=='kk'?`${cls.active}`: ''}>
-                            <p>қаз</p>
-                        </button>
-                    </div>
-                </div> 
-                {!isMobile &&
-                <div className={cls.headerRight}>
-                    <ControlBtn nav='/account/favorites'>
-                        <FavoriteHeaderIcon />
-                        <p>{lang=='ru'?`Избранное`:`Таңдаулылар`}</p>
-                        {favoritesList.length!== 0 && <CounterBadge count={favoritesList.length}/>}                        
-                    </ControlBtn>
-                    <ControlBtn nav='/cart'>
-                        <CartBtnIcon />
-                        <p>{lang=='ru'?`Корзина`:`Себет`}</p>
-                        {cartItems.length!== 0 && <CounterBadge count={cartItems.length}/>}
-                    </ControlBtn>
-                    <ControlBtn 
-                        onClick={loginHandler}
-                    >   
+                    <div className={cls.headerRight}>
+                        <ControlBtn nav='/account/favorites'>
+                            <FavoriteHeaderIcon />
+                            <p>
+                                {lang==='ru'?`Избранное`:`Таңдаулылар`}
+                            </p>
+                            {favoritesList.length!== 0 
+                            && <CounterBadge count={favoritesList.length}/>
+                            }                        
+                        </ControlBtn>
+                        <ControlBtn nav='/cart'>
+                            <CartBtnIcon />
+                            <p>{lang=='ru'?`Корзина`:`Себет`}</p>
+                            {cartItems.length!== 0 && <CounterBadge count={cartItems.length}/>}
+                        </ControlBtn>
+                        <ControlBtn 
+                            onClick={loginHandler}
+                        >   
 
-                        <LoginBtnIcon isActive={isAuth || (hasToken && loading)} />
-                            {/* {isAuth || (loadingAuth && hasToken)  && <p>Профиль </p>}
-                            {!isAuth && <p>Войти</p>} */}
-                            {showLogin || loading ? (
-                            <p>Профиль</p>
-                            ) : (
-                            <p>{lang=='ru'?`Войти`:`Кіру`}</p>
-                            )}
-                    </ControlBtn>
-                    {showProfileMenu && 
-                    <SideBar 
-                        isHeaderProfile={true} 
-                        setShowProfileMenu={setShowProfileMenu} 
-                        ordersCount={ordersCount}
-                        showProfileMenu={showProfileMenu}
-                    />
+                            <LoginBtnIcon isActive={isAuth || (hasToken && loading)} />
+                                {showLogin || loading ? (
+                                <p>Профиль</p>
+                                ) : (
+                                <p>{lang=='ru'?`Войти`:`Кіру`}</p>
+                                )}
+                        </ControlBtn>
+                        {showProfileMenu && 
+                        <SideBar 
+                            isHeaderProfile={true} 
+                            setShowProfileMenu={setShowProfileMenu} 
+                            ordersCount={ordersCount}
+                            showProfileMenu={showProfileMenu}
+                        />
+                        }
+                    </div>
                     }
+                    {isMobile && 
+                    <MobileSearchPanel 
+                        searchString={searchString || ""} 
+                        setSearchString={setSearchString} 
+                        lang={lang}
+                    />}
                 </div>
-                }
-                {isMobile && <div className={cls.mobileSearchPanel}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M8.5 1C11.084 1 13.244 1.73 14.757 3.243C16.27 4.756 17 6.916 17 9.5C17 11.678 16.479 13.553 15.41 14.995L18.707 18.293C18.8892 18.4816 18.99 18.7342 18.9877 18.9964C18.9854 19.2586 18.8802 19.5094 18.6948 19.6948C18.5094 19.8802 18.2586 19.9854 17.9964 19.9877C17.7342 19.99 17.4816 19.8892 17.293 19.707L13.995 16.409C12.553 17.48 10.678 18 8.5 18C5.916 18 3.756 17.27 2.243 15.757C0.73 14.244 0 12.084 0 9.5C0 6.916 0.73 4.756 2.243 3.243C3.756 1.73 5.916 1 8.5 1ZM8.5 3C6.284 3 4.694 3.62 3.657 4.657C2.62 5.694 2 7.284 2 9.5C2 11.716 2.62 13.306 3.657 14.343C4.694 15.38 6.284 16 8.5 16C10.716 16 12.306 15.38 13.343 14.343C14.38 13.306 15 11.716 15 9.5C15 7.284 14.38 5.694 13.343 4.657C12.306 3.62 10.716 3 8.5 3Z" fill="#8F9596"/>
-                    </svg>
-                <input className={cls.mobileSearch} value={searchString}
-                onChange={(e)=>setSearchString(e.target.value)} placeholder='Ищите все для стройки и ремонта '/></div>}
-            </div>
-        </header>
+            </header>
         }
         {isOpen && <CatalogMenu onClose={handleCloseMenu}/>}
         {isMobile && 
@@ -230,8 +223,9 @@ export const Header = ({ordersCount}) =>{
                 <p>Профиль</p>
             </ControlBtn>
         </div>}
-        {searchString.length>1 && <Search text={searchString} onClose={()=>setSearchString("")}/>}
-        
+        {searchString.length>1 && 
+            <Search text={searchString} onClose={()=>setSearchString("")}/>
+        }        
         </>
     )
 }

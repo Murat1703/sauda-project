@@ -206,6 +206,7 @@ export const MobileAccountPage = () =>{
     }
 
     if (!isAuthModalOpen && !isMobile) return null;
+    // if (!isAuth) return null
 
     return(
         <div className={cls.mobileLoginPageWrapper}>

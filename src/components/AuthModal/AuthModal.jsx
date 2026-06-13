@@ -26,7 +26,7 @@ export const AuthModal = ({next}) =>{
         replacement: { _: /\d/ },
     });
 
-    const {fetchUser} = useAuthStore();
+    const {isAuth, fetchUser} = useAuth();
 
     const { isAuthModalOpen, closeAuthModal, step, setStep, newOrderPhone } = useAuthModal();
 
@@ -168,9 +168,11 @@ export const AuthModal = ({next}) =>{
         await profile(profileName);
     }
 
+    useEffect(()=>{
+        console.log(isAuth)
+    },[isAuth])
 
     if (!isAuthModalOpen) return null;
-
 
     return(
     (isAuthModalOpen) &&

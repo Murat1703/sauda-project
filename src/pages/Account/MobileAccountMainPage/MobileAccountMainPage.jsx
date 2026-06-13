@@ -58,7 +58,7 @@ export const MainAccountMainPage = () =>{
                 <SideBar 
                     setLink={setLink} 
                     link={link} 
-                    ordersCount={orders?.data?.length || 0} 
+                    ordersCount={orders?.total || 0} 
                     isMobile={isMobile} 
                     onMobileLogout={mobileLogoutHandler}
                 /> 
