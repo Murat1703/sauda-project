@@ -17,7 +17,7 @@ import { useAuthStore } from '../../stores/useAuthStore.js';
 
 export const AuthModal = ({next}) =>{
 
-    console.log(next);
+    // console.log(next);
 
     const {pathname} = useLocation();
 
@@ -100,12 +100,12 @@ export const AuthModal = ({next}) =>{
     }, [verifyStatus]);
 
     useEffect(()=>{
-        console.log(verifyError)
+        // console.log(verifyError)
     },
     [verifyError])
 
     useEffect(() => {
-        console.log(profileStatus)
+        // console.log(profileStatus)
         if (profileStatus.next_step == 'done'){
             setStep('finish_registration')
         }
@@ -154,7 +154,7 @@ export const AuthModal = ({next}) =>{
         }
         if ((digits.length==11) && !errPhone) {
             const validNum = `+`+digits;
-            console.log(validNum);
+            // console.log(validNum);
             setStep('otp');
             await login(validNum)
         }

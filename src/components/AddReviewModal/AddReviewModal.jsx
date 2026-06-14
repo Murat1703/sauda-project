@@ -14,8 +14,8 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
 
     const [step, setStep] = useState(null);
 
-    console.log('review = ', review);
-    console.log('orderITEm = ', orderItem)
+    // console.log('review = ', review);
+    // console.log('orderITEm = ', orderItem)
     const {addReview, errLoadingReviewsList} = useReviewsStore();
 
     return(

@@ -29,7 +29,7 @@ export const ReviewsPage = ({isAuth}) =>{
     const {formatDate}  = useDateFormat();
 
 
-    console.log(accountReviews)
+    // console.log(accountReviews)
 
     const status = (item) =>{
         switch(item){

@@ -49,12 +49,14 @@ import { useAuth } from '../../context/AuthContext.jsx';
 export const ProductPage = ({isMobileScroll}) =>{
 
     const {slug} = useParams();
-
     const {product, loadProduct, loadingProduct, products, loadingProducts, loadProducts} = useProducts();
+    const {reviewsList, loadReviews} = useReviewsStore();
+
 
     useEffect(()=>{
         if (!slug) return;
-        loadProduct(slug)
+        loadProduct(slug);
+        loadReviews(slug)
     },[slug])
 
     const [add, setAdd] = useState(false);
@@ -102,12 +104,11 @@ export const ProductPage = ({isMobileScroll}) =>{
 
     const {isAuth} = useAuth();
 
-    const {reviewsList, loadReviews} = useReviewsStore();
     
-    useEffect(()=>{
-        if (!slug) return;
-        loadReviews(slug)
-    },[slug])
+    // useEffect(()=>{
+    //     if (!slug) return;
+    //     loadReviews(slug)
+    // },[slug])
 
     const cartItem = cartItems?.find(
         (item) => item?.product?.id === item.product_id || item?.id
@@ -136,8 +137,24 @@ export const ProductPage = ({isMobileScroll}) =>{
         })
     },[active, product?.product?.category?.slug, isMobile])
 
-    // console.log('products from product page ',products )
+    const handleShare = async () => {
+    const shareData = {
+        title: document.title,
+        text: `${product?.product?.name}`,
+        url: window.location.href,
+    };
 
+    if (navigator.share) {
+        try {
+        await navigator.share(shareData);
+        } catch (error) {
+        // console.log('Пользователь отменил шаринг');
+        }
+    } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Ссылка скопирована');
+    }
+    };
 
     return(
     <>
@@ -288,10 +305,11 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     }
                                     {active ==2 &&
                                     <div className={cls.alternative}>
+                                        {products?.data?.filter(item=> item.slug!==product?.product?.slug).length!==0 ?
                                         <Swiper
                                             slidesPerView={3.5}
                                         >
-                                            {products?.data?.filter(item=> item.slug!==product?.slug).map((alt)=>{
+                                            {products?.data?.filter(item=> item.slug!==product?.product?.slug).map((alt)=>{
                                                 return(
                                                     <SwiperSlide key={alt.slug}>
                                                         <ProductCard 
@@ -301,6 +319,9 @@ export const ProductPage = ({isMobileScroll}) =>{
                                                 )
                                             })}
                                         </Swiper>
+                                        :<Title>Похожих товаров не найдено</Title>
+                                        
+                                        }
                                     </div>}
                                 </div>
                             </div>
@@ -380,18 +401,18 @@ export const ProductPage = ({isMobileScroll}) =>{
                                     if (isAuth == false) {
                                         if (favoriteItem?.product?.slug === product?.product?.slug){
                                             deleteFromLocalFavoritesList(product?.product?.id);
-                                            <SnackBar text={`Товар удален из избранного `} />
+                                            toast.error(<SnackBar text={`Товар удален из избранного `} />)
                                         }else {
                                             addToLocalFavoritesList({
                                                 product_slug: product?.product?.slug, 
                                                 product: product.product
                                             });
-                                            <SnackBar text={`Товар добавлен в избранное`} />
+                                            toast(<SnackBar text={`Товар добавлен в избранное`} />)
                                         }
                                     }else{
                                         if (favoriteItem?.product?.slug === product?.product?.slug){
                                             deleteFromFavoritesList(product?.product?.id);
-                                            <SnackBar text={`Товар удален из избранного`} />
+                                            toast.error(<SnackBar text={`Товар удален из избранного`} />)
 
                                         }else {
                                             addToFavoritesList({
@@ -620,7 +641,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 :<HeartIcon />
                                 }
                             </button>
-                            <button>
+                            <button onClick={handleShare}>
                                 <RepostIcon />
                             </button>
                         </div>
@@ -799,12 +820,15 @@ export const ProductPage = ({isMobileScroll}) =>{
                 </div>
                 <div className={cls.mobileAlternativeWrapper}>
                     <Title>Альтернатива</Title>
+                    {products?.data?.
+                        filter(item=> item.slug!==product?.product?.slug).length !== 0
+                    ?
                     <Swiper
                         slidesPerView={2.2}
                         spaceBetween={8}
                     >
                         {products?.data?.
-                        filter(item=> item.slug!==product?.slug)
+                        filter(item=> item.slug!==product?.product?.slug)
                         .map((alt)=>{
                             return(
                                 <SwiperSlide key={alt.slug}>
@@ -813,6 +837,8 @@ export const ProductPage = ({isMobileScroll}) =>{
                             )
                         })}
                     </Swiper>
+                    :<p>Похожих товаров не найдено </p>
+                    }
                 </div>
                 <div className={cls.mobileReviewsWrapper}>
                     <div className={cls.mobileReviewsTop}>

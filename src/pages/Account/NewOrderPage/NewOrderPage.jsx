@@ -121,7 +121,7 @@ export const NewOrderPage = () =>{
         }
         if ((digits.length==11) && !errPhone) {
             const validNum = `+`+digits;
-            console.log(validNum);
+            // console.log(validNum);
             setStep('otp');
             await login(validNum);
             openAuthModalOtp();
@@ -293,7 +293,7 @@ export const NewOrderPage = () =>{
                                         <div className={cls.pointsList}>
                                         {localCityAdresses.length == 0 &&<p>Пункт вывоза заказа отсутсвует</p>}
                                         {localCityAdresses?.map((item,index)=>{
-                                            console.log(item)
+                                            // console.log(item)
                                             return(
                                                 <div key={index} className={cls.pointItem}>
                                                     <div>

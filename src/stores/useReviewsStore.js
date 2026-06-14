@@ -18,7 +18,7 @@ export const useReviewsStore = create((set, get) => ({
   loadReviews: async (slug) => {
     const { reviewsList, loadingReviews } = get();
     if (loadingReviews) return;
-    if (reviewsList?.data?.length > 0) return;
+    if (!slug) return;
 
     try {
       set({

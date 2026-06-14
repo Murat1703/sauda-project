@@ -62,8 +62,8 @@ export const useLogin = () => {
       {
         setVerifyError(res.data.message); 
       }
-      console.log('VERIFY:', res.data);
-      console.log('VERIFY USER:', res.data?.user);
+      // console.log('VERIFY:', res.data);
+      // console.log('VERIFY USER:', res.data?.user);
       return res.data
       } catch (err) {
         setVerifyError(err?.response?.data.message || err.message);
