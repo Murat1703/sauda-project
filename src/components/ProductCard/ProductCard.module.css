@@ -11,6 +11,13 @@
     position: relative;
     z-index: 0;
 }
+.prodcutCardLink{
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 250px);
+    bottom: 0;
+    z-index: 2;
+}
 .productCardImagesWrapper{
     height: 237.025px;
     flex-shrink: 0;
@@ -20,9 +27,23 @@
     position: relative;
     overflow: hidden;
 }
+.productCardImages > div:nth-child(1){
+    width: 100%;
+    height: 100%;
+}
+.productCardImages > div:nth-child(1) > div > div {
+    width: 100%;
+    height: 100%;
+}
+.productCardImages > div:nth-child(1) > div > div > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .productCardImagesWrapper > .badgesList{
     position: absolute;
     top: 8px;
+    z-index: 1;
     left: 8px;
     width: fit-content;
     height: fit-content;
@@ -177,9 +198,11 @@
 .productCardLink{
     position: absolute;
     inset: 0;
+    left: 0;
+    bottom: 0;
     z-index: 1;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 237px);
     opacity: 0;
 }
 .counterWrapper{
@@ -209,6 +232,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    position: relative;
+    z-index: 4;
 }
 .counterBlock > button{
     display: flex;
@@ -257,5 +282,8 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+    .productCardLink{
+        height: calc(100% - 175px);
     }
 }

@@ -45,7 +45,16 @@ export const NewOrderPage = () =>{
         delivery_method_code: null,
         payment_method_id: null,
         contact_phone: user?.user?.phone,
-        contact_name: user?.user?.name
+        contact_name: user?.user?.name, 
+        delivery_adress: {
+            city: null,
+            street: null,
+            building: null,
+            apartment: null,
+            entrance: null,
+            floor: null,
+            comment: null,
+        }
     })
 
     useEffect(()=>{
@@ -136,7 +145,11 @@ export const NewOrderPage = () =>{
     const [orderStatus, setOrderStatus]= useState(null)
 
     const handleAddOrder = () =>{
-        if (data.contact_name && data.contact_phone && data.delivery_method_code && data.payment_method_id) { 
+        if (
+            data.contact_name && 
+            data.contact_phone && 
+            data.delivery_method_code && 
+            data.payment_method_id) { 
             addOrder(data);
             setOrderStatus('send')
         } else window.alert('Проверьте все ли поля заполнены ')
@@ -278,8 +291,8 @@ export const NewOrderPage = () =>{
                                                     {citiesList.map((city, index)=>{
                                                         return(
                                                             <p 
-                                                            key={index}
-                                                            onClick={()=>setActiveCity(city)}
+                                                                key={index}
+                                                                onClick={()=>setActiveCity(city)}
                                                             >{city}</p>
                                                         )
                                                     })}
@@ -293,7 +306,6 @@ export const NewOrderPage = () =>{
                                         <div className={cls.pointsList}>
                                         {localCityAdresses.length == 0 &&<p>Пункт вывоза заказа отсутсвует</p>}
                                         {localCityAdresses?.map((item,index)=>{
-                                            // console.log(item)
                                             return(
                                                 <div key={index} className={cls.pointItem}>
                                                     <div>
@@ -374,13 +386,24 @@ export const NewOrderPage = () =>{
                                             <div>
                                                 <p>Этаж</p>
                                                 <input 
-                                                    type="text" placeholder='Этаж' 
+                                                    type="text" 
+                                                    placeholder='Этаж' 
+                                                    onChange={(e)=>{
+                                                    setData((prev)=>({
+                                                        ...prev,
+                                                        delivery_address: {
+                                                            ...prev.delivery_address,
+                                                            floor: e.target.value
+                                                        }
+                                                        }))
+                                                    }}
                                                 />
                                             </div>
                                             <div>
                                                 <p>Квартира</p>
                                                 <input 
-                                                    type="text" placeholder='Квартира'
+                                                    type="text"
+                                                    placeholder='Квартира'
                                                     onChange={(e)=>{
                                                         setData((prev)=>({
                                                             ...prev,
@@ -401,6 +424,15 @@ export const NewOrderPage = () =>{
                                             <input 
                                                 type="text" 
                                                 placeholder='Уточнения для курьера' 
+                                                onChange={(e)=>{
+                                                        setData((prev)=>({
+                                                            ...prev,
+                                                            delivery_address: {
+                                                                ...prev.delivery_address,
+                                                                comment: e.target.value
+                                                            }
+                                                        }))
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -553,12 +585,13 @@ export const NewOrderPage = () =>{
                                 <div className={cls.line}></div>
                                 <span>{cartTotal?.subtotal} ₸</span>
                             </div>
+                            {!data.delivery_method_code &&
                             <button 
                                 className={cls.newOrderBtn}
                                 onClick={()=>addOrder(data)}
                             >
                                 <p>Перейти к оплате</p>
-                            </button>
+                            </button>}
                         </div>
                     </div>
                 </div>

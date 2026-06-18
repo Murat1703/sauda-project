@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { useEffect } from 'react'
 import { useOrdersStore } from '../../../stores/useOrdersStore'
 import { PaymentCardIcon } from '../../../../public/assets/icons/PaymentCardIcon'
+import { PaymentCashIcon } from '../../../../public/assets/icons/PaymentCashIcon'
 
 export const OrderItem = ({order, formatDate})=>{
 
@@ -12,6 +13,7 @@ export const OrderItem = ({order, formatDate})=>{
     })
 
     const {loadOrderItem, orderItem} = useOrdersStore();
+
 
     const status = (item) =>{
         switch (item) {
@@ -59,20 +61,38 @@ export const OrderItem = ({order, formatDate})=>{
                     <div className={cls.orderInformationItem}>
                         <p>Оплата:</p>
                         <p>
-                            <PaymentCardIcon />
-                            оплата картой
+                            {order?.payment_method?.code == 'cash' ? 
+                            <PaymentCashIcon />:<PaymentCardIcon />}
+                            {order?.payment_method?.code == 'kaspi' && `Каспий QR` }
+                            {order?.payment_method?.code == 'card' && `Оплата картой` }
+                            {order?.payment_method?.code == 'cash' && `Оплата при получении` }
+                        </p>
+                    </div>
+                    <div className={cls.orderInformationItem}>
+                        <p>
+                            Вид доставки
+                        </p>
+                        <p>
+                            {order?.delivery_method_name}
                         </p>
                     </div>
                 </div>
             </div>
             <div className={cls.orderItemBottom}>
                 <div className={cls.orderItemPreviewsList}>
-                    {orderItem?.order?.items?.map((item) =>(
-                            <div className={cls.orderItemPreview} key={item.order?.name}>
-                                            <div className={cls.orderItemPreviewImage}>
-                                                <img src={item.primary_image_url} alt={name} />
-                                            </div>
+                    {order?.items?.map((item, index) =>(
+                        <div 
+                            className={cls.orderItemPreview} 
+                            key={index}
+                        >
+                            <div className={cls.orderItemPreviewImage}>
+                                <img 
+                                    src={item.primary_image_url} 
+                                    alt={`${item.name}`} 
+                                    loading='lazy'
+                                />
                             </div>
+                        </div>
                     ))}
                 </div>
                 <div className={cls.orderActionButtons}>

@@ -25,6 +25,7 @@ import { useLanguage } from '../../stores/useLanguage.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
 import { MobileSearchIcon } from '../../../public/assets/icons/MobileSearchIcon.jsx';
 import { MobileSearchPanel } from './MobileSearchPanel/MobileSearchPanel.jsx';
+import { useReviewsStore } from '../../stores/useReviewsStore.js';
 
 export const Header = ({ordersCount}) =>{
     const {lang, setLang} = useLanguage();
@@ -94,7 +95,12 @@ export const Header = ({ordersCount}) =>{
         pathname.startsWith('/account/orders')
     );
 
-    const [searchString, setSearchString] = useState('')
+    const [searchString, setSearchString] = useState('');
+
+    const {accountReviews, loadAccountReviews} = useReviewsStore();
+    useEffect(()=>{
+        loadAccountReviews();
+    },[])
 
     return(
         <>
@@ -166,6 +172,7 @@ export const Header = ({ordersCount}) =>{
                             setShowProfileMenu={setShowProfileMenu} 
                             ordersCount={ordersCount}
                             showProfileMenu={showProfileMenu}
+                            reviews={accountReviews}
                         />
                         }
                     </div>

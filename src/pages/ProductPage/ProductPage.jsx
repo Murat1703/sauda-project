@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import cls from './ProductPage.module.css'
 import { useProducts } from '../../stores/useProducts.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Loader } from '../../components/Loader';
 import { Link } from 'react-router-dom';
 import { BreadCrumbs } from '../../components/AccountLayout';
@@ -44,6 +44,8 @@ import { AccountRatingStar } from '../../../public/assets/icons/AccountRagingSta
 import { ProductPageIconToCart } from '../../../public/assets/icons/ProductPageIconToCart.jsx';
 import { useAuthStore } from '../../stores/useAuthStore.js';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { ProductPagePrevArrow } from '../../../public/assets/icons/ProductPagePrevArrow.jsx';
+import { ProductPageNextArrow } from '../../../public/assets/icons/ProductPageNextArrow.jsx';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -156,6 +158,10 @@ export const ProductPage = ({isMobileScroll}) =>{
     }
     };
 
+    const prevRef = useRef(null);
+    const nextRef = useRef(null);
+
+
     return(
     <>
         {loadingProduct && <Loader />}
@@ -189,49 +195,70 @@ export const ProductPage = ({isMobileScroll}) =>{
                     <div className={cls.left}>
                         <div className={cls.productSpecifications}>
                             <div className={cls.productSpecificationsImages}>
-                                <Swiper
-                                    style={{
-                                    '--swiper-navigation-color': '#fff',
-                                    '--swiper-pagination-color': '#fff',
-                                    }}
-                                    spaceBetween={10}
-                                    navigation={true}
-                                    thumbs={{ swiper: thumbsSwiper }}
-                                    modules={[FreeMode, Navigation, Thumbs]}
-                                    className="mySwiper2"
+                                {product?.product?.images && <>
+                                    <Swiper
+                                        style={{
+                                            '--swiper-navigation-color': '#fff',
+                                            '--swiper-pagination-color': '#fff',
+                                        }}
+                                        spaceBetween={10}
+                                        navigation={{
+                                        prevEl: prevRef.current,
+                                        nextEl: nextRef.current,
+                                        }}
+                                        thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                                        modules={[FreeMode, Navigation, Thumbs]}
+                                        // className="mySwiper2"
+                                    >
+                                        {product?.product?.images?.map((item, index)=>{
+                                            return(
+                                                <SwiperSlide key={index}>
+                                                    <img 
+                                                        src={`${item?.url}`} 
+                                                        alt={`${product?.product?.name}`}
+                                                        loading={`lazy`}
+                                                    />
+                                                </SwiperSlide>
+                                            )
+                                        })}
+                                    </Swiper>
+                                    <Swiper
+                                        onSwiper={setThumbsSwiper}
+                                        spaceBetween={7}
+                                        slidesPerView={5}
+                                        freeMode={true}
+                                        watchSlidesProgress={true}
+                                        modules={[FreeMode, Thumbs]}
+                                        // className="mySwiper"
+                                    >
+                                        {product?.product?.images?.map((item, index)=>{
+                                            return(
+                                                <SwiperSlide key={index}>
+                                                    <img 
+                                                        src={`${item?.url}`} 
+                                                        alt={`${product?.product?.name}`}
+                                                        loading={`lazy`}
+                                                    />
+                                                </SwiperSlide>
+                                            )
+                                        })}
+                                    </Swiper>
+
+                                
+                                </>}
+                                <button 
+                                    ref={prevRef}
+                                    className={cls.prevControlBtn}
                                 >
-                                    {product?.product?.images.map((item, index)=>{
-                                        return(
-                                            <SwiperSlide key={index}>
-                                                <img 
-                                                    src={`${item.url}`} 
-                                                    alt={`${item.name}`}
-                                                    lazy={`true`}
-                                                />
-                                            </SwiperSlide>
-                                        )
-                                    })}
-                                </Swiper>
-                                <Swiper
-                                    onSwiper={setThumbsSwiper}
-                                    spaceBetween={10}
-                                    slidesPerView={4}
-                                    freeMode={true}
-                                    watchSlidesProgress={true}
-                                    modules={[FreeMode, Thumbs]}
-                                    className="mySwiper"
+                                    <ProductPagePrevArrow />
+                                </button>
+                                <button 
+                                    ref={nextRef}
+                                    className={cls.nextControlBtn}
                                 >
-                                    {product?.product?.images.map((item, index)=>{
-                                        return(
-                                            <SwiperSlide key={index}>
-                                                <img 
-                                                    src={`${item.url}`} alt={`${item.name}`}
-                                                    lazy={`true`}
-                                                />
-                                            </SwiperSlide>
-                                        )
-                                    })}
-                                </Swiper>
+                                    <ProductPageNextArrow />
+                                </button>
+
 
                             </div>
                             <div className={cls.text}>
@@ -309,7 +336,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                         <Swiper
                                             slidesPerView={3.5}
                                         >
-                                            {products?.data?.filter(item=> item.slug!==product?.product?.slug).map((alt)=>{
+                                            {products?.data?.filter(item=> item.slug!==product?.product?.slug)?.map((alt)=>{
                                                 return(
                                                     <SwiperSlide key={alt.slug}>
                                                         <ProductCard 
@@ -557,7 +584,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                     <BreadCrumbs>
                         Каталог
                     </BreadCrumbs>
-                    {product?.product?.breadcrumbs?.map((breadcrumbItem, index)=>{
+                    {product?.product?.breadcrumbs?.map((breadcrumbItem)=>{
                         return (
                         <div key={breadcrumbItem.slug}>
                             <span>-</span>
@@ -829,7 +856,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                     >
                         {products?.data?.
                         filter(item=> item.slug!==product?.product?.slug)
-                        .map((alt)=>{
+                        ?.map((alt)=>{
                             return(
                                 <SwiperSlide key={alt.slug}>
                                     <ProductCard product={alt}/>
@@ -844,6 +871,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                     <div className={cls.mobileReviewsTop}>
                         <div>
                             <Title>Отзывы</Title>
+                            {console.log(reviewsList)}
                             <span>{reviewsList?.data?.length} отзывов</span>   
                         </div>
                         <div>

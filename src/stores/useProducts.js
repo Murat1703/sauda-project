@@ -1,3 +1,4 @@
+import { apiCatalogFilters } from "../api/api.catalogFilters.js";
 import { apiProducts, apiProduct } from "../api/api.products.js";
 import { create } from "zustand";
 
@@ -31,6 +32,36 @@ export const useProducts = create((set, get) => ({
       });
 
       const res = await apiProducts(params);
+
+      set({
+        products: res?.data || [],
+      });
+    } catch (error) {
+      set({
+        errLoadingProducts:
+          error?.response?.data?.message || error.message,
+      });
+    } finally {
+      set({
+        loadingProducts: false,
+      });
+    }
+  },
+
+  loadProductsFilters: async (params = {})=>{
+    const { products, loadingProducts, loadedProducts } = get();
+
+    if (loadingProducts) return;
+    if (loadedProducts) return;
+    if (products.length > 0) return;
+
+    try {
+      set({
+        loadingProducts: true,
+        errLoadingProducts: null,
+      });
+
+      const res = await apiCatalogFilters(params);
 
       set({
         products: res?.data || [],

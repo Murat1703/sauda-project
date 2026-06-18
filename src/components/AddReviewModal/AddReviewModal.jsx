@@ -4,6 +4,7 @@ import { Title } from '../Title'
 import cls from './AddReviewModal.module.css'
 import { useReviewsStore } from '../../stores/useReviewsStore'
 import { ReviewsSuccessIcon } from '../../../public/assets/icons/ReviewsSuccessIcon'
+import { AddImagesIcon } from '../../../public/assets/icons/AddImagesIcon'
 
 export const AddReviewModal = ({orderItem, onClose}) =>{
 
@@ -31,32 +32,50 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
                         <p>{orderItem?.name}</p>
                     </div>
                 </div>
-                <div className={cls.ratingWrapper}>
-                    <div className={cls.ratingText}>
-                        <p>Оцените товар</p>
-                        <p>Установите оценку от 1 до 5</p>
+                <div className={cls.ratingInformation}>
+                    <div className={cls.ratingWrapper}>
+                        <div className={cls.ratingText}>
+                            <p>Оцените товар</p>
+                            <p>Установите оценку от 1 до 5</p>
+                        </div>
+                        <div className={cls.reviewRating}>
+                            {[1,2,3,4,5].map((item, index)=>{
+                                return(
+                                    <div 
+                                        key={index} 
+                                        onClick={
+                                            ()=>setReview((prev)=>(
+                                                {
+                                                    ...prev,
+                                                    rating: item
+                                                }
+                                            ))
+                                        }
+                                    >
+                                        <ReviewAddIcon 
+                                            fill={item <=review.rating ? "#FF4D00": ""}
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
-                    <div className={cls.reviewRating}>
-                        {[1,2,3,4,5].map((item, index)=>{
-                            return(
-                                <div 
-                                    key={index} 
-                                    onClick={
-                                        ()=>setReview((prev)=>(
-                                            {
-                                                ...prev,
-                                                rating: item
-                                            }
-                                        ))
-                                    }
-                                >
-                                    <ReviewAddIcon 
-                                        fill={item <=review.rating ? "#FF4D00": ""}
-                                    />
-                                </div>
-                            )
-                        })}
+                    <div className={cls.uploadWrapper}>
+                        <div className={cls.ratingText}>
+                            <p>Загрузите фотографии</p>
+                            <p>До 5 фотографий (каждая не более 5 мб) и 1 видео до 100 мб</p>
+                        </div>
+                        <div className={cls.ratingUploadItems}>
+                            <div></div>
+                            <div className={cls.ratingUploadImagesInputWrapper}>
+                                <button>
+                                    <AddImagesIcon />
+                                </button>
+                                <input type="file" multiple/>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <div className={cls.top}>
                     <p>Место для отзыва</p>

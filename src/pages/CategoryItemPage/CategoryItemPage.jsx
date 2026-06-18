@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import cls from './CategoryItemPage.module.css'
 import { useCategories } from '../../stores/useCategories';
 import { useProducts } from '../../stores/useProducts.js';
-import { useEffect, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 import { Title } from '../../components/Title';
 import { Link } from 'react-router-dom';
 import { SortIcon } from '../../../public/assets/icons/SortIcon';
@@ -22,6 +22,7 @@ import { EmptyResults } from '../../components/EmptyResults';
 import { EmtpyWhiteHeartIcon } from '../../../public/assets/icons/EmtpyWhiteHeartIcon.jsx';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop.jsx';
 import { useLanguage } from '../../stores/useLanguage.js';
+import { useReviewsStore } from '../../stores/useReviewsStore.js';
 
 
 export const CategoryItemPage = ({isMobileScroll}) =>{
@@ -62,18 +63,13 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
 
     const {lang} = useLanguage();
 
+
     useEffect(()=>{
         loadCategoryItem(currentSlug, {locale: lang});
-        loadProducts({
-            locale: lang,
-            category_slug: currentSlug,
-            page: activePage
-        });
         loadCategoryFiltersList({
             category_slug: currentSlug
         })
-    },[currentSlug, activePage])
-
+    },[currentSlug])
 
     const {favoritesList} = useFavoritesStore();
 
@@ -129,10 +125,18 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         sort_new: null,
         sort_reviews: null
     });
+
+    const [filtersData, setFiltersData] = useState({
+        in_stock: null,
+        price_min: null,
+        price_max: null
+    })
+
     useEffect(()=>{
         loadProducts({
             locale: lang,
             category_slug:currentSlug,
+            page: activePage,
             sort: sortOptions.sort_discount || sortOptions.sort_price,
             ...(sortOptions.sort_popular && {
                 is_hit: sortOptions.sort_popular
@@ -140,11 +144,18 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
             ...(sortOptions.sort_new && {
                 is_new: sortOptions.sort_new
             }),
+            ...(filtersData.in_stock!==null && {
+                in_stock: filtersData.in_stock
+            }) ,       
+            ...(filtersData.price_min!=null && filtersData.price_max!=null &&{
+                price_min: filtersData.price_min,
+                price_max: filtersData.price_max,
+            } )
+            
+
         })
-
-    }, [sortOptions,  currentSlug])
-
-
+    }, [sortOptions, filtersData, currentSlug, activePage])
+    
 
     const handleReset = () =>{
         setSortOptions({
@@ -154,6 +165,15 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
             sort_new: null,
             sort_reviews: null
         })
+        setFiltersData(
+            {
+                in_stock: null,
+                price_min: categoryFiltersList?.price?.min,
+                price_max: categoryFiltersList?.price?.max
+            }
+        );
+        setMinPrice(categoryFiltersList?.price?.min);
+        setMaxPrice(categoryFiltersList?.price?.max)
     }
 
     const {pickupPoints, loadingPickupPoints, loadPoints} = usePickupPoints();
@@ -161,6 +181,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
     useEffect(()=>{
         loadPoints();
     },[])
+
+    console.log(products)
 
     return(
         <>
@@ -337,6 +359,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             name="availibility" 
                                             value="all" 
                                             defaultChecked 
+                                            onChange={()=>setFiltersData((prev)=>({...prev, in_stock: 1}))}
                                         />
 
                                     </div>
@@ -355,7 +378,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                         <p>Нет в наличии</p>
                                         <input 
                                             type="radio" 
-                                            id="availibility3" name="availibility" value="out_of_stock"  
+                                            id="availibility3" name="availibility" value="out_of_stock" 
+                                            onChange={()=>setFiltersData((prev)=>({...prev, in_stock:0}))} 
                                         />
                                     </div>
                                 </div>
@@ -383,7 +407,9 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             max={absoluteMax}
                                             step={1}
                                             value={minPrice}
-                                            onChange={(e)=>setMinPrice(Math.min(Number(e.target.value), maxPrice)) }
+                                            onChange={(e)=>{setMinPrice(Math.min(Number(e.target.value), maxPrice));  }}
+                                            onTouchEnd={()=>setFiltersData((prev)=>({...prev, price_min: minPrice }))}
+                                            onMouseUp={()=>setFiltersData((prev)=>({...prev, price_min: minPrice }))}
 
                                         />
                                         <input 
@@ -392,7 +418,9 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             max={absoluteMax}
                                             value={maxPrice}
                                             step={1}
-                                            onChange={(e)=>setMaxPrice(Math.max(Number(e.target.value), minPrice)) }
+                                            onChange={(e)=>{setMaxPrice(Math.max(Number(e.target.value), minPrice));} }
+                                            onTouchEnd={()=>setFiltersData((prev)=>({...prev, price_max: maxPrice }))}
+                                            onMouseUp={()=>setFiltersData((prev)=>({...prev, price_max: maxPrice }))}
                                         />
                                     </div>
                                 </div>
@@ -640,6 +668,7 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                             name="availibility" 
                                             value="all" 
                                             defaultChecked 
+                                            onChange={()=>setFiltersData((prev)=>({...prev, in_stock: 1}))}
                                         />
 
                                     </div>
@@ -658,7 +687,8 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                         <p>Нет в наличии</p>
                                         <input 
                                             type="radio" 
-                                            id="availibility3" name="availibility" value="out_of_stock"  
+                                            id="availibility3" name="availibility" value="out_of_stock" 
+                                            onChange={()=>setFiltersData((prev)=>({...prev, in_stock: 0}))}
                                         />
                                     </div>
                                 </div>
@@ -796,7 +826,14 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 </div>
                                 }
                             </div>
-                            <button className={cls.sumbitMobileBtn} onClick={()=>setShowFiltersList(false)}>
+                            <button className={cls.sumbitMobileBtn} onClick={()=>{
+                                setShowFiltersList(false);
+                                setFiltersData((prev)=>({
+                                    ...prev,
+                                    price_min: minPrice,
+                                    price_max: maxPrice
+                                }))
+                            }}>
                                 <p>Применить</p>
                             </button>
                 </div>

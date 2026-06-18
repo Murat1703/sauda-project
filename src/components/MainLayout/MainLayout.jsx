@@ -16,10 +16,14 @@ import {useCart} from '../../stores/useCart.js'
 import { useOrdersStore } from '../../stores/useOrdersStore.js';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useAuthStore } from '../../stores/useAuthStore.js';
+import { useReviewsStore } from '../../stores/useReviewsStore.js';
 
 export const MainLayout = ({setIsMobileScrolled}) =>{
 
-    const {orders, loadingOrders, loadOrders} = useOrdersStore();
+    const {orders, 
+        loadingOrders, 
+        loadOrders
+    } = useOrdersStore();
 
     const {pathname} = useLocation();
     const isMobile = useMediaQuery({
@@ -44,20 +48,19 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
         }
     }, [pathname, isAuthModalOpen, closeAuthModal]);
 
-
-    // const {isAuth} = useAuth();
     const {isAuth} = useAuthStore();
+
     useEffect(()=>{
         if (isAuth == true) {
             loadOrders();
         }
-            else return
+        else return
     },[isAuth]);
 
 
     const contentRef = useRef(null);
-
     const [isMobileScroll, setIsMobileScroll] = useState(false)
+    
     useEffect(() => {
         const el = contentRef.current;
 
@@ -83,6 +86,7 @@ export const MainLayout = ({setIsMobileScrolled}) =>{
     const {lang} = useLanguage();
 
     const isHideFooter = (!isMobile ||(pathname!=='/cart') && (pathname !== '/account') && ((pathname!=='/account/reviews')) && ((pathname!=='/account/profile')) && ((pathname!=='/login')) && ((pathname!=='/account/favorites')) && (pathname!=='/account/new-order') )
+
 
     return(
         <>

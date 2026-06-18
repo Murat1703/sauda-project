@@ -35,6 +35,9 @@
 .notAutorisedBlock > p > a{
     color: var(--accent);
 }
+.orderItem {
+    width: 100%;
+}
 @media (max-width:768px){
     .breadCrumbsWrapper{
         display: none;

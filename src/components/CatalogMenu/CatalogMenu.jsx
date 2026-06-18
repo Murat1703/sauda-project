@@ -40,8 +40,6 @@ export const CatalogMenu = ({onClose}) =>{
 
     const activeCategory = categoriesTree?.find(cat => cat.id === activeID);
 
-
-
     const isMobile = useMediaQuery({
       maxWidth: 768
     })
@@ -52,8 +50,14 @@ export const CatalogMenu = ({onClose}) =>{
 
     return(
         <>
-        <div className={cls.catalogMenuWrapper}>
-            <div className={cls.catalogMenuInner}>
+        <div 
+          className={cls.catalogMenuWrapper} 
+          onClick={onClose}
+        >
+            <div 
+              className={cls.catalogMenuInner} 
+              onClick={(e)=>e.stopPropagation()}
+            >
                 {!isMobile && errLoadingCategoriesTree && <p>{errLoadingCategoriesTree}</p>}
                 {isMobile && 
                 <div className={cls.catalogMenuMobileTop}>
@@ -137,7 +141,7 @@ export const CatalogMenu = ({onClose}) =>{
                 </nav>
             </div>
         </div>
-        <div className={cls.bg}></div>
+        <div className={cls.bg} ></div>
         {isMobile && searchString && 
         <Search 
           text={searchString} 

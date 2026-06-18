@@ -36,26 +36,6 @@ const ProtectedRoutes = () =>{
     maxWidth: 768
   })
 
-  // useEffect(() => {
-  //   if (isAuthLoading) return;
-
-  //   const protectedRoutes = ['/account', '/cart'];
-  //   const isProtected = protectedRoutes.some(route =>
-  //     pathname.startsWith(route)
-  //   );
-
-
-  //   if (!isAuth && isMobile  ) {
-  //     openAuthModal();
-  //   }
-
-
-  //   if (!isAuth || !isProtected ){
-  //     closeAuthModal();
-  //   }
-
-
-  // }, [isAuthLoading, isAuth, isMobile, pathname, closeAuthModal, openAuthModal]);
 
   useEffect(() => {
     if (loading) return;
@@ -69,7 +49,6 @@ const ProtectedRoutes = () =>{
     openAuthModal
   ]);
 
-
   if (loading) return null;
 
   if (!isAuth) return null;
@@ -79,8 +58,6 @@ const ProtectedRoutes = () =>{
 
 function App() {
 
-  
-  // const {isAuth, isAuthLoading} = useAuth();
   const {isAuth, loading, fetchUser} = useAuth();
 
   const [isMobileScroll, setIsMobileScroll] = useState(false);

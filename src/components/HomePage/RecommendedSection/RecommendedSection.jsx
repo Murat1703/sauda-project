@@ -38,6 +38,7 @@ export const RecommendedSection = ({products}) =>{
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
+                        touchReleaseOnEdges={true}
                         breakpoints={{
                             360:{
                                 slidesPerView : 2

@@ -17,8 +17,11 @@ export const OrderPage = () =>{
     const { formatDate } = useDateFormat();
 
     const {orderItem, loadOrderItem, loadingOrderItem} = useOrdersStore();
+
+    console.log(orderItem)
     
     useEffect(()=>{
+        if (!orderId) return
         loadOrderItem(orderId);
     },[orderId])
 
@@ -98,7 +101,19 @@ export const OrderPage = () =>{
                         <>                        
                         <p>Доставка по адресу:</p>
                         <span>
-                            {`г.${orderItem?.order?.delivery_address.city}, ул.${orderItem?.order?.delivery_address.street} кв.${orderItem?.order?.delivery_address?.apartment}`}
+                            {`г.${orderItem?.order?.delivery_address.city}, ул.${orderItem?.order?.delivery_address?.street} кв.${orderItem?.order?.delivery_address?.apartment || ""}`}
+                        </span>
+                        </>
+
+                        }
+
+                    </div>
+                    <div className={cls.orderPageInfoItem}>
+                        {orderItem?.order?.delivery_address &&
+                        <>                        
+                        <p>Комментарий курьеру:</p>
+                        <span>
+                            {`${orderItem?.order?.delivery_address?.comment}`}
                         </span>
                         </>
 

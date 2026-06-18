@@ -18,6 +18,10 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { CounterIncreaseIcon } from '../../../public/assets/icons/CounterIncreaseIcon.jsx';
 import { CounterDecreaseIcon } from '../../../public/assets/icons/CounterDecreaseIcon.jsx';
 import { CounterToCartIcon } from '../../../public/assets/icons/CounterToCartIcon.jsx';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import { Pagination } from 'swiper/modules';
+
 
 
 export const ProductCard = ({product, isFavorite, isDelete}) =>{
@@ -34,9 +38,9 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
 
     const {loadReviews, reviewsList} = useReviewsStore();
 
-    useEffect(()=>{
-        loadReviews(product?.slug)
-    },[]);
+
+
+
 
     const formatPrice = (price) => {
         return Number(price).toLocaleString('ru-RU', {
@@ -52,7 +56,9 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
         if (isAuth == false) {
             if (favoriteItem?.product?.slug === product?.slug){
                 deleteFromLocalFavoritesList(favoriteItem?.product?.id);
-                toast(<SnackBar text={`Товар удален из избранного `} />)
+                toast.error(
+                    <SnackBar text={`Товар удален из избранного `} />
+                )
             }else {
                 addToLocalFavoritesList({
                     product_slug: product?.slug, 
@@ -76,10 +82,6 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
 
     const [counter, setCounter] = useState(1);
     const [showCounter, setShowCounter] = useState(null)
-
-    // useEffect(()=>{
-    //     console.log(counter)
-    // },[counter.count])
 
     const handleShowCounter = (product_slug) =>{
         setShowCounter(product_slug);
@@ -105,20 +107,46 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
 
     return(
         <>
-            <div className={cls.productCard}>
+            <div className={cls.productCard} >
                 <div className={cls.productCardImagesWrapper}>
-                    <div className={cls.productCardImages}>
+                    <div className={cls.productCardImages}
+                    >
+                        {product?.images?.length > 1 ?
+                            <>
+                            <Swiper
+                                style={{
+                                    '--swiper-navigation-color': '#fff',
+                                    '--swiper-pagination-color': '#FF4D00',
+                                }}
+                                pagination={true}
+                                modules={[Pagination]}
+                                nested={true}
+                                touchMoveStopPropagation={true}
+                            >
+                                {product?.images?.map((img, index)=>{
+                                    return(
+                                        <SwiperSlide key={index}>
+                                            <img 
+                                                src={`${img?.url}`
+                                                } 
+                                                alt={`${product?.name}`}
+                                                lazy={`true`}
+                                                style={{
+                                                    opacity: product?.stock_quantity ==0 ? "0.5": "1"
+                                                }}
+                                            />
+                                        </SwiperSlide>
+                                    )
+                                })}
+
+                            </Swiper>
+                            </>
+                        : 
                         <img 
-                            src={`${product?.primary_image_url 
-                                    ? product?.primary_image_url
-                                    : product?.images?.[0].url}`
-                            } 
+                            src={`${product?.primary_image_url}`}
                             alt={`${product?.name}`}
-                            lazy={`true`}
-                            style={{
-                                opacity: product?.stock_quantity ==0 ? "0.5": "1"
-                            }}
-                        />
+                        />}
+
                     </div>
                     <button 
                         className={cls.favoriteBtn} 
@@ -141,8 +169,8 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                     <Link to={`/products/${product?.slug}`} className={cls.productCardInfoTop}>
                         <div className={cls.productCardInfoReviews}>
                             <ReviewItemStar />
-                            <span>{reviewsList?.summary?.average_rating}</span>
-                            <span>· {reviewsList?.summary?.reviews_count} отзвывов</span>
+                            <span>{product?.reviews_summary?.average_rating || 5}</span>
+                            <span>· {product?.reviews_summary?.reviews_count || 0} отзвывов</span>
                         </div>
                         <h4>{product?.name}</h4>
                     </Link>
@@ -215,8 +243,8 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                         </>
                         }
                     </div>
-
                 </div>
+                {/* <Link to={`/products/${product?.slug}`} className={cls.productCardLink}/> */}
             </div>
         </>
     )

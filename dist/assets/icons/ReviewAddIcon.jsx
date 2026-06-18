@@ -1,7 +1,8 @@
 export const ReviewAddIcon = ({fill}) =>{
     return(
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-            <path d="M18 3.75L22.326 12.516L32 13.929L25 20.748L26.652 30.384L18 25.836L9.348 30.384L11 20.748L4 13.929L13.674 12.516L18 3.75Z" stroke="#A6AAAB" fill={`${fill}`} strokeWidth="2" strokeLinejoin="round"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="47" height="48" viewBox="0 0 47 48" fill="none">
+            <path d="M29.6768 15.8857L29.793 16.1426L30.0723 16.1768L44.7334 17.9512L33.8867 28.1963L33.6865 28.3848L33.7393 28.6553L36.6152 43.4404L23.75 36.0859L23.502 35.9443L23.2539 36.0859L10.3877 43.4404L13.2646 28.6553L13.3174 28.3848L13.1172 28.1963L2.27051 17.9512L16.9316 16.1768L17.2119 16.1426L17.3281 15.8857L23.502 2.21387L29.6768 15.8857Z" stroke="#FF4D00" fill={`${fill}`}/>
         </svg>
+
     )
 }

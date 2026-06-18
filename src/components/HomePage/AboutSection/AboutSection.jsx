@@ -97,6 +97,14 @@ export const AboutSection = () =>{
                             <p>Читать подробнее</p>
                             <ShowMoreIcon />
                         </a>}
+                        {showMore && lang =='ru' &&
+                        <a 
+                            className={cls.moreLink}
+                            onClick={()=>setShowMore(false)}
+                        >
+                            <p>Cвернуть</p>
+                            <ShowMoreIcon hide={showMore}/>
+                        </a>}
                         {!showMore && lang=='kk' &&
                         <a 
                             className={cls.moreLink}
@@ -104,6 +112,15 @@ export const AboutSection = () =>{
                         >
                             <p>Толығырақ оқу</p>
                             <ShowMoreIcon />
+                        </a>
+                        }
+                        {showMore && lang=='kk' &&
+                        <a 
+                            className={cls.moreLink}
+                            onClick={()=>setShowMore(false)}
+                        >
+                            <p>Жасыру</p>
+                            <ShowMoreIcon hide={showMore}/>
                         </a>
                         }
                     </div>

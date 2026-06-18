@@ -12,12 +12,14 @@ export const AccountDetailsPage = ({isAuth}) =>{
 
     const {user} = useAuth();
 
+    console.log(user)
+
     const [userName, setUserName] = useState(null);
     const [userPhone, setUserPhone] = useState(null);
 
     useEffect(()=>{
-       setUserName(user?.name);
-       setUserPhone(user?.phone)
+       setUserName(user?.user?.name);
+       setUserPhone(user?.user?.phone)
     }, [])
 
     
@@ -52,7 +54,7 @@ export const AccountDetailsPage = ({isAuth}) =>{
                             type="text" 
                             name='name' 
                             placeholder='Ваше имя'
-                            value={userName}
+                            defaultValue={userName}
                         />
                     </div>
                     <div className={cls.accountItemInputWrapper}>
@@ -80,7 +82,7 @@ export const AccountDetailsPage = ({isAuth}) =>{
                             type="text" 
                             name='phone' 
                             placeholder='+7'
-                            value={userPhone}
+                            defaultValue={userPhone}
                         />
                     </div>
                     <div className={cls.accountItemInputWrapper}>
