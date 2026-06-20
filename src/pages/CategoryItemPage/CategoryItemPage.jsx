@@ -182,7 +182,25 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
         loadPoints();
     },[])
 
-    console.log(products)
+    const handleChangeMinPriceManual = (e) =>{
+        const number = e.target.value;
+        if (number < 0) {setMinPrice(absoluteMin)}
+        else setMinPrice(number)
+        setFiltersData((prev)=>({
+            ...prev, 
+            price_min: number
+        }))
+    }
+
+    const handleChangeMaxPriceManual = (e) =>{
+        const number = e.target.value;
+        if (number > absoluteMax) {setMaxPrice(absoluteMax)}
+        else setMaxPrice(number)
+                setFiltersData((prev)=>({
+            ...prev, 
+            price_max: number
+        }))
+    }
 
     return(
         <>
@@ -394,10 +412,20 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 <div className={cls.priceFilterSliderWrapper}>
                                     <div className={cls.priceValuesWrapper}>
                                         <div>
-                                            <p>{minPrice}</p>
+                                            <input        
+                                                type="number" 
+                                                value={minPrice}
+                                                min={absoluteMin}
+                                                onChange={handleChangeMinPriceManual}
+                                            />
                                         </div>
                                         <div>
-                                            <p>{maxPrice}</p>
+                                            <input        
+                                                type="number" 
+                                                value={maxPrice}
+                                                max={absoluteMax}
+                                                onChange={handleChangeMaxPriceManual}
+                                            />
                                         </div>
                                     </div>
                                     <div className={cls.priceSliderWrapper}>
@@ -756,10 +784,20 @@ export const CategoryItemPage = ({isMobileScroll}) =>{
                                 <div className={cls.priceFilterSliderWrapper}>
                                     <div className={cls.priceValuesWrapper}>
                                         <div>
-                                            <p>{minPrice}</p>
+                                            <input 
+                                                type="number" 
+                                                value={minPrice}
+                                                min={absoluteMin}
+                                                onChange={handleChangeMinPriceManual}
+                                            />
                                         </div>
                                         <div>
-                                            <p>{maxPrice}</p>
+                                            <input 
+                                                type="number" 
+                                                value={maxPrice}
+                                                min={absoluteMax}
+                                                onChange={handleChangeMaxPriceManual}
+                                            />
                                         </div>
                                     </div>
                                     <div className={cls.priceSliderWrapper}>

@@ -11,7 +11,7 @@ import { SnackBar } from '../SnackBar';
 // import { useAuth } from '../../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useAuthStore } from '../../stores/useAuthStore.js';
 import { useReviewsStore } from '../../stores/useReviewsStore.js';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -24,23 +24,12 @@ import { Pagination } from 'swiper/modules';
 
 
 
-export const ProductCard = ({product, isFavorite, isDelete}) =>{
+export const ProductCard = memo( function ProductCard({product, isFavorite, isDelete}){
 
-    const {addToCart, cartItems} = useCart();
+    const {addToCart} = useCart();
     const{favoritesList, addToFavoritesList, deleteFromFavoritesList, addToLocalFavoritesList, deleteFromLocalFavoritesList} = useFavoritesStore();
 
-    const navigate = useNavigate();
-
     const {isAuth} = useAuth();
-
-    // console.log(isAuth)
-    const [addFavorite, setAddFavorite] = useState(false);
-
-    const {loadReviews, reviewsList} = useReviewsStore();
-
-
-
-
 
     const formatPrice = (price) => {
         return Number(price).toLocaleString('ru-RU', {
@@ -108,6 +97,11 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
     return(
         <>
             <div className={cls.productCard} >
+                <div className={cls.badgesList}>
+                            {product?.is_hit && <Badge type={`hit`}>Хит</Badge>}
+                            {product?.is_new && <Badge type={`new`}>Новинка</Badge>}
+                            {stockError && <Badge type={`error`}>{stockError}</Badge>}
+                </div>
                 <div className={cls.productCardImagesWrapper}>
                     <div className={cls.productCardImages}
                     >
@@ -117,6 +111,8 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                 style={{
                                     '--swiper-navigation-color': '#fff',
                                     '--swiper-pagination-color': '#FF4D00',
+                                    '--swiper-pagination-bullet-size': '4px',
+                                    '--swiper-pagination-bullet-horizontal-gap': '6px',
                                 }}
                                 pagination={true}
                                 modules={[Pagination]}
@@ -130,7 +126,7 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                                                 src={`${img?.url}`
                                                 } 
                                                 alt={`${product?.name}`}
-                                                lazy={`true`}
+                                                loading={index === 0 ? 'eager' : 'lazy'}
                                                 style={{
                                                     opacity: product?.stock_quantity ==0 ? "0.5": "1"
                                                 }}
@@ -158,12 +154,6 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                             :<HeartIcon />
                         }
                     </button>
-                    <div className={cls.badgesList}>
-                        {product?.is_hit && <Badge type={`hit`}>Хит</Badge>}
-                        {product?.is_new && <Badge type={`new`}>Новинка</Badge>}
-                        {stockError && <Badge type={`error`}>{stockError}</Badge>}
-
-                    </div>
                 </div>
                 <div className={cls.productCardInfo}>
                     <Link to={`/products/${product?.slug}`} className={cls.productCardInfoTop}>
@@ -244,8 +234,7 @@ export const ProductCard = ({product, isFavorite, isDelete}) =>{
                         }
                     </div>
                 </div>
-                {/* <Link to={`/products/${product?.slug}`} className={cls.productCardLink}/> */}
             </div>
         </>
     )
-}
+})

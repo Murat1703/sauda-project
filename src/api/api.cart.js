@@ -1,6 +1,6 @@
 import { http } from "./http";
 
-export const apiGetCart = () => http.get('/cart');
+export const apiGetCart = () => http.get('/cart?reconcile=1');
 
 export const apiAddToCart = (data) => http.post('/cart/items', data);
 

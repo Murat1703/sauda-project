@@ -871,6 +871,8 @@ export const useCart = create((set, get) => ({
         errLoadingCartTotal: null,
       });
 
+      // const reconcile = {reconcile: 1}
+
       const res = await apiGetCart();
 
       const cart = res?.data?.cart || {};
