@@ -183,7 +183,7 @@ export const ProductCard = memo( function ProductCard({product, isFavorite, isDe
                                 <span>{formatPrice(product?.price)} ₸</span>
                             </div>
                         </div>
-                        {product?.stock_quantity == 0 && <p>Нет в наличии</p>} 
+                        {product?.stock_quantity == 0 && <button className={`${cls.productCardBtn} ${cls.productCardBtnEmpty}`}><p>Нет в наличии</p></button>} 
                         {product?.stock_quantity !== 0 &&
                         <>
                         {showCounter !== product?.slug &&

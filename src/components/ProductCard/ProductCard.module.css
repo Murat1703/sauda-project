@@ -179,6 +179,12 @@
         line-height: 24px;
     }
 }
+.productCardBtnEmpty{
+    background: #E4E5E5;
+    p{
+        color: #8F9596;
+    }
+}
 .finalPrice{
     span{
         font-size: 20px;

@@ -39,9 +39,10 @@ export const Search = ({text, onClose}) =>{
                     <p>{lang=='ru'?`Возможно вы имели в виду: `:`Мүмкін, сіз мынаны іздеген шығарсыз:`}</p>
                     {searchData?.query_suggestions?.map((item,index)=>{
                         return(
-                        <div key={index}>
-                            {item.text}
-                        </div>
+                            <div key={index}>
+                                {item.text}
+                                {item.text.includes(text)}
+                            </div>
                         )
                     })}
                 </div>

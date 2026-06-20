@@ -377,6 +377,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 <p>Отзывов пока нет</p>
                                 ) : (
                                 <div className={cls.productPageReviews}>
+                                    {console.log(reviewsList)}
                                     {reviewsList?.data?.map((review) => {
                                     return (
                                         <div className={cls.reviewItem} key={review.id}>
@@ -396,6 +397,18 @@ export const ProductPage = ({isMobileScroll}) =>{
                                                 </div>
                                             </div>
                                             <p>{review?.body}</p>
+                                            {review?.images.length > 0 && <div className={cls.reviewImagesList}>
+                                                {review?.images?.map((image)=>{
+                                                    return(
+                                                        <div key={image.id}>
+                                                            <img 
+                                                                src={image.url}
+                                                                alt="review"/>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                            }
                                         </div>
                                     );
                                     })}
