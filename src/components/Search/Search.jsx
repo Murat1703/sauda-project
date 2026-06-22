@@ -25,7 +25,27 @@ export const Search = ({text, onClose}) =>{
     const categoryItems = searchData?.suggestions?.filter((item)=>item.type=='category');
 
     const {lang} = useLanguage();
-    const onlyProducts = searchData?.suggestions?.filter((item)=>item?.type!=='category')
+    const onlyProducts = searchData?.suggestions?.filter((item)=>item?.type!=='category');
+
+    const highlightText = (data, text) => {
+        if (!text?.trim()) return data;
+
+        const escapedText = text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        const regex = new RegExp(`(${escapedText})`, 'gi');
+
+        return data.split(regex).map((part, index) => {
+            const isMatch = part.toLowerCase() === text.toLowerCase();
+
+            return isMatch ? (
+                <b key={index}>{part}</b>
+            ) : (
+                <span key={index}>{part}</span>
+            );
+        });
+    };
+
+
     return(
         <div className={cls.searchWrapper} onClick={onClose}>
             <div className={cls.searchResults} onClick={(e)=>e.stopPropagation()}>
@@ -40,15 +60,13 @@ export const Search = ({text, onClose}) =>{
                     {searchData?.query_suggestions?.map((item,index)=>{
                         return(
                             <div key={index}>
-                                {item.text}
-                                {item.text.includes(text)}
+                                {highlightText(item.text, text)}
                             </div>
                         )
                     })}
                 </div>
                 }
                 {searchData?.suggestions?.length>0 && 
-
                     <div 
                         className={cls.searchResultsItems}
                         style={{
@@ -68,7 +86,7 @@ export const Search = ({text, onClose}) =>{
                                     key={item.slug}
                                 >
                                     <div className={cls.textContent}>
-                                        <p>{item.name}</p>
+                                        <p>{highlightText(item.name, text)}</p>
                                     </div>
                                 </Link>
                             )
@@ -91,7 +109,7 @@ export const Search = ({text, onClose}) =>{
                                         />
                                     </div>
                                     <div className={cls.textContent}>
-                                        <p>{item.name}</p>
+                                        <p>{highlightText(item.name, text)}</p>
                                         <div className={cls.resultPrice}>
                                             <p>{item.price} ₸</p>
                                             {item.old_price && 

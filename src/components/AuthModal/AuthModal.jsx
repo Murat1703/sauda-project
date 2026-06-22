@@ -26,7 +26,7 @@ export const AuthModal = ({next}) =>{
         replacement: { _: /\d/ },
     });
 
-    const {isAuth, fetchUser} = useAuth();
+    const {isAuth, fetchUser, user} = useAuth();
 
     const { isAuthModalOpen, closeAuthModal, step, setStep, newOrderPhone } = useAuthModal();
 

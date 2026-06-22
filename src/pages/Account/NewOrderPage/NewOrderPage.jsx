@@ -318,6 +318,15 @@ export const NewOrderPage = () =>{
                                                     <input 
                                                         type="radio" name='city'
                                                         value={item?.address}
+                                                        onChange={()=>{
+                                                            const deliveryMethod = 'pickup';
+                                                            setDelivery(deliveryMethod);
+                                                            setData((prev)=>({
+                                                                ...prev,
+                                                                delivery_method_code: deliveryMethod
+                                                            }))
+
+                                                        }}
                                                     />
                                                     <div></div>
                                                 </div>

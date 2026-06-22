@@ -46,6 +46,7 @@ import { useAuthStore } from '../../stores/useAuthStore.js';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { ProductPagePrevArrow } from '../../../public/assets/icons/ProductPagePrevArrow.jsx';
 import { ProductPageNextArrow } from '../../../public/assets/icons/ProductPageNextArrow.jsx';
+import { ReviewsList } from '../../components/Reviews/ReviewsList/ReviewsList.jsx';
 
 
 export const ProductPage = ({isMobileScroll}) =>{
@@ -353,71 +354,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 </div>
                             </div>
                         </div>
-                        <div className={cls.reviewsListContent}>
-                            <div className={cls.productReviews}>
-                                <div className={cls.productReviewsTitleBlock}>
-                                    <div className={cls.productReviewTitle}>
-                                        <Title>Отзывы</Title>
-                                        <p>{reviewsList?.data?.length} отзывов</p>
-                                    </div>
-                                    <div className={cls.productReviewRating}>
-                                        <div className={cls.productReviewRatingContent}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                            <path d="M10.0008 15.2167L4.12295 18.5069L5.43573 11.8999L0.490234 7.32652L7.17943 6.5334L10.0008 0.416687L12.8222 6.5334L19.5113 7.32652L14.5659 11.8999L15.8787 18.5069L10.0008 15.2167Z" fill="#EDBA37"/>
-                                            </svg>
-                                            <div className={cls.productRatingValue}>
-                                                <p>{reviewsList?.summary?.average_rating || 5}</p>
-                                                <p>/5</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={cls.productReviewsInner}>
-                                {reviewsList?.data?.length === 0 ? (
-                                <p>Отзывов пока нет</p>
-                                ) : (
-                                <div className={cls.productPageReviews}>
-                                    {console.log(reviewsList)}
-                                    {reviewsList?.data?.map((review) => {
-                                    return (
-                                        <div className={cls.reviewItem} key={review.id}>
-                                            <div className={cls.reviewItemTop}>
-                                                <div>
-                                                <p>{review?.author_name}</p>
-                                                <p>{formatDate(review?.published_at)}</p>
-                                                </div>
-                                                <div className={cls.accountReviewRating}>
-                                                    {[1,2,3,4,5].map((ratingCount)=>{
-                                                        return(
-                                                            <AccountRatingStar 
-                                                            key={ratingCount}
-                                                            fill={ratingCount <= Number(review?.rating)? true : false}/>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-                                            <p>{review?.body}</p>
-                                            {review?.images.length > 0 && <div className={cls.reviewImagesList}>
-                                                {review?.images?.map((image)=>{
-                                                    return(
-                                                        <div key={image.id}>
-                                                            <img 
-                                                                src={image.url}
-                                                                alt="review"/>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                            }
-                                        </div>
-                                    );
-                                    })}
-                                </div>
-                                )}
-                                </div>
-                            </div>
-
-                        </div>
+                        <ReviewsList reviewsList={reviewsList}/>
                     </div>
                     <div className={cls.right}>
                         <div className={cls.productPageInfoTop}>
@@ -941,32 +878,6 @@ export const ProductPage = ({isMobileScroll}) =>{
                         <div className={cls.textDescriptionItem}>
                             <TextInfo html={product?.product?.warranty_text}/>
                         </div>
-                        {/* {!showMoreGaranty &&
-                        <a onClick={()=>setShowMoreGaranty(true)}>
-                            <p>Читать полностью</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M4.35656 7.85653C4.71194 7.50115 5.28812 7.50115 5.64349 7.85653L10 12.2131L14.3566 7.85653C14.7119 7.50115 15.2881 7.50115 15.6435 7.85653C15.9989 8.21191 15.9989 8.78809 15.6435 9.14346L10.6435 14.1435C10.2881 14.4988 9.71194 14.4988 9.35656 14.1435L4.35656 9.14346C4.00118 8.78809 4.00118 8.21191 4.35656 7.85653Z" fill="#FF5302"/>
-                            </svg>
-                        </a>
-                        } */}
-
-                        {/* {showMoreGaranty && 
-                        <>
-
-                        <div className={cls.textDescriptionItem}>
-                                        <h4>Защита платежей</h4>
-                                        <p>Ваши деньги не передаются продавцу до момента подтверждения получения товара. Это гарантирует, что вы платите только за то, что действительно получили.</p>
-                        </div>
-                        <div className={cls.textDescriptionItem}>
-                                        <h4>Поддержка на каждом этапе</h4>
-                                        <p>Наша служба поддержки помогает решать любые спорные ситуации между покупателем и продавцом. Мы всегда на стороне справедливости.</p>
-                        </div>
-                        <div className={cls.textDescriptionItem}>
-                                        <h4>Ответственность продавцов</h4>
-                                        <p>Продавцы обязаны соблюдать стандарты качества и сроки доставки. За нарушения предусмотрены санкции вплоть до блокировки.</p>
-                        </div>
-
-                        </>} */}
                     </div>
                 </div>
                 }

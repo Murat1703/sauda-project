@@ -6,6 +6,7 @@ import { useReviewsStore } from '../../stores/useReviewsStore'
 import { ReviewsSuccessIcon } from '../../../public/assets/icons/ReviewsSuccessIcon'
 import { AddImagesIcon } from '../../../public/assets/icons/AddImagesIcon'
 import { CloseIconDesktop } from '../../../public/assets/icons/CloseIconDesktop.jsx';
+import { PreviewDeleteIcon } from '../../../public/assets/icons/PreviewDeleteIcon.jsx'
 
 export const AddReviewModal = ({orderItem, onClose}) =>{
 
@@ -23,26 +24,57 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
     const [previews, setPreviews] = useState([]);
 
 
-    const handleImagesChange = (e) => {
-        const files = Array.from(e.target.files);
+    const max_files = 5;
+    // const handleImagesChange = (e) => {
+    //     const files = Array.from(e.target.files);
 
-        if (!files.length) return;
+    //     if (!files.length) return;
+    //     setImages((prev) => [...prev, ...files]);
 
-        setImages((prev) => [...prev, ...files]);
-        if (images.length >=5) {
-            window.alert('Не более 5 файлов');
-            return
-        }
+    //     if (images.length >=5) {
+    //         window.alert('Не более 5 файлов');
+    //         return
+    //     }
 
-        const previewUrls = files.map((file) => ({
-            file,
-            url: URL.createObjectURL(file),
-        }));
+    //     const previewUrls = files.map((file) => ({
+    //         file,
+    //         url: URL.createObjectURL(file),
+    //     }));
 
-        setPreviews((prev) => [...prev, ...previewUrls]);
+    //     setPreviews((prev) => [...prev, ...previewUrls]);
 
-        e.target.value = "";
-    };
+    //     e.target.value = "";
+    // };
+
+const handleImagesChange = (e) => {
+    const files = Array.from(e.target.files || []);
+
+    if (!files.length) return;
+
+    const availableSlots = max_files - images.length;
+
+    if (availableSlots <= 0) {
+        window.alert('Не более 5 файлов');
+        e.target.value = '';
+        return;
+    }
+
+    const filesToAdd = files.slice(0, availableSlots);
+
+    if (files.length > availableSlots) {
+        window.alert('Можно загрузить не более 5 файлов');
+    }
+
+    const newPreviews = filesToAdd.map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+    }));
+
+    setImages((prev) => [...prev, ...filesToAdd]);
+    setPreviews((prev) => [...prev, ...newPreviews]);
+
+    e.target.value = '';
+};
 
     useEffect(() => {
         return () => {
@@ -52,7 +84,15 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
         };
     }, [previews]);
 
+    const handleDeletePreview = (index) => {
+        setPreviews((prev) => {
+            URL.revokeObjectURL(prev[index].url);
 
+            return prev.filter((_, i) => i !== index);
+        });
+
+        setImages((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -125,13 +165,19 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
                             {previews.map((url, index)=>{
                                 return(
                                         <div
-                                            key={index}
+                                            key={url.url}
                                             style={{
                                                 marginLeft: index!==0 ? "-10px" : ""
                                             }}
-                                        >                                   <img 
+                                            className={cls.previewWrapper}
+                                        >                                        <img 
                                                 src={url?.url}    alt='review-img'
                                             />
+                                            <button
+                                                onClick={()=>handleDeletePreview(index)}
+                                            >
+                                                <PreviewDeleteIcon />
+                                            </button>
                                         </div>
                                 )
                             })}
@@ -168,8 +214,6 @@ export const AddReviewModal = ({orderItem, onClose}) =>{
                         onClick={
                             (e)=>{
                                 handleSubmit(e)
-                                // addReview(orderItem.slug, review);
-                                
                             }
                         }   
                     >

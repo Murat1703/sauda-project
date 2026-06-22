@@ -99,7 +99,7 @@ export const Header = ({ordersCount}) =>{
 
     const {accountReviews, loadAccountReviews} = useReviewsStore();
     useEffect(()=>{
-        loadAccountReviews();
+        hasToken && loadAccountReviews();
     },[])
 
     return(
@@ -123,7 +123,7 @@ export const Header = ({ordersCount}) =>{
                                 type="text" 
                                 placeholder={lang=='ru'?'Ищите все для стройки и ремонта':'Құрылыс пен жөндеуге қажеттінің бәрін іздеңіз'}
                                 value={searchString}
-                                onChange={(e)=>setSearchString(e.target.value)}
+                                onChange={(e)=>{setSearchString(e.target.value); if (isOpen==true) setIsOpen(false)}}
                             />
                             <button>
                                 <SearchIcon />
