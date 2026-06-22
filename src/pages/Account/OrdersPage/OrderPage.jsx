@@ -95,7 +95,17 @@ export const OrderPage = () =>{
                             {orderItem?.order?.payment_method?.name}
                         </span>
                     </div>
-                  
+                  {console.log(orderItem?.order)}
+                    {orderItem?.order?.delivery_method_code =='pickup' && 
+                    <div className={cls.orderPageInfoItem}>
+                        <p>Самовывоз по адресу:</p>
+                        <span>
+                            {`г.${orderItem?.order?.delivery_address.city}, ул.${orderItem?.order?.delivery_address?.street} кв.${orderItem?.order?.delivery_address?.apartment || ""}`}
+                        </span>
+                    </div>
+                    }
+                    {orderItem?.order?.delivery_method_code !=='pickup' && 
+                    <>
                     <div className={cls.orderPageInfoItem}>
                         {orderItem?.order?.delivery_address &&
                         <>                        
@@ -120,6 +130,8 @@ export const OrderPage = () =>{
                         }
 
                     </div>
+                    </>
+                    }
                     {orderItem?.order?.status == 'completed' && 
                     <div className={cls.orderPageInfoItem}>
                         <p>Доставлено:</p>

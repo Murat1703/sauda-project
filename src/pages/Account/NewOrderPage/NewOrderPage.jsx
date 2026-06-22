@@ -46,7 +46,7 @@ export const NewOrderPage = () =>{
         payment_method_id: null,
         contact_phone: user?.user?.phone,
         contact_name: user?.user?.name, 
-        delivery_adress: {
+        delivery_address: {
             city: null,
             street: null,
             building: null,
@@ -56,6 +56,8 @@ export const NewOrderPage = () =>{
             comment: null,
         }
     })
+
+    const [error, setError] = useState({})
 
     useEffect(()=>{
         if (!user?.user) return;
@@ -144,468 +146,548 @@ export const NewOrderPage = () =>{
 
     const [orderStatus, setOrderStatus]= useState(null)
 
-    const handleAddOrder = () =>{
+    const handleAddOrder = () => {
+        const newErrors = {};
+
+        if (!data?.contact_name) {
+            newErrors.contact_name = 'Ошибка при заполнении имени';
+        }
+
+        if (!data?.contact_phone) {
+            newErrors.contact_phone = 'Ошибка при заполнении телефона';
+        }
+
+        if (!data?.delivery_method_code) {
+            newErrors.delivery_method_code = 'Не выбран способ доставки';
+        }
+
+        if (!data?.payment_method_id) {
+            newErrors.payment_method_id = 'Не выбран способ оплаты';
+        }
+
         if (
-            data.contact_name && 
-            data.contact_phone && 
-            data.delivery_method_code && 
-            data.payment_method_id) { 
-            addOrder(data);
-            setOrderStatus('send')
-        } else window.alert('Проверьте все ли поля заполнены ')
-    }
+            data?.delivery_method_code === 'standard' &&
+            (
+            !data?.delivery_address?.city ||
+            !data?.delivery_address?.street ||
+            !data?.delivery_address?.building ||
+            !data?.delivery_address?.apartment
+            )
+        ) {
+            newErrors.delivery_address = {
+            city: !data?.delivery_address?.city ? 'Не выбран город' : '',
+            street: !data?.delivery_address?.street ? 'Не выбрана улица' : '',
+            building: !data?.delivery_address?.building ? 'Не выбран дом' : '',
+            apartment: !data?.delivery_address?.apartment ? 'Не выбрана квартира' : '',
+            };
+        }
+
+        if (
+            data?.delivery_method_code === 'pickup' &&
+            (
+                !data?.delivery_address?.city ||
+                !data?.delivery_address?.street 
+            )
+        ) {
+            newErrors.pickup_address = {
+                city: !data?.delivery_address?.city ? 'Не выбран город' : '',
+                adress: !data?.delivery_address?.street ? 'Не выбрана точка самовывоза' : '',
+            };
+        }
+
+
+
+        if (Object.keys(newErrors).length > 0) {
+            setError(newErrors)
+            return;
+        }
+
+        addOrder(data);
+        setOrderStatus('send');
+    };
 
     return(
         <>
-        <div className={cls.newOrderPage}>
-            <div className={cls.newOrderPageTop}>
-                <Link to={`/cart`}>
-                    <ArrowOrderPageIcon />
-                    <p>Вернутся в корзину</p>
-                </Link>
-                <Title>
-                    Оформление заказа
-                </Title>
-            </div>
-            {isMobile && 
-            <div className={cls.mobileTotalOrderCount}>
-                <span>{cartTotal?.items_quantity} товара</span>
-                <span>{cartTotal?.subtotal}₸</span>
-            </div>
-            }
-            {orderStatus == 'send' && <EmptyResults 
-                icon={<EmtpyWhiteHeartIcon />}
-                text={`Спасибо! Ваш заказ создан!`}
-                description={`Проверяйте заказы в персональном разделе.Ознакомьтесь с нашим каталогом поближе`}    
-                orders={`/account/orders`}        
-            />}
-            {!orderStatus &&
-            <div className={cls.newOrderBody}>
-                <div className={cls.newOrderContacts}>
-                    <div 
-                        className={cls.newOrderField} 
-                        // onClick={()=>setShow(0)}
-                    >
-                        <div className={cls.newOrderFieldTitle}>
-                            <div>
-                                1
+        {console.log(error)}
+            <div className={cls.newOrderPage}>
+                <div className={cls.newOrderPageTop}>
+                    <Link to={`/cart`}>
+                        <ArrowOrderPageIcon />
+                        <p>Вернутся в корзину</p>
+                    </Link>
+                    <Title>
+                        Оформление заказа
+                    </Title>
+                </div>
+                {isMobile && 
+                <div className={cls.mobileTotalOrderCount}>
+                    <span>{cartTotal?.items_quantity} товара</span>
+                    <span>{cartTotal?.subtotal}₸</span>
+                </div>
+                }
+                {orderStatus == 'send' && 
+                <EmptyResults 
+                    icon={<EmtpyWhiteHeartIcon />}
+                    text={`Спасибо! Ваш заказ создан!`}
+                    description={`Проверяйте заказы в персональном разделе.Ознакомьтесь с нашим каталогом поближе`}    
+                    orders={`/account/orders`}        
+                />}
+                {!orderStatus &&
+                <div className={cls.newOrderBody}>
+                    <div className={cls.newOrderContacts}>
+                        <div 
+                            className={cls.newOrderField} 
+                            // onClick={()=>setShow(0)}
+                        >
+                            <div className={cls.newOrderFieldTitle}>
+                                <div>
+                                    1
+                                </div>
+                                <p>Контактные данные</p>
                             </div>
-                            <p>Контактные данные</p>
-                        </div>
-                        <div className={cls.newOrderFieldContactInfo}>
-                            {isAuth && 
-                                <>
-                                <div>
-                                    <NewOrderCheckIcon />
-                                </div>
-                                <div>
-                                    <p>{user?.user?.phone}</p>
-                                    <p>{user?.user?.name}</p>
-                                </div>
-                                </>
-                            }
-                            {!isAuth && 
-                            <>
-                                <div className={cls.contactsInputsBlock}>
-                                    <div className={cls.contactPhoneInput}>
-                                        <p>Номер телефона</p>
-                                        {errPhone && <span className={cls.errPhone}>{errPhone}</span>}
-                                        <input 
-                                            type="tel" 
-                                            placeholder='+7 '
-                                            ref={phoneMask}
-                                            onChange={(e)=>{
-                                                const value = e.target.value;
-                                                setPhone(value);
-                                                setNewOrderPhone(value)
-                                                setErrPhone(null)
-                                            }}
-                                        />
+                            <div className={cls.newOrderFieldContactInfo}>
+                                {isAuth && 
+                                    <>
+                                    <div>
+                                        <NewOrderCheckIcon />
                                     </div>
-                                    <button 
-                                        className={cls.sendPhoneBtn}
+                                    <div>
+                                        <p>{user?.user?.phone}</p>
+                                        <p>{user?.user?.name}</p>
+                                    </div>
+                                    </>
+                                }
+                                {!isAuth && 
+                                <>
+                                    <div className={cls.contactsInputsBlock}>
+                                        <div className={cls.contactPhoneInput}>
+                                            <p>Номер телефона</p>
+                                            {errPhone && <span className={cls.errPhone}>{errPhone}</span>}
+                                            <input 
+                                                type="tel" 
+                                                placeholder='+7 '
+                                                ref={phoneMask}
+                                                onChange={(e)=>{
+                                                    const value = e.target.value;
+                                                    setPhone(value);
+                                                    setNewOrderPhone(value)
+                                                    setErrPhone(null)
+                                                }}
+                                            />
+                                        </div>
+                                        <button 
+                                            className={cls.sendPhoneBtn}
+                                            onClick={()=>{
+                                                validate(phone)
+                                            }}
+                                        >
+                                            <p>Отправить</p>
+                                        </button>
+                                    </div>
+                                </>}
+                            </div>
+                        </div>
+                        <div 
+                            className={cls.newOrderField} 
+                        >
+                            <div className={cls.newOrderFieldTitle}>
+                                <div>
+                                    2
+                                </div>
+                                <p>Способ доставки</p>
+                            </div>
+                            {data.contact_name && data.contact_phone &&
+                            <div className={cls.newOrderDeliveryMethod}>
+                                <div className={cls.newOrderDeliveryMethodTop}>
+                                    <div 
+                                        className={`${cls.pickup} ${delivery=='pickup'? cls.active: ""}`}
                                         onClick={()=>{
-                                            validate(phone)
+                                            const deliveryMethod = 'pickup';
+                                            setDelivery(deliveryMethod);
+                                            setData((prev)=>({
+                                                ...prev,
+                                                delivery_method_code: deliveryMethod
+                                            }))
                                         }}
                                     >
-                                        <p>Отправить</p>
-                                    </button>
-                                </div>
-                            </>}
-                        </div>
-                    </div>
-                    <div 
-                        className={cls.newOrderField} 
-                    >
-                        <div className={cls.newOrderFieldTitle}>
-                            <div>
-                                2
-                            </div>
-                            <p>Способ доставки</p>
-                        </div>
-                        {data.contact_name && data.contact_phone &&
-                        <div className={cls.newOrderDeliveryMethod}>
-                            <div className={cls.newOrderDeliveryMethodTop}>
-                                <div 
-                                    className={`${cls.pickup} ${delivery=='pickup'? cls.active: ""}`}
-                                    onClick={()=>{
-                                        const deliveryMethod = 'pickup';
-                                        setDelivery(deliveryMethod);
-                                        setData((prev)=>({
-                                            ...prev,
-                                            delivery_method_code: deliveryMethod
-                                        }))
-                                    }}
-                                >
-                                    <p>Самовывоз</p>
-                                </div>
-                                <div 
-                                    className={`${cls.standart} ${delivery=='standard'? cls.active : ""}`}
-                                    onClick={()=>{
-                                        setDelivery('standard');
-                                        const deliveryMethod = 'standard';
-                                        setData((prev)=>({
-                                            ...prev,
-                                            delivery_method_code: deliveryMethod
-                                        }))
-                                    }}
-                                >
-                                    <p>Доставка до адреса</p>
-                                </div>
-                            </div>
-                            <div className={cls.newOrderDeliveryMethodBody}>
-                                {delivery=='pickup' && 
-                                <div className={cls.pickupDeliveryInfo}>
-                                    <div className={cls.pickupCityWrapper}>
-                                        <p>Выберите город</p>
-                                        <div className={cls.pickupCitiesListWrapper}
-                                        onClick={()=>setShowList(!showList)}>
-                                            <div className={cls.activeCity} >
-                                                <LocationIcon />
-                                                <p>{activeCity}</p>
-                                            </div>
-                                            <OrderListArrow />
-                                            {showList && 
-                                            <div className={cls.list}>
-                                                <div>
-                                                    {citiesList.map((city, index)=>{
-                                                        return(
-                                                            <p 
-                                                                key={index}
-                                                                onClick={()=>setActiveCity(city)}
-                                                            >{city}</p>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-                                            }
-                                        </div>
+                                        <p>Самовывоз</p>
                                     </div>
-                                    <div className={cls.pickupPointsList}>
-                                        <p>Пункты самовывоза</p>
-                                        <div className={cls.pointsList}>
-                                        {localCityAdresses.length == 0 &&<p>Пункт вывоза заказа отсутсвует</p>}
-                                        {localCityAdresses?.map((item,index)=>{
-                                            return(
-                                                <div key={index} className={cls.pointItem}>
+                                    <div 
+                                        className={`${cls.standart} ${delivery=='standard'? cls.active : ""}`}
+                                        onClick={()=>{
+                                            setDelivery('standard');
+                                            const deliveryMethod = 'standard';
+                                            setData((prev)=>({
+                                                ...prev,
+                                                delivery_method_code: deliveryMethod
+                                            }))
+                                        }}
+                                    >
+                                        <p>Доставка до адреса</p>
+                                    </div>
+                                </div>
+                                <div className={cls.newOrderDeliveryMethodBody}>
+                                    {delivery=='pickup' && 
+                                    <div className={cls.pickupDeliveryInfo}>
+                                        <div className={cls.pickupCityWrapper}>
+                                            <p>Выберите город</p>
+                                            <div className={cls.pickupCitiesListWrapper}
+                                            onClick={()=>{
+                                                setShowList(!showList)
+                                            }}>
+                                                <div className={cls.activeCity} >
+                                                    <LocationIcon />
+                                                    <p>{activeCity}</p>
+                                                </div>
+                                                <OrderListArrow />
+                                                {showList && 
+                                                <div className={cls.list}>
                                                     <div>
-                                                        <MobileCheckIcon />
-                                                    </div>
-                                                    <div>
-                                                        <p>{item?.address}</p>
-                                                        <p>{item?.work_hours}</p>
-                                                    </div>
-                                                    <input 
-                                                        type="radio" name='city'
-                                                        value={item?.address}
-                                                        onChange={()=>{
-                                                            const deliveryMethod = 'pickup';
-                                                            setDelivery(deliveryMethod);
-                                                            setData((prev)=>({
-                                                                ...prev,
-                                                                delivery_method_code: deliveryMethod
-                                                            }))
+                                                        {citiesList.map((city, index)=>{
+                                                            return(
+                                                                <p 
+                                                                    key={index}
+                                                                    onClick={()=>{setActiveCity(city);
+                                                                    setData((prev)=>({
+                                                                        ...prev,
+                                                                        delivery_address: {
+                                                                            ...(prev.delivery_address || {}),
+                                                                            city : activeCity
+                                                                        }
+                                                                    }))
 
-                                                        }}
-                                                    />
-                                                    <div></div>
+                                                                    }}
+                                                                >{city}</p>
+                                                            )
+                                                        })}
+                                                    </div>
                                                 </div>
-                                            )
-                                        })}
-                                        </div>
-                                    </div>
-                                </div>
-                                }
-                                {delivery=='standard' &&
-                                <div className={cls.deliveryStandart}>
-                                    <div className={cls.pickupCityWrapper}>
-                                        <p>Выберите город</p>
-                                        <div className={cls.pickupCitiesListWrapper}
-                                        onClick={()=>setShowList(!showList)}>
-                                            <div className={cls.activeCity} >
-                                                <LocationIcon />
-                                                <p>{activeCity}</p>
+                                                }
                                             </div>
-                                            <OrderListArrow />
-                                            {showList && 
-                                            <div className={cls.list}>
-                                                <div>
-                                                    {citiesList.map((city, index)=>{
-                                                        return(
-                                                            <p 
-                                                            key={index}
-                                                            onClick={()=>{
-                                                                setActiveCity(city);
-                                                                const toDataCity = city; 
+                                        </div>
+                                        <div className={cls.pickupPointsList}>
+                                            <p>Пункты самовывоза</p>
+                                            <div className={cls.pointsList}>
+                                            {localCityAdresses.length == 0 &&<p>Пункт вывоза заказа отсутсвует</p>}
+                                            {localCityAdresses?.map((item,index)=>{
+                                                return(
+                                                    <div key={index} className={cls.pointItem}>
+                                                        <div>
+                                                            <MobileCheckIcon />
+                                                        </div>
+                                                        <div>
+                                                            <p>{item?.address}</p>
+                                                            <p>{item?.work_hours}</p>
+                                                        </div>
+                                                        <input 
+                                                            type="radio" name='city'
+                                                            value={item?.address}
+                                                            onChange={()=>{
+                                                                const deliveryMethod = 'pickup';
+                                                                setDelivery(deliveryMethod);
+                                                                setData((prev)=>({
+                                                                    ...prev,
+                                                                    delivery_method_code: deliveryMethod
+                                                                }));
                                                                 setData((prev)=>({
                                                                     ...prev,
                                                                     delivery_address: {
-                                                                        ...prev.delivery_address,
-                                                                        city: toDataCity
+                                                                        ...(prev.delivery_address),
+                                                                        street: item?.address
                                                                     }
                                                                 }))
+
+
                                                             }}
-                                                            >{city}
-                                                            </p>
-                                                        )
-                                                    })}
-                                                </div>
+                                                        />
+                                                        <div></div>
+                                                    </div>
+                                                )
+                                            })}
                                             </div>
-                                            }
                                         </div>
                                     </div>
-                                    <div className={cls.deliveryAdressInputs}>
-                                        <div>
-                                            <p>Введите ваш адрес<span>*</span></p>
-                                            <input 
-                                                type="text" placeholder='Введите ваш адрес' 
-                                                onChange={(e)=>{
-                                                    setData((prev)=>({
-                                                        ...prev,
-                                                        delivery_address: {
-                                                            ...prev.delivery_address,
-                                                            street: e.target.value
-                                                        }
-                                                    }))
-                                                }}
-                                            />
-                                            <span>Пример: ул.Макатаева 314</span>
+                                    }
+                                    {delivery=='standard' &&
+                                    <div className={cls.deliveryStandart}>
+                                        <div className={cls.pickupCityWrapper}>
+                                            <p>Выберите город</p>
+                                            <div className={cls.pickupCitiesListWrapper}
+                                            onClick={()=>setShowList(!showList)}>
+                                                <div className={cls.activeCity} >
+                                                    <LocationIcon />
+                                                    <p>{activeCity}</p>
+                                                </div>
+                                                <OrderListArrow />
+                                                {showList && 
+                                                <div className={cls.list}>
+                                                    <div>
+                                                        {citiesList.map((city, index)=>{
+                                                            return(
+                                                                <p 
+                                                                key={index}
+                                                                onClick={()=>{
+                                                                    setActiveCity(city);
+                                                                    const toDataCity = city; 
+                                                                    setData((prev)=>({
+                                                                        ...prev,
+                                                                        delivery_address: {
+                                                                            ...prev.delivery_address,
+                                                                            city: toDataCity
+                                                                        }
+                                                                    }))
+                                                                }}
+                                                                >{city}
+                                                                </p>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                }
+                                            </div>
                                         </div>
-                                        <div>
+                                        <div className={cls.deliveryAdressInputs}>
                                             <div>
-                                                <p>Этаж</p>
+                                                <p>Введите ваш адрес<span>*</span></p>
+                                                <input 
+                                                    type="text" placeholder='Введите ваш адрес' 
+                                                    onChange={(e)=>{
+                                                        setData((prev)=>({
+                                                            ...prev,
+                                                            delivery_address: {
+                                                                ...prev.delivery_address,
+                                                                street: e.target.value
+                                                            }
+                                                        }))
+                                                    }}
+                                                />
+                                                <span>Пример: ул.Макатаева 314</span>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <p>Этаж</p>
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder='Этаж' 
+                                                        onChange={(e)=>{
+                                                        setData((prev)=>({
+                                                            ...prev,
+                                                            delivery_address: {
+                                                                ...prev.delivery_address,
+                                                                floor: e.target.value
+                                                            }
+                                                            }))
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <p>Квартира</p>
+                                                    <input 
+                                                        type="text"
+                                                        placeholder='Квартира'
+                                                        onChange={(e)=>{
+                                                            setData((prev)=>({
+                                                                ...prev,
+                                                                delivery_address: {
+                                                                    ...prev.delivery_address,
+                                                                    apartment: e.target.value
+                                                                }
+                                                            }))
+                                                        }}
+                                                    />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div className={cls.deliveryAdressInputs}>
+                                            <div className={cls.notes}>
+                                                <p>Комментарий для курьера</p>
                                                 <input 
                                                     type="text" 
-                                                    placeholder='Этаж' 
+                                                    placeholder='Уточнения для курьера' 
                                                     onChange={(e)=>{
-                                                    setData((prev)=>({
-                                                        ...prev,
-                                                        delivery_address: {
-                                                            ...prev.delivery_address,
-                                                            floor: e.target.value
-                                                        }
-                                                        }))
+                                                            setData((prev)=>({
+                                                                ...prev,
+                                                                delivery_address: {
+                                                                    ...prev.delivery_address,
+                                                                    comment: e.target.value
+                                                                }
+                                                            }))
                                                     }}
                                                 />
                                             </div>
-                                            <div>
-                                                <p>Квартира</p>
-                                                <input 
-                                                    type="text"
-                                                    placeholder='Квартира'
-                                                    onChange={(e)=>{
-                                                        setData((prev)=>({
-                                                            ...prev,
-                                                            delivery_address: {
-                                                                ...prev.delivery_address,
-                                                                apartment: e.target.value
-                                                            }
-                                                        }))
-                                                    }}
-                                                />
-                                            </div>
-
                                         </div>
-                                    </div>
-                                    <div className={cls.deliveryAdressInputs}>
-                                        <div className={cls.notes}>
-                                            <p>Комментарий для курьера</p>
-                                            <input 
-                                                type="text" 
-                                                placeholder='Уточнения для курьера' 
-                                                onChange={(e)=>{
-                                                        setData((prev)=>({
-                                                            ...prev,
-                                                            delivery_address: {
-                                                                ...prev.delivery_address,
-                                                                comment: e.target.value
-                                                            }
-                                                        }))
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={cls.deliveryBtnWrapper}>
-                                        <button onClick={()=>setShow(2)}>
-                                            <p>Продолжить</p>
-                                        </button>
-                                        <div className={cls.deliveryInfo}>
-                                            <PickupIconDelivery />
-                                            <div>
-                                                <p>Доставка до адреса</p>
-                                                <p>1000₸</p>
+                                        <div className={cls.deliveryBtnWrapper}>
+                                            <button onClick={()=>setShow(2)}>
+                                                <p>Продолжить</p>
+                                            </button>
+                                            <div className={cls.deliveryInfo}>
+                                                <PickupIconDelivery />
+                                                <div>
+                                                    <p>Доставка до адреса</p>
+                                                    <p>1000₸</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    }
                                 </div>
-                                }
                             </div>
+                            }
                         </div>
-                        }
-                    </div>
-                    <div 
-                        className={cls.newOrderField} 
-                    >
-                        <div className={cls.newOrderFieldTitle}>
-                            <div>
-                                3
-                            </div>
-                            <p>Способ оплаты</p>
-                        </div>
-                        {data.delivery_method_code && 
-                        <>
-                        <div className={cls.newOrderPayment}>
-                            <div className={cls.newOrderPaymentItem}>
-                                <div className={cls.newOrderLeft}>
-                                    <PaymentCardIcon />
-                                    <div>
-                                        <p>Оплата картой</p>
-                                        <p>Visa, Mastercard</p>
-                                    </div>
-                                </div>
-                                <div></div>
-                                <input 
-                                    type="radio" 
-                                    name='payment-method' 
-                                    value={'card'}
-                                    onChange={()=>setData((prev)=>(
-                                        {
-                                            ...prev,
-                                            payment_method_id: 1
-                                        }
-                                    ))}
-                                />
-                            </div>
-                            <div className={cls.newOrderPaymentItem}>
-                                <div className={cls.newOrderLeft}>
-                                    <img src={kaspiIcon} alt='kaspi'/>
-                                    <div>
-                                        <p>Kaspi.kz</p>
-                                        <p>Оплата с помощью Kaspi Gold</p>
-                                    </div>
-                                </div>
-                                <div></div>
-                                <input 
-                                    type="radio" 
-                                    name='payment-method' 
-                                    value={'kaspi'}
-                                    onChange={()=>setData((prev)=>(
-                                        {
-                                            ...prev,
-                                            payment_method_id: 3
-                                        }
-                                    ))}
-                                />
-                            </div>
-                            <div className={cls.newOrderPaymentItem}>
-                                <div className={cls.newOrderLeft}>
-                                    <PaymentCashIcon />
-                                    <div>
-                                        <p>Наличными при получении</p>
-                                        <p>Оплачивается при выдаче товара</p>
-                                    </div>
-                                </div>
-                                <div></div>
-                                <input 
-                                    type="radio" 
-                                    name='payment-method' 
-                                    value={'cash'}
-                                    onChange={()=>setData((prev)=>(
-                                        {
-                                            ...prev,
-                                            payment_method_id: 4
-                                        }
-                                    ))}
-                                />
-                            </div>
-                        </div>
-                        <button 
-                            className={cls.newOrderBtn}
-                            onClick={handleAddOrder}
+                        <div 
+                            className={cls.newOrderField} 
                         >
-                            <p>Перейти к оплате</p>
-                        </button>
-                        </>
-
-                        }
-                    </div>
-                </div>
-                <div className={cls.newOrderDetails}>
-                    <div className={cls.newOrderDetailsContent}>
-                        <h4>Детали заказа</h4>
-                        {cartTotal?.items?.length !== 0 &&
-                        <div className={cls.newOrderDetailsList}>
-                            {cartTotal?.items?.map((item, index)=>{
-                                return(
-                                    <div 
-                                        className={cls.newOrderDetailItem} key={item?.product?.slug}
-                                    >
-                                        <div>
-                                            <img src={`${item?.product?.primary_image_url}`} alt={`${item?.product?.name}`}/>
-                                        </div>
-                                        <Link to={`/products/${item?.product?.slug}`}>
-                                            {item?.product?.name}
-                                        </Link>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        }
-                        <div className={cls.newOrderPriceBlock}>
-                            <div className={cls.top}>
-                                <div className={cls.newCharacteristicItem}>
-                                    <span>Всего товаров</span>
-                                    <div className={cls.line} ></div>
-                                    <span>{cartTotal?.items_quantity} шт</span>
+                            <div className={cls.newOrderFieldTitle}>
+                                <div>
+                                    3
                                 </div>
-                                <div className={cls.newCharacteristicItem}>
-                                    <span>Всего</span>
+                                <p>Способ оплаты</p>
+                            </div>
+                            {data.delivery_method_code && 
+                            <>
+                            <div className={cls.newOrderPayment}>
+                                <div className={cls.newOrderPaymentItem}>
+                                    <div className={cls.newOrderLeft}>
+                                        <PaymentCardIcon />
+                                        <div>
+                                            <p>Оплата картой</p>
+                                            <p>Visa, Mastercard</p>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                    <input 
+                                        type="radio" 
+                                        name='payment-method' 
+                                        value={'card'}
+                                        onChange={()=>setData((prev)=>(
+                                            {
+                                                ...prev,
+                                                payment_method_id: 1
+                                            }
+                                        ))}
+                                    />
+                                </div>
+                                <div className={cls.newOrderPaymentItem}>
+                                    <div className={cls.newOrderLeft}>
+                                        <img src={kaspiIcon} alt='kaspi'/>
+                                        <div>
+                                            <p>Kaspi.kz</p>
+                                            <p>Оплата с помощью Kaspi Gold</p>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                    <input 
+                                        type="radio" 
+                                        name='payment-method' 
+                                        value={'kaspi'}
+                                        onChange={()=>setData((prev)=>(
+                                            {
+                                                ...prev,
+                                                payment_method_id: 3
+                                            }
+                                        ))}
+                                    />
+                                </div>
+                                <div className={cls.newOrderPaymentItem}>
+                                    <div className={cls.newOrderLeft}>
+                                        <PaymentCashIcon />
+                                        <div>
+                                            <p>Наличными при получении</p>
+                                            <p>Оплачивается при выдаче товара</p>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                    <input 
+                                        type="radio" 
+                                        name='payment-method' 
+                                        value={'cash'}
+                                        onChange={()=>setData((prev)=>(
+                                            {
+                                                ...prev,
+                                                payment_method_id: 4
+                                            }
+                                        ))}
+                                    />
+                                </div>
+                            </div>
+                            <button 
+                                className={cls.newOrderBtn}
+                                onClick={handleAddOrder}
+                            >
+                                <p>Перейти к оплате</p>
+                            </button>
+                            </>
+
+                            }
+                        </div>
+                    <div>
+                        {error?.contact_name && <p>{error?.contact_name}</p>}
+                        {error?.contact_phone && <p>{error?.contact_phone}</p>}
+                        {error?.delivery_method_code && <p>{error?.delivery_method_code}</p>}
+                        {error?.delivery_address && <p>{error?.delivery_method_code}</p>}
+                        {error?.payment_method_id && <p>{error?.payment_method_id}</p>}
+                        {error?.delivery_address?.city && <p>{error?.delivery_address?.city}</p>}
+                        {error?.delivery_address?.street && <p>{error?.delivery_address?.street}</p>}
+                    </div>
+
+                    </div>
+                    <div className={cls.newOrderDetails}>
+                        <div className={cls.newOrderDetailsContent}>
+                            <h4>Детали заказа</h4>
+                            {cartTotal?.items?.length !== 0 &&
+                            <div className={cls.newOrderDetailsList}>
+                                {cartTotal?.items?.map((item, index)=>{
+                                    return(
+                                        <div 
+                                            className={cls.newOrderDetailItem} key={item?.product?.slug}
+                                        >
+                                            <div>
+                                                <img src={`${item?.product?.primary_image_url}`} alt={`${item?.product?.name}`}/>
+                                            </div>
+                                            <Link to={`/products/${item?.product?.slug}`}>
+                                                {item?.product?.name}
+                                            </Link>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            }
+                            <div className={cls.newOrderPriceBlock}>
+                                <div className={cls.top}>
+                                    <div className={cls.newCharacteristicItem}>
+                                        <span>Всего товаров</span>
+                                        <div className={cls.line} ></div>
+                                        <span>{cartTotal?.items_quantity} шт</span>
+                                    </div>
+                                    <div className={cls.newCharacteristicItem}>
+                                        <span>Всего</span>
+                                        <div className={cls.line}></div>
+                                        <span>{cartTotal?.subtotal} ₸</span>
+                                    </div>
+                                    <div className={cls.newCharacteristicItem}>
+                                        <span>Скидка</span>
+                                        <div className={cls.line}></div>
+                                        <span>{0} ₸</span>
+                                    </div>
+                                </div>
+                                <div className={cls.bottom}>
+                                    <span>Скидка</span>
                                     <div className={cls.line}></div>
                                     <span>{cartTotal?.subtotal} ₸</span>
                                 </div>
-                                <div className={cls.newCharacteristicItem}>
-                                    <span>Скидка</span>
-                                    <div className={cls.line}></div>
-                                    <span>{0} ₸</span>
-                                </div>
+                                {/* {!data.delivery_method_code &&
+                                <button 
+                                    className={cls.newOrderBtn}
+                                    onClick={()=>addOrder(data)}
+                                >
+                                    <p>Перейти к оплате</p>
+                                </button>} */}
                             </div>
-                            <div className={cls.bottom}>
-                                <span>Скидка</span>
-                                <div className={cls.line}></div>
-                                <span>{cartTotal?.subtotal} ₸</span>
-                            </div>
-                            {!data.delivery_method_code &&
-                            <button 
-                                className={cls.newOrderBtn}
-                                onClick={()=>addOrder(data)}
-                            >
-                                <p>Перейти к оплате</p>
-                            </button>}
                         </div>
                     </div>
-                </div>
-            </div>}
-        </div>
+                </div>}
+            </div>
         {/* {step == 'otp' && <AuthModal next={step}/>} */}
         </>
     )
