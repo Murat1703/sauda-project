@@ -17,10 +17,9 @@ export const HomePage = () =>{
     useEffect(()=>{
         loadProducts();
     },[])
-
-
-    const productsWithDiscount = products?.data?.filter(product => product.old_price !== null)
-
+    
+    const productsWithDiscount = products?.data
+    ?.filter(product => product.old_price !== null)
  
     return(
         <>

@@ -8,6 +8,7 @@ import { useBrands } from '../../../stores/useBrands';
 import { useEffect, useState } from 'react';
 import { ShowMoreIcon } from '../../../../public/assets/icons/ShowMoreIcon';
 import { useLanguage } from '../../../stores/useLanguage';
+import { Loader } from '../../Loader';
 
 
 export const AboutSection = () =>{
@@ -24,6 +25,7 @@ export const AboutSection = () =>{
 
     return(
         <section className={cls.aboutSectionWrapper}>
+            {loadingBrands ? <Loader /> :
             <div className={cls.aboutSectionContent}>
                 {errLoadingBrands ? <p className={cls.errText}>{errLoadingBrands}</p> :
                 <div className={cls.aboutSectionLogoSlider}>
@@ -126,6 +128,7 @@ export const AboutSection = () =>{
                     </div>
                 </div>
             </div>
+            }
         </section>
     )
 }

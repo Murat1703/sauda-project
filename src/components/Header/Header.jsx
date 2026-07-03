@@ -23,7 +23,6 @@ import { MobileControlPanelAccount } from '../../../public/assets/icons/MobileCo
 import { Search } from '../Search';
 import { useLanguage } from '../../stores/useLanguage.js';
 import { useFavoritesStore } from '../../stores/useFavoritesStore.js';
-import { MobileSearchIcon } from '../../../public/assets/icons/MobileSearchIcon.jsx';
 import { MobileSearchPanel } from './MobileSearchPanel/MobileSearchPanel.jsx';
 import { useReviewsStore } from '../../stores/useReviewsStore.js';
 
@@ -69,7 +68,8 @@ export const Header = ({ordersCount}) =>{
 
     useEffect(()=>{            
         if (!isAuth) {
-            setShowLogin(false); return
+            setShowLogin(false); 
+            return
         };    
         syncLocalCartWithAccount();
         setShowLogin(true);
