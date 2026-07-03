@@ -3,8 +3,6 @@ import cls from './ProductPage.module.css'
 import { useProducts } from '../../stores/useProducts.js';
 import { useEffect, useState, useRef } from 'react';
 import { Loader } from '../../components/Loader';
-import { Link } from 'react-router-dom';
-import { BreadCrumbs } from '../../components/AccountLayout';
 import { Title } from '../../components/Title';
 import { Badge } from '../../components/Badge';
 // import { useCart } from '../../hooks/useCart';
@@ -18,7 +16,7 @@ import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { useMediaQuery } from 'react-responsive';
 import { Button } from '../../components/Button';
-import { ProductCard } from '../../components/ProductCard';
+import { FavoriteButton, ProductCard } from '../../components/ProductCard';
 import { TextInfo } from '../../components/TextInfo/TextInfo.jsx';
 import { CartIcon } from '../../../public/assets/icons/CartIcon.jsx';
 import { PickUpIcon } from '../../../public/assets/icons/PickUpIcon.jsx';
@@ -42,19 +40,19 @@ import { ProductPageIncreaseIcon } from '../../../public/assets/icons/ProductPag
 import { useDateFormat } from '../../hooks/useDateFormat.js';
 import { AccountRatingStar } from '../../../public/assets/icons/AccountRagingStar.jsx';
 import { ProductPageIconToCart } from '../../../public/assets/icons/ProductPageIconToCart.jsx';
+import {usePriceFormat} from '../../hooks/usePriceFormat.js';
 import { useAuthStore } from '../../stores/useAuthStore.js';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { ProductPagePrevArrow } from '../../../public/assets/icons/ProductPagePrevArrow.jsx';
-import { ProductPageNextArrow } from '../../../public/assets/icons/ProductPageNextArrow.jsx';
 import { ReviewsList } from '../../components/Reviews/ReviewsList/ReviewsList.jsx';
-
+import { ProductPageBreadCrumbs } from './components/ProductPageBreadCrumbs';
+import {ProductPageSpecificationImages} from './components/ProductPageSpecificationImages'
+import {ProductPageSpecifications} from './components/ProductPageSpecifications'
 
 export const ProductPage = ({isMobileScroll}) =>{
 
     const {slug} = useParams();
-    const {product, loadProduct, loadingProduct, products, loadingProducts, loadProducts} = useProducts();
+    const {product, loadProduct, loadingProduct, products, loadProducts} = useProducts();
     const {reviewsList, loadReviews} = useReviewsStore();
-
 
     useEffect(()=>{
         if (!slug) return;
@@ -73,8 +71,6 @@ export const ProductPage = ({isMobileScroll}) =>{
         month: 'long',
     });
 
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
     const [active, setActive] = useState(0);
 
     const isMobile = useMediaQuery({
@@ -84,8 +80,6 @@ export const ProductPage = ({isMobileScroll}) =>{
     const{favoritesList, addToFavoritesList, deleteFromFavoritesList, addToLocalFavoritesList, deleteFromLocalFavoritesList} = useFavoritesStore();
 
     const [addToFavorite, setAddToFavorite] = useState(false);
-
-    const [showMoreGaranty, setShowMoreGaranty] = useState(false);
 
     const [mobileCount, setMobileCount] = useState(5);
 
@@ -107,12 +101,6 @@ export const ProductPage = ({isMobileScroll}) =>{
 
     const {isAuth} = useAuth();
 
-    
-    // useEffect(()=>{
-    //     if (!slug) return;
-    //     loadReviews(slug)
-    // },[slug])
-
     const cartItem = cartItems?.find(
         (item) => item?.product?.id === item.product_id || item?.id
     );
@@ -123,15 +111,11 @@ export const ProductPage = ({isMobileScroll}) =>{
 
     const {formatDate} = useDateFormat();
 
-    const formatPrice = (price) => {
-        return Number(price).toLocaleString('ru-RU', {
-            maximumFractionDigits: 0,
-        });
-    };
+    const formatPrice = usePriceFormat();
 
     const [errorText, setErrorText] = useState(null);
 
-    console.log(product)
+    // console.log(product)
 
     useEffect(()=>{
         if (active!==2 && !isMobile )return;
@@ -141,27 +125,22 @@ export const ProductPage = ({isMobileScroll}) =>{
     },[active, product?.product?.category?.slug, isMobile])
 
     const handleShare = async () => {
-    const shareData = {
-        title: document.title,
-        text: `${product?.product?.name}`,
-        url: window.location.href,
-    };
-
-    if (navigator.share) {
-        try {
-        await navigator.share(shareData);
-        } catch (error) {
-        // console.log('Пользователь отменил шаринг');
+        const shareData = {
+            title: document.title,
+            text: `${product?.product?.name}`,
+            url: window.location.href,
+        };
+        if (navigator.share) {
+            try {
+            await navigator.share(shareData);
+            } catch (error) {
+            // console.log('Пользователь отменил шаринг');
+            }
+        } else {
+            await navigator.clipboard.writeText(window.location.href);
+            alert('Ссылка скопирована');
         }
-    } else {
-        await navigator.clipboard.writeText(window.location.href);
-        alert('Ссылка скопирована');
-    }
     };
-
-    const prevRef = useRef(null);
-    const nextRef = useRef(null);
-
 
     return(
     <>
@@ -171,21 +150,7 @@ export const ProductPage = ({isMobileScroll}) =>{
             <div className={cls.productPageContent}>
                 <div className={cls.productTitleBlock}>
                     <div>
-                        <div className={cls.breadCrumbsBlock}>
-                            <BreadCrumbs>
-                                Каталог
-                            </BreadCrumbs>
-                            {product?.product?.breadcrumbs?.map((breadcrumbItem, index)=>{
-                                return (
-                                    <div key={breadcrumbItem.slug}>
-                                        <span>-</span>
-
-                                        <Link to={`/catalog/categories/${breadcrumbItem.slug}`} >{breadcrumbItem.name}</Link>
-                                    </div>
-                                )
-                            })}
-
-                        </div>
+                        <ProductPageBreadCrumbs product={product}/>
                         <Title>
                             {product?.product?.name}
                         </Title>
@@ -195,162 +160,68 @@ export const ProductPage = ({isMobileScroll}) =>{
                 <div className={cls.productInfoBlock}>
                     <div className={cls.left}>
                         <div className={cls.productSpecifications}>
-                            <div className={cls.productSpecificationsImages}>
-                                {product?.product?.images && <>
-                                    <Swiper
-                                        style={{
-                                            '--swiper-navigation-color': '#fff',
-                                            '--swiper-pagination-color': '#fff',
-                                        }}
-                                        spaceBetween={10}
-                                        navigation={{
-                                        prevEl: prevRef.current,
-                                        nextEl: nextRef.current,
-                                        }}
-                                        thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-                                        modules={[FreeMode, Navigation, Thumbs]}
-                                        // className="mySwiper2"
-                                    >
-                                        {product?.product?.images?.map((item, index)=>{
-                                            return(
-                                                <SwiperSlide key={index}>
-                                                    <img 
-                                                        src={`${item?.url}`} 
-                                                        alt={`${product?.product?.name}`}
-                                                        loading={`lazy`}
-                                                    />
-                                                </SwiperSlide>
-                                            )
-                                        })}
-                                    </Swiper>
-                                    <Swiper
-                                        onSwiper={setThumbsSwiper}
-                                        spaceBetween={7}
-                                        slidesPerView={5}
-                                        freeMode={true}
-                                        watchSlidesProgress={true}
-                                        modules={[FreeMode, Thumbs]}
-                                        // className="mySwiper"
-                                    >
-                                        {product?.product?.images?.map((item, index)=>{
-                                            return(
-                                                <SwiperSlide key={index}>
-                                                    <img 
-                                                        src={`${item?.url}`} 
-                                                        alt={`${product?.product?.name}`}
-                                                        loading={`lazy`}
-                                                    />
-                                                </SwiperSlide>
-                                            )
-                                        })}
-                                    </Swiper>
-
-                                
-                                </>}
-                                <button 
-                                    ref={prevRef}
-                                    className={cls.prevControlBtn}
-                                >
-                                    <ProductPagePrevArrow />
-                                </button>
-                                <button 
-                                    ref={nextRef}
-                                    className={cls.nextControlBtn}
-                                >
-                                    <ProductPageNextArrow />
-                                </button>
-
-
-                            </div>
+                            <ProductPageSpecificationImages product={product}/>
                             <div className={cls.text}>
-                                <div className={cls.textItem}>
-                                            <span>Бренд</span>
-                                            <div className={cls.line}></div>
-                                            <p>{product?.product?.brand.name}</p>
-                                </div>
-                                {product?.product?.attributes.slice(0,5).map((attr)=>{
-                                    return(
-                                        <div className={cls.textItem} key={attr.id}>
-                                            <span>{attr.name}</span>
-                                            <div className={cls.line}></div>
-                                            <p>{attr.value}</p>
-                                        </div>
-                                    )
-                                })}
+                                <ProductPageSpecifications 
+                                    product={product} 
+                                    limit={5}
+                                />
                                 <a href='#specifications'>Все характеристики</a>
                             </div>
                         </div>
                         <div className={cls.productSpecificationsDesc}>
                             <div className={cls.productSpecificationsDescContent}>
                                 <div className={cls.top}>
-                                    <button
-                                        onClick={()=>setActive(0)}
-                                        className={active==0 ? `${cls.active}`: ""}
-                                    >
-                                        <p>Описание</p>
-                                    </button>
-                                    <button
-                                        onClick={()=>setActive(1)}
-                                        className={active==1 ? `${cls.active}`: ""}
-                                    >
-                                        <p>Гарантия</p>
-                                    </button>
-                                    <button
-                                        onClick={()=>setActive(2)}
-                                        className={active==2 ? `${cls.active}`: ""}
-                                    >
-                                        <p>Альтернатива</p>
-                                    </button>
+                                    {[...Array(3)].map((item, index) => (
+                                        <button
+                                            onClick={()=>setActive(index)}
+                                            className={active==index ? `${cls.active}`: ""}
+                                            key={index} 
+                                        >
+                                            <p>{index==0 ? "Описание" : index==1 ? "Гарантия" : "Альтернатива"}</p>
+                                        </button>
+                                    ))}
                                 </div> 
                                 <div className={cls.middle} id='specifications'>
                                     <div>
-                                        <div className={cls.textItem}>
-                                            <span>Бренд</span>
-                                            <div className={cls.line}></div>
-                                            <p>{product?.product?.brand.name}</p>
-                                        </div>
-                                        {product?.product?.attributes.map((attr)=>{
-                                            return(
-                                                <div className={cls.textItem} key={attr.id}>
-                                                    <span>{attr.name}</span>
-                                                    <div className={cls.line}></div>
-                                                    <p>{attr.value}</p>
-                                                </div>
-                                            )
-                                        })}
+                                        <ProductPageSpecifications 
+                                            product={product}
+                                            limit={product?.product?.attributes.length}
+                                        />
                                     </div>
                                 </div>
                                 <div className={cls.bottom}>
                                     {active == 0 &&
-                                    <>
-                                        <TextInfo html={product?.product?.description}/>
-                                    </>
+                                        <TextInfo 
+                                            html={product?.product?.description}
+                                        />
                                     }
                                     {active == 1 &&
-                                    <>
-                                        <TextInfo html={product?.product?.warranty_text}/>
-                                    </>
+                                        <TextInfo 
+                                            html={product?.product?.warranty_text}
+                                        />
                                     }
                                     {active ==2 &&
-                                    <div className={cls.alternative}>
-                                        {products?.data?.filter(item=> item.slug!==product?.product?.slug).length!==0 ?
-                                        <Swiper
-                                            slidesPerView={3.5}
-                                        >
-                                            {products?.data?.filter(item=> item.slug!==product?.product?.slug)?.map((alt)=>{
-                                                return(
-                                                    <SwiperSlide key={alt.slug}>
-                                                        <ProductCard 
-                                                            product={alt}
-                                                        />
-                                                    </SwiperSlide>
-                                                )
-                                            })}
-                                        </Swiper>
-                                        :<Title>Похожих товаров не найдено</Title>
-                                        
-                                        }
-                                    </div>}
+                                        <div className={cls.alternative}>
+                                            {products?.data?.filter(item=> item.slug!==product?.product?.slug).length!==0 ?
+                                            <Swiper
+                                                slidesPerView={3.5}
+                                            >
+                                                {products?.data?.filter(item=> item.slug!==product?.product?.slug)?.map((alt)=>{
+                                                    return(
+                                                        <SwiperSlide key={alt.slug}>
+                                                            <ProductCard 
+                                                                product={alt}
+                                                            />
+                                                        </SwiperSlide>
+                                                    )
+                                                })}
+                                            </Swiper>
+                                            :<Title>Похожих товаров не найдено</Title>
+                                            
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -371,43 +242,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                                 <p className={cls.countError}>{errorText}</p>
                                 }
                             </div>
-                            <button 
-                                onClick={()=>{
-                                    // const flagIsAdd = !addToFavorite;
-                                    // setAddToFavorite(flagIsAdd);
-                                    if (isAuth == false) {
-                                        if (favoriteItem?.product?.slug === product?.product?.slug){
-                                            deleteFromLocalFavoritesList(product?.product?.id);
-                                            toast.error(<SnackBar text={`Товар удален из избранного `} />)
-                                        }else {
-                                            addToLocalFavoritesList({
-                                                product_slug: product?.product?.slug, 
-                                                product: product.product
-                                            });
-                                            toast(<SnackBar text={`Товар добавлен в избранное`} />)
-                                        }
-                                    }else{
-                                        if (favoriteItem?.product?.slug === product?.product?.slug){
-                                            deleteFromFavoritesList(product?.product?.id);
-                                            toast.error(<SnackBar text={`Товар удален из избранного`} />)
-
-                                        }else {
-                                            addToFavoritesList({
-                                                product_slug: product?.product?.slug, 
-                                                product: product.product
-                                            });
-                                            toast(
-                                            <SnackBar text={`Товар добавлен в избранное`}/>
-                                            )
-                                        }
-                                    }
-                                }}
-                            >
-                                {favoriteItem?.product?.slug == product?.product?.slug
-                                ?<HeartIconFilled />
-                                :<HeartIcon />
-                                }
-                            </button>
+                            <FavoriteButton product={product?.product} />
                         </div>
                         <div className={cls.priceBlock}>
                             <div className={cls.priceDiscount}>
@@ -531,6 +366,9 @@ export const ProductPage = ({isMobileScroll}) =>{
             <div className={cls.mobileProductPageContent}>
                 {loadingProduct && <Loader />}
                 <div className={cls.mobileBreadCrumbs}>
+                    <ProductPageBreadCrumbs product={product}/>
+                </div>
+                {/* <div className={cls.mobileBreadCrumbs}>
                     <BreadCrumbs>
                         Каталог
                     </BreadCrumbs>
@@ -543,7 +381,7 @@ export const ProductPage = ({isMobileScroll}) =>{
                         )
                     })}
 
-                </div>
+                </div> */}
                 <div className={cls.mobileProductImgWrapper}>
                     <div className={cls.mobileProductImgSlider}>
                         <Swiper

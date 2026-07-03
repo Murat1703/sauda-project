@@ -126,10 +126,8 @@ export const Search = ({text, onClose}) =>{
                                     </div>
                                 </Link>
                             )
-                        })}
-                    
-                    </div>
-                    
+                        })}                    
+                    </div>                    
                 }
             </div>
         </div>
